@@ -1,0 +1,106 @@
+/*--------------------------------------------------------------
+# Newsletter Two
+--------------------------------------------------------------*/
+.newsletter-one {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background-color: var(--judges-base);
+    padding: 45px 0 48px;
+    z-index: 1;
+}
+
+.newsletter-one__big-text {
+    font-weight: 700;
+    font-size: 150px;
+    line-height: .8em;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.15) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    font-family: var(--judges-font-two);
+    text-transform: uppercase;
+    position: absolute;
+    top: 96px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: -1;
+}
+
+.newsletter-one__inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.newsletter-one__left {
+    position: relative;
+    display: block;
+}
+
+.newsletter-one__title {
+    font-size: 55px;
+    line-height: 1em;
+    font-weight: 700;
+    color: var(--judges-white);
+    text-transform: capitalize;
+    margin-bottom: 18px;
+}
+
+.newsletter-one__text {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--judges-white);
+}
+
+.newsletter-one__right {
+    position: relative;
+    display: block;
+    max-width: 670px;
+    width: 100%;
+}
+
+.newsletter-one__form {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.newsletter-one__input {
+    position: relative;
+    display: block;
+    max-width: 430px;
+    width: 100%;
+}
+
+.newsletter-one__input input[type="email"] {
+    font-size: 16px;
+    color: var(--judges-white);
+    font-weight: 500;
+    height: 58px;
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--judges-white);
+    border-radius: 30px;
+    outline: none;
+    padding: 0 30px 0;
+}
+
+.newsletter-one__form .thm-btn {
+    border: none;
+    margin-left: 15px;
+    background-color: var(--judges-primary);
+}
+
+.newsletter-one__form .thm-btn:hover {
+    border: none;
+}
+
+.newsletter-one__form .thm-btn::before {
+    background-color: var(--judges-black);
+}

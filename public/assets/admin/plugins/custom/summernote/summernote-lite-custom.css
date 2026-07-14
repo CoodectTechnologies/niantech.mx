@@ -1,0 +1,10 @@
+.note-btn-group button {
+    background-color: var(--summernote-bg)!important;
+    color: var(--summernote-text-color)!important;
+}
+.note-frame {
+    color: var(--summernote-text-color)!important;
+}
+.note-editing-area, .note-popover .popover-content, .note-editor .note-toolbar {
+    background-color: var(--summernote-bg)!important;
+}

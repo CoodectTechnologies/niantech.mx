@@ -1,0 +1,118 @@
+[data-bs-theme="light"] {
+    --bs-app-bg-color: #f5f5f5;
+    --bs-app-blank-bg-color: #ffffff;
+    --bs-app-header-base-bg-color: #ffffff;
+    --bs-app-sidebar-base-bg-color: #fafafa;
+    --bs-app-aside-base-bg-color: #fafafa;
+    --bs-menu-link-bg-color-show: #d1d1d1;
+}
+[data-bs-theme="dark"] {
+    --bs-app-bg-color: #0f1014;
+    --bs-app-blank-bg-color: #151521;
+    --bs-app-header-base-bg-color: #0f1014;
+    --bs-app-sidebar-base-bg-color: #0f1014;
+    --bs-app-aside-base-bg-color: #0f1014;
+}
+[data-kt-app-sidebar-minimize="on"] {
+    --bs-app-sidebar-width: 70px;
+}
+.app-sidebar .menu .menu-item > .menu-link .menu-icon,
+.app-sidebar .menu .menu-item > .menu-link .menu-icon .svg-icon,
+.app-sidebar .menu .menu-item > .menu-link .menu-icon i {
+    color: var(--bs-gray-800);
+    font-size: 15px;
+    margin-right: 15px;
+    margin-left: 7px;
+}
+.app-sidebar .menu .menu-item .menu-link .menu-title {
+    font-size: 1.0rem;
+    font-weight: 500;
+}
+.menu-item {
+    padding: 0;
+}
+.overflow{
+    height: 400px;
+    overflow: scroll;
+    margin-top: 30px;
+}
+.note-toolbar {
+    background: #ffffff!important;
+}
+.note-editing-area {
+    background-color: white;
+}
+.card.card-access-payments.shadow.bg-body.rounded {
+    min-height: 320px;
+    max-height: 320px;
+}
+.btn-product-variation {
+    padding: calc(-0.45rem + 1px) calc(1.25rem + 1px);
+    margin-bottom: 10px;
+}
+button.btn.btn-product-variation.btn-primary {
+    padding: calc(-0.25rem + 1px) calc(1.5rem + 1px)!important;
+}
+button.disabled{
+    cursor: not-allowed;
+}
+.product-color-swatch .color {
+    display: block;
+    text-align: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    border: none;
+    margin-right: 0;
+}
+.product-color-swatch .color::before {
+    content: "";
+    display: inline-block;
+    font-family: "Font Awesome 5 Free";
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: #fff;
+    line-height: 2.2;
+}
+.product-color-swatch .color.active::before {
+    content: "\f00c";
+}
+button.btn.btn-product-variation.color {
+    padding: calc(0.75rem + -7px) calc(0.5rem + 0px)!important;
+}
+.table.table-row-dashed tr {
+    border-bottom-width: 2px;
+    border-bottom-style: dashed;
+    border-bottom-color: #c4b4b4;
+}
+
+.dropzone {
+    background: var(--bs-gray-300);
+}
+
+
+.loader {
+  width: 20px;
+  aspect-ratio: 4;
+  --_g: no-repeat radial-gradient(circle closest-side,var(--bs-gray-300) 90%,#0000);
+  background: 
+    var(--_g) 0%   50%,
+    var(--_g) 50%  50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100%/3) 100%;
+  animation: loading-dots-1 1s infinite linear;
+}
+@keyframes loading-dots-1 {
+    33%{background-size:calc(100%/3) 0%  ,calc(100%/3) 100%,calc(100%/3) 100%}
+    50%{background-size:calc(100%/3) 100%,calc(100%/3) 0%  ,calc(100%/3) 100%}
+    66%{background-size:calc(100%/3) 100%,calc(100%/3) 100%,calc(100%/3) 0%  }
+}
+
+/* SILEO */
+[data-bs-theme="dark"] [data-sileo-description] {
+	color: rgba(0, 0, 0, 0.5);
+}
+[data-bs-theme="light"] [data-sileo-description] {
+	color: rgba(255, 255, 255, 0.5);
+}

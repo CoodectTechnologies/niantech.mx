@@ -1,0 +1,30 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "braces_position": {
+            "functions_opening_brace": "same_line",
+            "classes_opening_brace": "next_line_unless_newline_at_signature_end",
+            "control_structures_opening_brace": "same_line"
+        },
+        "class_attributes_separation": {
+            "elements": {
+                "method": "none",
+                "property": "none",
+                "trait_import": "none"
+            }
+        },
+        "no_extra_blank_lines": {
+            "tokens": [
+                "curly_brace_block",
+                "extra",
+                "parenthesis_brace_block",
+                "throw",
+                "use"
+            ]
+        },
+        "control_structure_braces": true,
+        "control_structure_continuation_position": {
+            "position": "same_line"
+        }
+    }
+}

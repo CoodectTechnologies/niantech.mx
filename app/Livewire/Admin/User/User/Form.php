@@ -1,0 +1,134 @@
+<?php
+
+namespace App\Livewire\Admin\User\User;
+
+use App\Exceptions\OdooException;
+use App\Models\Profile;
+use App\Models\Role;
+use App\Models\User;
+use Exception;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+
+class Form extends Component
+{
+    use WithFileUploads;
+
+    // User// User
+    public $user;
+    public $profile;
+    public $method;
+    public $imageTmp;
+    public $password;
+    public $password_confirmation;
+
+    // Role
+    public $userRolesArray = [];
+
+    protected function rules() {
+        return [
+            'user.name' => 'required',
+            'user.email' => 'required|email|unique:users,email,'.$this->user->id,
+            'profile.title' => 'nullable',
+            'profile.biography' => 'nullable',
+            'profile.website' => 'nullable',
+            'profile.facebook' => 'nullable',
+            'profile.instagram' => 'nullable',
+            'profile.linkedin' => 'nullable',
+            'profile.twitter' => 'nullable',
+            'profile.youtube' => 'nullable',
+            'imageTmp' => 'nullable|image',
+        ];
+    }
+    public function mount(User $user, $method) {
+        $this->user = $user;
+        $this->profile = $user->profile ?? new Profile;
+        $this->method = $method;
+        $this->userRolesArray = $user->roles()->pluck('name')->toArray();
+    }
+    public function render() {
+        $roles = Role::orderBy('id', 'desc')->get();
+
+        return view('livewire.admin.user.user.form', compact('roles'));
+    }
+    public function store() {
+        $this->validate();
+        try {
+            $this->savePassword();
+            $this->user->save();
+            $this->profile = $this->user->profile()->create($this->profile->toArray());
+            $this->saveImage();
+            $this->saveRoles();
+            $this->user->markEmailAsVerified();
+            $this->user = new User;
+            $this->reset('imageTmp');
+            $this->dispatch('alert', 'success', __('Registration successfully added'));
+            $this->dispatch('render');
+        } catch (OdooException $e) {
+            report($e);
+            $this->dispatch('alert', 'warning', __('There was an error saving your registration, please try again later.'));
+
+            return;
+        } catch (Exception $e) {
+            report($e);
+            $this->dispatch('alert', 'warning', __('There was an error saving your registration, please try again later.'));
+
+            return;
+        }
+    }
+    public function update() {
+        $this->validate();
+        try {
+            $this->savePassword();
+            $this->user->update();
+            $this->profile->update();
+            $this->saveImage();
+            $this->saveRoles();
+            $this->dispatch('alert', 'success', __('Registration successfully updated'));
+            $this->dispatch('render');
+        } catch (OdooException $e) {
+            report($e);
+            $this->dispatch('alert', 'warning', __('There was an error saving your registration, please try again later.'));
+
+            return;
+        } catch (Exception $e) {
+            report($e);
+            $this->dispatch('alert', 'warning', __('There was an error saving your registration, please try again later.'));
+
+            return;
+        }
+    }
+    public function saveImage() {
+        if ($this->imageTmp) {
+            $url = $this->imageTmp->store('user');
+            imageManager($url, 200, $this->user);
+        }
+    }
+    public function removeImage() {
+        if ($this->user->image) {
+            if (Storage::exists($this->user->image->url)) {
+                Storage::delete($this->user->image->url);
+            }
+            $this->user->image()->delete();
+            $this->user->image = null;
+        }
+        $this->reset('imageTmp');
+        $this->dispatch('alert', 'success', __('Image successfully deleted'));
+    }
+    public function savePassword() {
+        if ($this->password && $this->password_confirmation) {
+            $this->validate([
+                'password' => 'string|min:8|confirmed',
+            ]);
+            $this->user->password = Hash::make($this->password);
+            $this->dispatch('alert', 'success', 'Contraseña guardada con éxito');
+        }
+    }
+    public function saveRoles() {
+        if ($this->userRolesArray) {
+            $this->user->syncRoles($this->userRolesArray);
+        }
+    }
+}

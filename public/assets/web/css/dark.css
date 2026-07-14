@@ -1,0 +1,268 @@
+body,
+body.boxed-wrapper .page-wrapper,
+.stricky-header.main-menu,
+.about-one__satisfied-box-inner,
+.services-one:before,
+.team-one__single,
+.video-one__contact-box:before,
+.video-one__contact-box:after {
+    background-color: var(--judges-black);
+}
+
+
+.services-one__icon,
+.services-one__btn:hover,
+.why-choose-one,
+.why-choose-one__icon,
+.why-choose-one__round-text-box,
+.skill-one__video-content,
+.process-one__icon,
+.testimonial-one__single,
+.case-one:before,
+.case-one__content,
+.counter-one__content,
+.team-one,
+.video-one__contact-box,
+.faq-one-accrodion .accrodion {
+    background-color: #1c1c1c;
+}
+
+
+
+.main-menu__wrapper {
+    border-bottom: 1px solid rgba(var(--judges-white-rgb), .10);
+}
+
+
+
+.main-menu .main-menu__list>li>a,
+.stricky-header .main-menu__list>li>a,
+.main-menu .main-menu__list>li.dropdown>a:after,
+.main-menu__call-number a,
+.main-menu__search,
+.main-menu__cart,
+.thm-btn,
+.main-slider__title,
+.section-title__title,
+.about-one__points-content h4,
+.about-one__high-quality-service h5,
+.about-one__satisfied-count h3,
+.about-one__satisfied-count span,
+.services-one__title a,
+.why-choose-one__points li .content h3 a,
+.skill-one__progress-title,
+.skill-one__progress-box .progress-box .bar-title,
+.process-one__title,
+.testimonial-one__satisfied-clients-text span,
+.testimonial-one__client-name a,
+.case-one__content-box h3 a,
+.counter-one__count-box h3,
+.counter-one__count-box span,
+.team-one__name a,
+.faq-one-accrodion .accrodion-title h4,
+.pricing-one__price-title,
+.brand-one__text,
+.blog-one__title a,
+.blog-one__read-more {
+    color: var(--judges-white);
+}
+
+.main-menu .main-menu__list>li.current>a::after,
+.main-menu .main-menu__list>li:hover>a::after,
+.stricky-header .main-menu__list>li.current>a::after,
+.stricky-header .main-menu__list>li:hover>a::after,
+.main-menu__call-sub-title,
+.about-one__satisfied-count-text {
+    color: var(--judges-base);
+}
+
+
+
+
+
+
+
+.main-slider__text,
+.about-one__text,
+.about-one__points-content p,
+.services-one__text,
+.why-choose-one__text,
+.why-choose-one__points li .content p,
+.skill-one__text,
+.process-one__text,
+.testimonial-one__client-sub-title,
+.testimonial-one__text,
+.case-one__content-box p,
+.faq-one-accrodion .accrodion-content p,
+.blog-one__text {
+    color: rgba(var(--judges-white-rgb), .60);
+}
+
+
+
+
+
+
+
+.main-slider__btn .thm-btn {
+    color: var(--judges-black);
+}
+
+.main-slider__btn .thm-btn:hover {
+    color: var(--judges-white);
+}
+
+.main-slider__video-icon {
+    color: var(--judges-base);
+    background-color: rgba(var(--judges-white-rgb), 1);
+}
+
+.main-slider__video-link .ripple,
+.main-slider__video-icon .ripple:before,
+.main-slider__video-icon .ripple:after {
+    -ms-box-shadow: 0 0 0 0 rgba(var(--judges-base-rgb), 0.6);
+    -o-box-shadow: 0 0 0 0 rgba(var(--judges-base-rgb), 0.6);
+    -webkit-box-shadow: 0 0 0 0 rgba(var(--judges-base-rgb), 0.6);
+    box-shadow: 0 0 0 0 rgba(var(--judges-base-rgb), 0.6);
+}
+
+
+
+
+
+.about-one__high-quality-service {
+    background-color: rgba(var(--judges-black-rgb), 1);
+}
+
+.about-one__shape-2 {
+    filter: brightness(0.5);
+}
+
+.services-one__single {
+    background-color: var(--judges-black);
+    border: 1px solid rgba(var(--judges-white-rgb), .10);
+}
+
+.services-one__count {
+    -webkit-text-stroke: 1px rgba(var(--judges-white-rgb), .10);
+}
+
+.skill-one__progress-box .progress-box .bar {
+    background-color: rgba(var(--judges-white-rgb), .10);
+}
+
+.process-one__shape-4 {
+    opacity: .05;
+}
+
+.process-one__shape-1,
+.process-one__shape-2,
+.process-one__shape-3 {
+    border: 1px dashed rgba(var(--judges-white-rgb), .10);
+}
+
+.testimonial-one__img img {
+    border: 5px solid #1c1c1c;
+}
+
+.counter-one__text {
+    background-color: var(--judges-black);
+    color: var(--judges-white);
+}
+
+.team-one__shape-box-2,
+.team-one__shape-box {
+    background: rgba(22, 22, 22, 0.8);
+}
+
+.team-one__shape-2,
+.team-one__shape-1 {
+    background: rgba(16, 15, 15, .50);
+}
+
+.team-one__single:hover .team-one__shape-2,
+.team-one__single:hover .team-one__shape-1 {
+    background: rgba(16, 15, 15, .2);
+}
+
+.video-one-contact__btn-box .thm-btn {
+    color: var(--judges-black);
+}
+
+.video-one-contact__btn-box .thm-btn:hover {
+    color: var(--judges-white);
+}
+
+.pricing-one__single-inner {
+    background-color: #1c1c1c;
+}
+
+.brand-one {
+    border-top: 1px solid rgba(var(--judges-white-rgb), .10);
+    border-bottom: 1px solid rgba(var(--judges-white-rgb), .10);
+}
+
+.brand-one__img img {
+    filter: none;
+}
+
+.blog-one__single {
+    background-color: #1c1c1c;
+    border: 1px solid rgba(var(--judges-white-rgb), .10);
+}
+
+.blog-one__single:hover {
+    background-color: #1c1c1c;
+}
+
+.blog-one__date span {
+    background-color: var(--judges-black);
+    color: var(--judges-white);
+}
+
+.footer-widget__newsletter-form .thm-btn {
+    color: var(--judges-black);
+}
+
+.footer-widget__newsletter-form .thm-btn:hover {
+    color: var(--judges-white);
+}
+
+.video-one-contact__input-box input[type="text"],
+.video-one-contact__input-box input[type="email"],
+.video-one-contact__input-box .nice-select,
+.video-one-contact__input-box textarea {
+    border: 1px solid rgba(var(--judges-white-rgb), .10);
+}
+
+.xs-sidebar-group .content-inner .form-inner .form-group button {
+    color: var(--judges-black);
+}
+
+.xs-sidebar-group .content-inner .form-inner .form-group button:hover {
+    color: var(--judges-white);
+}
+
+
+.blog-one__carousel.owl-theme .owl-nav .owl-next:hover,
+.blog-one__carousel.owl-theme .owl-nav .owl-prev:hover {
+    background-color: #1c1c1c !important;
+    color: var(--judges-white) !important;
+}
+
+
+
+@media only screen and (max-width: 767px) {
+    .about-one__points--two {
+        border-top: 1px solid rgba(var(--judges-white-rgb), .10);
+    }
+}
+
+
+.main-menu .mobile-nav__toggler:hover {
+    color: var(--judges-white);
+}
+
+
+
+/* End */
