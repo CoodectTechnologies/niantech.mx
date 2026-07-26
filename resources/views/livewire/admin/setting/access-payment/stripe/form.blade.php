@@ -38,7 +38,7 @@
             </label>
             <input wire:model="stripePublic"
                 class="form-control form-control-solid @error('stripePublic') invalid-feedback @enderror"
-                placeholder="Ejem: pk_test_WUYDZRAxUFDfIhtYShxshVcZ00j9lAoooz" name="" />
+                placeholder="Ejem: pk_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" name="" />
             @error('stripePublic')
                 <small class="form-text text-danger" role="alert">{{ $message }}</small>
             @enderror
@@ -51,7 +51,7 @@
             </label>
             <input wire:model="stripeSecret"
                 class="form-control form-control-solid @error('stripeSecret') invalid-feedback @enderror"
-                placeholder="Ejem: sk_test_x2eEjmW2gfNfi7vCybR3LY0w00P4bpoj8u" name="" />
+                placeholder="Ejem: sk_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx" name="" />
             @error('stripeSecret')
                 <small class="form-text text-danger" role="alert">{{ $message }}</small>
             @enderror
