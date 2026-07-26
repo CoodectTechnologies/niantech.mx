@@ -82,16 +82,17 @@ NIANTECH
 🟢 Migrar a laravel 12 en limpio
 🟢 Testear la impersonación de otras personas con productos en carrito
 🟢 Testear la hora en la que se vendio o registro algo ya que ahora tenemos UTC
-🟡 Analizar si usar laravel localization
-🟡 Traerse la logica de subscripciones de mi horli para planes gratis
+🟢 Analizar si usar laravel localization
+🟢 Traerse la logica de subscripciones de mi horli para planes gratis
 🟡 Instalar ngrok
+🟡 Agregar logs para pasarelas de pago
 🟡 Generar un buen diseño para el modal del popup
 🟡 Método de envío por default, el más barato pero solo si no han escogido ya alguno
 🟡 Cancelación de ordenes a la semana de no haberlas pagado
 🟡 Sinonimos
 🟡 ¿El Rastreo como funcionará ya con odoo integrado?
 🟡 Mejorar dashboard principal como tiendanube
-🟡 Mejorar filtro de precios ya que si hay productos en USD, ya no es consistente el filtro ya que filtra por el valor guardado de la base de datos ejemplo 10usd, y si el filtro de de 0 a 100, 100 dolares en pesos son como 1700, entonces esos productos de 1700 pesos se seguiran mostrando ya que su valor es 10 usd, me doy a entender?
+🟢 Mejorar filtro de precios ya que si hay productos en USD, ya no es consistente el filtro ya que filtra por el valor guardado de la base de datos ejemplo 10usd, y si el filtro de de 0 a 100, 100 dolares en pesos son como 1700, entonces esos productos de 1700 pesos se seguiran mostrando ya que su valor es 10 usd, me doy a entender?
 🟠 Generar servicio de productos, para reutilizar con sincronizador de proveedores
 🟠 Generar tipos de opciones para productos (Color, Texto, Selector)
 🟠 Integrar algun proveedor como estafeta (Wishlist)

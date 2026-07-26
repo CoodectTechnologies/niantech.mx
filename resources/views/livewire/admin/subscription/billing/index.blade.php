@@ -24,11 +24,10 @@
                     </div>
                     {{-- PLANES --}}
                     <div class="row g-10 mb-15">
-                        @foreach($plans as $plan)
+                        @foreach ($plans as $plan)
                             <div class="col-xl-4" wire:key='plan-{{ $plan->id }}'>
                                 <div class="d-flex h-100 align-items-center">
                                     <div class="w-100 d-flex flex-column flex-center rounded-3 bg-light bg-opacity-75 py-15 px-10">
-                                        
                                         @php
                                             // --- 0. Inicialización y Determinación de Estado ---
                                             $priceId = $this->planType === 'month' ? $plan->stripe_price_month_id : $plan->stripe_price_year_id;
@@ -41,7 +40,7 @@
                                             <h1 class="text-gray-900 mb-5 fw-bolder">{{ $plan->title }}</h1>
                                             <div class="text-gray-600 fw-semibold mb-5">{{ $plan->subtitle }}</div>
                                             <div class="text-center">
-                                                @if($plan->stripe_id)
+                                                @if ($plan->stripe_id)
                                                     <span class="mb-2 text-primary">$</span>
                                                     <span x-show="planType == 'month'" class="fs-3x fw-bold text-primary">{{ $plan->amount_month }}</span>
                                                     <span x-show="planType == 'month'" class="fs-7 fw-semibold opacity-50">/ <span>Mensual</span></span>
@@ -65,13 +64,13 @@
                                             @endforeach
                                         </div>
                                         
-                                        @if($plan->stripe_id)
+                                        @if ($plan->stripe_id)
                                             {{-- ---------------------------------------------------------------- --}}
                                             {{-- LÓGICA DE BOTONES --}}
                                             {{-- ---------------------------------------------------------------- --}}
-                                            @if($isCurrentPlan)
+                                            @if ($isCurrentPlan)
                                                 {{-- CASO 1: ES EL PLAN ACTUAL (Activo, Cancelado en Gracia, Incompleto) --}}
-                                                @if($subscription->onGracePeriod())
+                                                @if ($subscription->onGracePeriod())
                                                     <span class="badge badge-warning mb-3">Renovación Cancelada (Vigente hasta: {{ $subscription->ends_at->format('d M') }})</span>
                                                     <button 
                                                         wire:click='resumeSubscription("{{ $plan->id }}")'
@@ -103,7 +102,7 @@
                                                     </button>
                                                 @endif
                                             @elseif ($isSubscribedToAny)
-                                                {{-- CASO 2: ESTÁ SUSCRITO A OTRO PLAN (Hacer Switch) --}}
+                                                {{-- CASO 2: ESTÁ SUSCRITO A OTRO PLAN (Hacer Switch / Cambiar a Gratis o de Pago) --}}
                                                 <button 
                                                     wire:click='newSubscription("{{ $plan->id }}")'
                                                     wire:loading.attr='disabled'
@@ -124,19 +123,19 @@
                                                     <span wire:loading wire:target="newSubscription('{{ $plan->id }}')" class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                                 </button>
                                             @else
-                                                {{-- CASO 4: ESCENARIO POR DEFECTO (Compra Inicial) --}}
+                                                {{-- CASO 4: ESCENARIO POR DEFECTO (Compra Inicial / Registro Inicial) --}}
                                                 <button
                                                     wire:click='newSubscription("{{ $plan->id }}")'
                                                     wire:loading.attr='disabled'
                                                     wire:target='newSubscription("{{ $plan->id }}")'
                                                     class="btn btn-sm btn-primary">
-                                                    Suscribirte
+                                                    {{-- Texto dinámico si el plan actual iterado es el gratis --}}
+                                                    {{ $plan->isFree() ? 'Suscribirme gratuitamente' : 'Suscribirme' }}
                                                     <span wire:loading wire:target="newSubscription('{{ $plan->id }}')" class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                                 </button>
                                             @endif
-                                            
                                         @else
-                                            {{-- Si el plan no tiene Stripe ID, es un plan manual o a cotizar --}}
+                                            {{-- Este else ahora ÚNICAMENTE se ejecuta si creas un plan manual en tu base de datos (por ejemplo, plan personalizado para empresas a cotizar) --}}
                                             <span class="btn btn-sm btn-secondary">
                                                 <a href="mailto:{{ config('contact.email') }}" class="text-dark">A cotizar</a>
                                             </span>
@@ -203,7 +202,7 @@
                                                 <div class="me-3">
                                                     <div class="d-flex align-items-center fw-bold">
                                                         {{ $brand }}
-                                                        @if($isExpired)
+                                                        @if ($isExpired)
                                                             <div class="badge badge-light-danger ms-5">Expirada</div>
                                                         @endif
                                                     </div>
@@ -278,7 +277,7 @@
                                                         <tr>
                                                             <td class="text-muted">Email</td>
                                                             <td class="text-gray-800">
-                                                                @if($billing->email)
+                                                                @if ($billing->email)
                                                                     <a href="mailto:{{ $billing->email }}"
                                                                         class="text-gray-900 text-hover-primary">
                                                                         {{ $billing->email }}
@@ -298,7 +297,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @if(!$loop->last)
+                                    @if (!$loop->last)
                                         <div class="separator separator-dashed"></div>
                                     @endif
                                 @empty
@@ -330,7 +329,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class="fs-6 fw-semibold text-gray-600">
-                                            @foreach($invoices as $invoice)
+                                            @foreach ($invoices as $invoice)
                                                 <tr>
                                                     <td>{{ $invoice->date()->toFormattedDateString() }}</td>
                                                     <td class="text-success">{{ $invoice->total() }}</td>

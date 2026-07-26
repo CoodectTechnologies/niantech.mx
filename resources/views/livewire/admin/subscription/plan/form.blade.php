@@ -106,7 +106,7 @@
             </label>
             <select wire:model="planFeaturesArray" multiple class="form-control form-control-solid @error('planFeaturesArray') is-invalid @enderror">
                 <option value="">{{ __('Selecciona las caracteristicas') }}</option>
-                @foreach($planFeatures as $planFeature)
+                @foreach ($planFeatures as $planFeature)
                     <option value="{{ $planFeature->id }}">{{ $planFeature->name }}</option>
                 @endforeach
             </select>
@@ -118,12 +118,12 @@
             <div class="table-responsive">
                 <table class="table align-middle table-row-dashed fs-6 gy-5">
                     <tbody>
-                        @foreach($permissions as $group => $items)
+                        @foreach ($permissions as $group => $items)
                             <tr>
                                 <td class="text-gray-900 fw-bold">{{ ucfirst($group) }}</td>
                                 <td></td>
                             </tr>
-                            @foreach($items as $permission)
+                            @foreach ($items as $permission)
                                 <tr>
                                     <td class="text-gray-800 ps-4">
                                         {{ $permission->alias }}

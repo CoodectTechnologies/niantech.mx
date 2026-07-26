@@ -152,8 +152,6 @@ return [
             ],
         ],
 
-        // TODO: Agregar logs para pasarelas de pago
-
     ],
 
 ];

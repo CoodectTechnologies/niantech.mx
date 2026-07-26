@@ -37,6 +37,9 @@ class Plan extends Model
     public function subscriptions() {
         return $this->hasMany(Subscription::class);
     }
+    public function isFree(){
+        return ($this->free_trial_days === null && !$this->amount_month && !$this->amount_year);
+    }
     public function statusToString() {
         switch ($this->status) {
             case true:

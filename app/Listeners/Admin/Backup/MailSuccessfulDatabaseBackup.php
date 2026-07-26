@@ -28,7 +28,7 @@ class MailSuccessfulDatabaseBackup
     public function mailBackupFile($path) {
         try {
             Mail::raw('Tiene un nuevo archivo de copia de seguridad de la base de datos.', function ($message) use ($path) {
-                $message->to(env('DB_BACKUP_EMAIL', 'hola@example.com')) // TODO: Esto es una mala practica
+                $message->to(env('DB_BACKUP_EMAIL', 'hola@example.com'))
                     ->subject('Copia de seguridad de la base de datos Lista.')
                     ->attach($path);
             });
