@@ -84,7 +84,7 @@ NIANTECH
 🟢 Testear la hora en la que se vendio o registro algo ya que ahora tenemos UTC
 🟢 Analizar si usar laravel localization
 🟢 Traerse la logica de subscripciones de mi horli para planes gratis
-🟡 Instalar ngrok
+🟢 Instalar ngrok
 🟡 Agregar logs para pasarelas de pago
 🟡 Generar un buen diseño para el modal del popup
 🟡 Método de envío por default, el más barato pero solo si no han escogido ya alguno

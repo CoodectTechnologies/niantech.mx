@@ -10,11 +10,24 @@ use Illuminate\Support\Facades\Log;
 class WebhookMercadopagoController extends Controller
 {
     public function __invoke(Request $request) {
-        Log::alert('request notification:', $request->all());
+        self::log('Webhook recibido', [
+            'headers' => $request->headers->all(),
+            'query' => $request->query(),
+            'body' => $request->all(),
+        ]);
+
         if ($request->data) {
             return MercadoPagoController::payment($request);
         } else {
             return [];
         }
+    }
+    private static function log($title, $url, $data = [], $response = []){
+        Log::channel('mercadopago.webhook')->info('==========================================');
+        Log::channel('mercadopago.webhook')->info($title);
+        Log::channel('mercadopago.webhook')->info($url);
+        Log::channel('mercadopago.webhook')->info('Data:', $data);
+        Log::channel('mercadopago.webhook')->info('Response:', $response);
+        Log::channel('mercadopago.webhook')->info('==========================================');
     }
 }

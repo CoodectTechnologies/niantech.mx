@@ -127,6 +127,57 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'mercadopago' => [
+            'api' => [
+                'driver' => 'daily',
+                'path' => storage_path('logs/mercadopago/api/api.log'),
+                'level' => env('LOG_LEVEL', 'debug'),
+                'days' => env('LOG_DAILY_DAYS', 30),
+                'replace_placeholders' => true,
+            ],
+            'webhook' => [
+                'driver' => 'daily',
+                'path' => storage_path('logs/mercadopago/webhook/webhook.log'),
+                'level' => env('LOG_LEVEL', 'debug'),
+                'days' => 30,
+                'replace_placeholders' => true,
+            ],
+        ],
+
+        'stripe' => [
+            'api' => [
+                'driver' => 'daily',
+                'path' => storage_path('logs/stripe/api/api.log'),
+                'level' => env('LOG_LEVEL', 'debug'),
+                'days' => env('LOG_DAILY_DAYS', 30),
+                'replace_placeholders' => true,
+            ],
+            'webhook' => [
+                'driver' => 'daily',
+                'path' => storage_path('logs/stripe/webhook/webhook.log'),
+                'level' => env('LOG_LEVEL', 'debug'),
+                'days' => 30,
+                'replace_placeholders' => true,
+            ],
+        ],
+
+        'openpay' => [
+            'api' => [
+                'driver' => 'daily',
+                'path' => storage_path('logs/openpay/api/api.log'),
+                'level' => env('LOG_LEVEL', 'debug'),
+                'days' => env('LOG_DAILY_DAYS', 30),
+                'replace_placeholders' => true,
+            ],
+            'webhook' => [
+                'driver' => 'daily',
+                'path' => storage_path('logs/openpay/webhook/webhook.log'),
+                'level' => env('LOG_LEVEL', 'debug'),
+                'days' => 30,
+                'replace_placeholders' => true,
+            ],
+        ],
+
         'vadeto_brands' => [
             'driver' => 'daily',
             'path' => storage_path('logs/brands/brands.log'),

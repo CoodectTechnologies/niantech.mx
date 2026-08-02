@@ -31,7 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: ['webhook/*']);
         $middleware->appendToGroup('web', [LanguageMiddleware::class]);
         $middleware->group('admin', [CurrencyMiddleware::class, PanelMiddleware::class]);
-        $middleware->group('ecommerce', [CurrencyMiddleware::class, CartMiddleware::class]);
+        $middleware->group('ecommerce', [CurrencyMiddleware::class]);
         $middleware->alias([
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
