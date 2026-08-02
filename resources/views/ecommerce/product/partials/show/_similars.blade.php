@@ -2,7 +2,7 @@
     <div class="title-link-wrapper mb-4">
         <h4 class="title">{{ __('Related products') }}</h4>
         <a href="{{ route('ecommerce.product.index') }}"
-            class="btn btn-dark btn-link btn-slide-right btn-icon-right">{{ __('More products') }}<i
+            class="btn btn-link btn-slide-right btn-icon-right">{{ __('More products') }}<i
                 class="w-icon-long-arrow-right"></i></a>
     </div>
     <div class="owl-carousel owl-theme row cols-lg-3 cols-md-4 cols-sm-3 cols-2"
