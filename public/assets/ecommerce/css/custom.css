@@ -1501,104 +1501,129 @@ img.btn-whatsapp:hover {
 
 /* BANNERS DE COOKIES Y RENDER MEDIA QUERIES */
 .cookie-banner {
-    display: none;
-    background: #fff;
-    width: calc(100% - 40px);
-    max-width: 300px;
-    line-height: 160%;
-    border-radius: 25px;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    z-index: 99999991;
-    padding-top: 10px;
-    box-shadow: 0px 2px 20px 10px rgba(222, 222, 222, 0.25);
-    text-align: center;
-    transform: translate(-50%, -50%);
-    overflow: auto;
-    max-height: 100vh;
+    bottom: -200px;
+    /* Escondido por defecto para la animación */
+    left: 20px;
+    right: 20px;
+    background: var(--bs-card-bg);
+    z-index: 999999;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: bottom 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s;
+    opacity: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+@media (min-width: 768px) {
+    .cookie-banner {
+        left: 30px;
+        right: auto;
+        max-width: 450px;
+    }
 }
 
 .cookie-banner.active {
-    display: block;
+    bottom: 20px;
+    opacity: 1;
 }
 
-.cookie-banner .cookie-image {
-    max-width: 62%;
-    position: absolute;
-    top: 0;
-    left: calc(50% - 31%);
+.cookie-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-.cookie-banner .cookie-title,
-.cookie-banner .cookie-paragraph {
-    margin-bottom: 15px;
+.cookie-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
 }
 
-.cookie-banner .cookie-title {
-    color: #FEB700;
+.cookie-image-container {
+    flex-shrink: 0;
+}
+
+.cookie-image {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.cookie-text-container {
+    flex-grow: 1;
+}
+
+.cookie-title {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--bs-gray-800);
+}
+
+.cookie-paragraph {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--bs-gray-600);
+}
+
+.cookie-link {
+    color: var(--bs-primary);
+    text-decoration: underline;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.cookie-link:hover {
+    color: var(--bs-primary-hover);
+}
+
+.cookie-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.cookie-button-accept,
+.cookie-button-decline {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    flex: 1;
+}
+
+@media (min-width: 48px) {
+
+    .cookie-button-accept,
+    .cookie-button-decline {
+        flex: none;
+    }
 }
 
 .cookie-banner .cookie-button-accept {
-    width: 70%;
-    background: #FED800;
-    border: none;
-    color: #fff;
-    text-align: center;
-    padding: 13px 20px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: .3s ease all;
-    border-radius: 17px;
-    margin-bottom: 15px;
-    font-size: 20px;
+    background: var(--bs-gray-900);
+    color: var(--bs-gray-100);
 }
 
 .cookie-banner .cookie-button-accept:hover {
-    background: #000;
+    background: var(--bs-dark);
+    color: var(--bs-gray-200);
 }
 
 .cookie-banner .cookie-button-decline {
-    width: 70%;
-    border: none;
-    color: #B79900;
-    text-align: center;
-    padding: 15px 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: .3s ease all;
-    border-radius: 17px;
-    margin-bottom: 5px;
-    font-size: 20px;
+    background: var(--bs-gray-200);
+    color: var(--bs-gray-900);
 }
 
 .cookie-banner .cookie-button-decline:hover {
-    text-decoration: underline;
-}
-
-.cookie-banner .cookie-link {
-    color: #969696;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.cookie-banner .cookie-link:hover {
-    text-decoration: underline;
-}
-
-.cookie-banner-background {
-    display: none;
-    background: rgba(0, 0, 0, .20);
-    position: fixed;
-    z-index: 99999990;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-}
-
-.cookie-banner-background.active {
-    display: block;
+    background: var(--bs-gray-300);
+    color: var(--bs-gray-800);
 }
 
 /* SKELETON LOADERS */
@@ -1676,108 +1701,6 @@ body::-webkit-scrollbar-thumb {
 @keyframes shimmer {
     100% {
         transform: translateX(100%);
-    }
-}
-
-/* ==========================================================================
-   4. RESPONSIVE DESIGN & QUERIES
-   ========================================================================== */
-@media (min-width: 1001px) {
-    .cookie-banner {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        max-width: 500px;
-        max-height: 100vh;
-        overflow: auto;
-    }
-
-    .cookie-banner.active {
-        display: flex;
-    }
-
-    .cookie-banner-content {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        width: 100%;
-    }
-
-    .cookie-banner .cookie-image-container {
-        flex: 1;
-        text-align: left;
-    }
-
-    .cookie-banner .cookie-image {
-        max-width: 100%;
-        position: static;
-    }
-
-    .cookie-banner .cookie-text-container {
-        flex: 2;
-        text-align: left;
-    }
-
-    .cookie-banner .cookie-buttons {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-        background: #ebebeb;
-    }
-
-    .cookie-banner .cookie-button-accept,
-    .cookie-banner .cookie-button-decline {
-        width: 48%;
-        margin-bottom: 0;
-    }
-}
-
-@media (max-width: 1000px) {
-    .cookie-banner {
-        display: none;
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .cookie-banner.active {
-        display: block;
-    }
-
-    .cookie-banner-content {
-        display: block;
-        padding-bottom: 10px;
-    }
-
-    .cookie-banner .cookie-image-container {
-        text-align: center;
-        margin-bottom: 15px;
-    }
-
-    .cookie-banner .cookie-image {
-        max-width: 62%;
-        position: static;
-    }
-
-    .cookie-banner .cookie-text-container {
-        text-align: center;
-        padding: 10px;
-    }
-
-    .cookie-banner .cookie-buttons {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background: #ebebeb;
-        padding-top: 5px;
-    }
-
-    .cookie-banner .cookie-button-accept,
-    .cookie-banner .cookie-button-decline {
-        width: 70%;
-        margin-bottom: 10px;
     }
 }
 

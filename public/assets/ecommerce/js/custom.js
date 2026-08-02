@@ -21,28 +21,27 @@ class Custom {
         const accept = document.getElementById('btn-accept-cookies');
         const decline = document.getElementById('btn-decline-cookies');
         const banner = document.getElementById('cookie-banner');
-        const background = document.getElementById('cookie-banner-background');
 
-        if (!accept) return;
+        if (!banner || !accept || !decline) return;
 
-        if (
-            !localStorage.getItem('cookies-accepted') &&
-            !localStorage.getItem('cookies-declined')
-        ) {
-            banner.classList.add('active');
-            background.classList.add('active');
+        // Si ya tomó una decisión, no hacer nada
+        if (localStorage.getItem('cookies-accepted') || localStorage.getItem('cookies-declined')) {
+            return;
         }
+
+        // Muestra el banner con una transición suave después de 1 segundo
+        setTimeout(() => {
+            banner.classList.add('active');
+        }, 1000);
 
         accept.addEventListener('click', () => {
             banner.classList.remove('active');
-            background.classList.remove('active');
-            localStorage.setItem('cookies-accepted', true);
+            localStorage.setItem('cookies-accepted', 'true');
         });
 
         decline.addEventListener('click', () => {
             banner.classList.remove('active');
-            background.classList.remove('active');
-            localStorage.setItem('cookies-declined', true);
+            localStorage.setItem('cookies-declined', 'true');
         });
     }
 
