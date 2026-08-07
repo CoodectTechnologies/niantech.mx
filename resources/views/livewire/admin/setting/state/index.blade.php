@@ -29,7 +29,7 @@
             <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                 <div class="w-100 mw-150px">
                     <!--begin::Select2-->
-                    <select wire:model="filterCountry" class="form-select form-select-solid">
+                    <select wire:model.live="filterCountry" class="form-select form-select-solid">
                         <option value="">{{ __('Countries') }}</option>
                         @foreach($countries as $country)
                             <option value="{{ $country->id }}">{{ $country->name }}</option>

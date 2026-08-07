@@ -180,14 +180,14 @@ Route::middleware(['can:ordenes'])->resource('/order', OrderController::class)->
 // Questionnaire
 Route::middleware(['can:cuestionarios'])->resource('/questionnaire', QuestionnaireController::class)->names('questionnaire');
 // // Configurator
-// Route::prefix('configurator')->name('configurator.')->group(function () {
-//     Route::middleware(['can:configurador pasos'])->resource('/stage', ConfiguratorStageController::class)->parameters(['stage' => 'configuratorStage'])->names('stage');
-//     Route::middleware(['can:configurador compatibilidades'])->resource('/compatibilities', ConfiguratorCompatibilityController::class)->parameters(['compatibilities' => 'configuratorCompatibility'])->names('compatibility');
-//     Route::middleware(['can:configurador rendimiento'])->resource('/performance', ConfiguratorPerformanceController::class)->parameters(['performance' => 'configuratorPerformance'])->names('performance');
-//     Route::middleware(['can:configurador juegos'])->resource('/games', ConfiguratorGameController::class)->parameters(['games' => 'configuratorGame'])->names('game');
-//     Route::middleware(['can:configurador rangos'])->resource('/budgets', ConfiguratorBudgetController::class)->parameters(['budgets' => 'configuratorBudget'])->names('budget');
-//     Route::middleware(['can:configurador fps'])->resource('/fps', ConfiguratorFPSController::class)->parameters(['fps' => 'configuratorFPS'])->names('fps');
-// });
+Route::prefix('configurator')->name('configurator.')->group(function () {
+    Route::middleware(['can:configurador pasos'])->resource('/stage', ConfiguratorStageController::class)->parameters(['stage' => 'configuratorStage'])->names('stage');
+    Route::middleware(['can:configurador compatibilidades'])->resource('/compatibilities', ConfiguratorCompatibilityController::class)->parameters(['compatibilities' => 'configuratorCompatibility'])->names('compatibility');
+    Route::middleware(['can:configurador rendimiento'])->resource('/performance', ConfiguratorPerformanceController::class)->parameters(['performance' => 'configuratorPerformance'])->names('performance');
+    Route::middleware(['can:configurador juegos'])->resource('/games', ConfiguratorGameController::class)->parameters(['games' => 'configuratorGame'])->names('game');
+    Route::middleware(['can:configurador rangos'])->resource('/budgets', ConfiguratorBudgetController::class)->parameters(['budgets' => 'configuratorBudget'])->names('budget');
+    Route::middleware(['can:configurador fps'])->resource('/fps', ConfiguratorFPSController::class)->parameters(['fps' => 'configuratorFPS'])->names('fps');
+});
 // // Invoice
 Route::prefix('invoice')->name('invoice.')->group(function () {
     Route::redirect('/', '/admin/invoice/invoice');

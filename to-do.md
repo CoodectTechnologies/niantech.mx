@@ -88,6 +88,7 @@ NIANTECH
 🟢 Agregar logs para pasarelas de pago
 🟢 Generar un buen diseño para el modal del popup
 🟢 Mejorar filtro de precios ya que si hay productos en USD, ya no es consistente el filtro ya que filtra por el valor guardado de la base de datos ejemplo 10usd, y si el filtro de de 0 a 100, 100 dolares en pesos son como 1700, entonces esos productos de 1700 pesos se seguiran mostrando ya que su valor es 10 usd, me doy a entender?
+🟡 Mejora absoluta de los filtros del sidebar del catálogo de productos
 🟡 Método de envío por default, el más barato pero solo si no han escogido ya alguno
 🟡 Cancelación de ordenes a la semana de no haberlas pagado
 🟡 Sinonimos

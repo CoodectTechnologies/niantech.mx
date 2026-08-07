@@ -29,7 +29,7 @@
             <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                 <div class="w-100 mw-150px">
                     <!--begin::Select2-->
-                    <select wire:model="statusFilter" class="form-select form-select-solid">
+                    <select wire:model.live="statusFilter" class="form-select form-select-solid">
                         <option value="">{{ __('All') }}</option>
                         <option value="1">{{ __('Active') }}</option>
                         <option value="0">{{ __('Inactive') }}</option>

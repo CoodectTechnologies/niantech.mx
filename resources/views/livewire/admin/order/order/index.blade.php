@@ -27,7 +27,7 @@
             <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                 <div class="w-100 mw-150px">
                     <!--begin::Select2-->
-                    <select wire:model="status" class="form-select form-select-solid">
+                    <select wire:model.live="status" class="form-select form-select-solid">
                         <option value="">{{ __('Status') }}: {{ __('All') }}</option>
                         <option value="Confirmado">{{ __('Confirmed') }}</option>
                         <option value="Procesando">{{ __('Processing') }}</option>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="w-100 mw-150px">
                     <!--begin::Select2-->
-                    <select wire:model="paymentStatus" class="form-select form-select-solid">
+                    <select wire:model.live="paymentStatus" class="form-select form-select-solid">
                         <option value="">{{ __('Payment status') }}</option>
                         <option value="Aprobado">{{ __('Approved') }}</option>
                         <option value="Pendiente">{{ __('Earring') }}</option>

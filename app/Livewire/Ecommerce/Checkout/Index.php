@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Index extends Component
@@ -56,13 +57,21 @@ class Index extends Component
     public ?string $shippingDays = null;
 
     // Prices
+    #[Locked] 
     public float $subtotal = 0;
+    #[Locked] 
     public float $subtotalTax = 0;
+    #[Locked] 
     public float $subtotalFinal = 0;
+    #[Locked] 
     public float $shippingPrice = 0;
+    #[Locked] 
     public float $shippingPriceTax = 0;
+    #[Locked] 
     public float $shippingPriceFinal = 0;
+    #[Locked] 
     public float $tax = 0;
+    #[Locked] 
     public float $totalPrice = 0;
 
     protected function rules() {
@@ -171,8 +180,10 @@ class Index extends Component
         } else {
             $this->shippingMethods = [];
         }
+        $this->shippingZoneId = collect($this->shippingMethods)->where('default', true)->first()['id'] ?? null;
+        $this->loadShippingPrice($this->shippingZoneId);
     }
-    public function updatedShippingZoneId($id) {
+    public function loadShippingPrice(int $shippingZoneId){
         // if(config('services.odoo.status')):
         if (config('services.odoo.status') && false) {
             // TODO: BORRAME EL false y desarrolla lo de los métodos de envío de ODOO
@@ -186,7 +197,7 @@ class Index extends Component
                 $this->shippingDays = $days.' '.__('days').', '.$estimatedDate;
             }
         } else {
-            $shippingZone = ShippingZone::findOrFail($id);
+            $shippingZone = ShippingZone::findOrFail($shippingZoneId);
             $this->shippingPrice = ShippingService::getShippingPriceByZone($shippingZone);
             $this->shippingMethod = $shippingZone->alias;
             if ($shippingZone->shipping_days) {
@@ -195,6 +206,9 @@ class Index extends Component
                 $this->shippingDays = $days.' '.__('days').', '.$estimatedDate;
             }
         }
+    }
+    public function updatedShippingZoneId(int $id) {
+        $this->loadShippingPrice($id);
         $this->loadPrices();
     }
 

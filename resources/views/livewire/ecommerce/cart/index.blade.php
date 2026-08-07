@@ -86,7 +86,7 @@
                             <tbody>
                                 @foreach($cart as $item)
                                     <tr class="tab-content shadow-sm">
-                                        <td class="product-thumbnail">
+                                        <td class="product-thumbnail pl-5">
                                             <div class="p-relative">
                                                 <a href="{{ route('ecommerce.product.show', $item->model) }}">
                                                     <figure>

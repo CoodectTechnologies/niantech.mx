@@ -130,7 +130,7 @@
             <label class="fs-6 fw-bold form-label mb-2">
                 <span class="required">{{ __('Module') }}</span>
             </label>
-            <select wire:model="banner.module_web_id" wire:change="loadLastOrder($event.target.value)"
+            <select wire:model.live="banner.module_web_id" wire:change="loadLastOrder($event.target.value)"
                 class="form-select @error('banner.module_web_id') invalid-feedback @enderror">
                 <option value="">{{ __('Select a option') }}</option>
                 @foreach($modulesWeb as $moduleWeb)

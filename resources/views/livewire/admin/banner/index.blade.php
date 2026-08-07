@@ -11,7 +11,7 @@
             <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                 <div class="w-100 mw-150px">
                     <!--begin::Select2-->
-                    <select wire:model="module" class="form-select form-select-solid">
+                    <select wire:model.live="module" class="form-select form-select-solid">
                         <option value="">{{ __('All') }}</option>
                         @foreach($modulesWeb as $moduleWeb)
                             <option value="{{ $moduleWeb->id }}">{{ $moduleWeb->name }}</option>

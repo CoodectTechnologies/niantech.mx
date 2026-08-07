@@ -30,7 +30,7 @@
                 <div class="w-100 mw-150px">
                     <div class="fv-row">
                         <div class="form-check form-switch form-check-custom form-check-solid">
-                            <input wire:model="onlyParentsFilter" class="form-check-input" type="checkbox"
+                            <input wire:model.live="onlyParentsFilter" class="form-check-input" type="checkbox"
                                 value="" id="onlyParents" />
                             <label class="form-check-label" for="onlyParents">
                                 <span class="">{{ __('Only parents') }}</span>
@@ -48,7 +48,7 @@
                 <div class="w-100 mw-150px">
                     <div class="d-flex justify-content-between align-items-center">
                         <!--begin::Select2-->
-                        <select wire:model="includeInMenuFilter" class="form-select form-select-solid">
+                        <select wire:model.live="includeInMenuFilter" class="form-select form-select-solid">
                             <option value="">{{ __('In menu') }}</option>
                             <option value="1">{{ __('Including') }}</option>
                             <option value="2">{{ __('Not including') }}</option>
@@ -61,7 +61,7 @@
                 <div class="w-100 mw-150px">
                     <div class="d-flex justify-content-between align-items-center">
                         <!--begin::Select2-->
-                        <select wire:model="statusFilter" class="form-select form-select-solid">
+                        <select wire:model.live="statusFilter" class="form-select form-select-solid">
                             <option value="">{{ __('Status') }}</option>
                             <option value="1">{{ __('Enabled') }}</option>
                             <option value="2">{{ __('Disabled') }}</option>
@@ -74,7 +74,7 @@
                 <div class="w-100 mw-150px">
                     <div class="d-flex justify-content-between align-items-center">
                         <!--begin::Select2-->
-                        <select wire:model="categoryFhaterFilter" class="form-select form-select-solid">
+                        <select wire:model.live="categoryFhaterFilter" class="form-select form-select-solid">
                             <option value="">{{ __('All') }}</option>
                             @foreach($categoriesFather as $categoryFather)
                                 <option value="{{ $categoryFather->id }}">{{ $categoryFather->name }}</option>

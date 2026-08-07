@@ -112,6 +112,7 @@ class Form extends Component
         foreach ($this->productsInCategoryTmp as $productIdInCategory => $productInCategory) {
             $this->category->products()->attach($productIdInCategory);
         }
+        $this->productsInCategoryTmp = [];
     }
     private function getProducts() {
         $products = Product::withRelations()->validateProduct();

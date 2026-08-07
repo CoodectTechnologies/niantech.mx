@@ -15,7 +15,7 @@
         <div class="card-header border-0 pt-6">
             <div class="w-100 mw-150px">
                 <!--begin::Select2-->
-                <select wire:model="filter" class="form-select form-select-solid">
+                <select wire:model.live="filter" class="form-select form-select-solid">
                     <option value="">{{ __('All') }}</option>
                     <option value="{{ __('Negatives') }}">{{ __('Negatives') }}</option>
                     <option value="{{ __('Positives') }}">{{ __('Positives') }}</option>

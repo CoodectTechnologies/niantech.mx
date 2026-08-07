@@ -13,7 +13,7 @@
                     </div>
                     <div class="card-title">
                         <!--begin::Select2-->
-                        <select wire:model="countryId" wire:change="loadWarehouseState"
+                        <select wire:model.live="countryId" wire:change="loadWarehouseState"
                             class="form-select form-select-solid">
                             @foreach($countries as $country)
                                 <option value="{{ $country->id }}">{{ $country->name }}</option>

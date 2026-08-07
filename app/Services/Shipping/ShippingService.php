@@ -58,12 +58,20 @@ class ShippingService
             ->with(['states', 'shippingClasses'])
             ->whereRelation('states', 'state_id', $stateId)
             ->get();
+        $shippingIdDefault = null;
+        $shippingPriceDefault = 0;
         foreach ($shippingZones as $shippingZone) {
+            $shippingPriceByZone = self::getShippingPriceByZone($shippingZone);
+            if($shippingPriceByZone > $shippingPriceDefault):
+                $shippingPriceDefault = $shippingPriceByZone;
+                $shippingIdDefault = $shippingZone->id;
+            endif;
             $addToShippingZone = [
                 'id' => $shippingZone->id,
                 'name' => $shippingZone->alias,
-                'price' => self::getShippingPriceByZone($shippingZone),
+                'price' => $shippingPriceByZone,
                 'days' => $shippingZone->shipping_days,
+                'default' => false,
                 'estimatedDate' => Carbon::parse(today())->addDays($shippingZone->shipping_days)->toFormattedDateString(),
             ];
             if (! $shippingZone->zip_codes || in_array($zipCode, explode(',', $shippingZone->zip_codes))) {
@@ -81,7 +89,9 @@ class ShippingService
                 }
             }
         }
-
+        if($shippingMethods && isset($shippingMethods[$shippingIdDefault])):
+            $shippingMethods[$shippingIdDefault]['default'] = true;
+        endif;
         return $shippingMethods;
     }
     public static function getShippingPriceByZone($shippingZone) {
