@@ -98,11 +98,10 @@
                     <h4 class="widget-title">Ayuda</h4>
 
                     <ul class="widget-body">
-                        <li><a href="#">Envíos y entregas</a></li>
-                        <li><a href="#">Devoluciones</a></li>
-                        <li><a href="#">Métodos de pago</a></li>
-                        <li><a href="#">Garantías</a></li>
-                        <li><a href="#">Preguntas frecuentes</a></li>
+                        <li><a href="{{ route('ecommerce.track-order.index') }}">Envíos y entregas</a></li>
+                        @foreach($privacyNotices as $privacyNotice)
+                            <li><a href="{{ route('ecommerce.privacy-notice.show', $privacyNotice) }}">Devoluciones</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -149,12 +148,7 @@
             </p>
 
             <div>
-                @foreach($privacyNotices as $privacyNotice)
-                    <a href="{{ route('ecommerce.privacy-notice.show', $privacyNotice) }}"
-                    class="mx-2">
-                        {{ $privacyNotice->name }}
-                    </a>
-                @endforeach
+                <p class="mx-2">Desarrollado por Niantech</p>
             </div>
 
         </div>

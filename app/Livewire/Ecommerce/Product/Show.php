@@ -121,11 +121,6 @@ class Show extends Component
         if ($this->type == Product::TYPE_PHYSICAL) {
             if ($this->variantSelected) {
                 $this->quantityTotal = $this->variantSelected->getQuantityTotal();
-            } elseif (count($this->product->productVariants)) {
-                $this->quantityTotal = 0;
-                foreach ($this->product->productVariants as $variant) {
-                    $this->quantityTotal += $variant->getQuantityTotal();
-                }
             } else {
                 $this->quantityTotal = $this->product->getQuantityTotal();
             }

@@ -242,36 +242,36 @@ window.Coodect = {};
     // })();
 
     Coodect.appear = function (el, fn, intObsOptions) {
-		var interSectionObserverOptions = {
-			rootMargin: '0px 0px 200px 0px',
-			threshold: 0,
-			alwaysObserve: true
-		};
+        var interSectionObserverOptions = {
+            rootMargin: '0px 0px 200px 0px',
+            threshold: 0,
+            alwaysObserve: true
+        };
 
-		if (intObsOptions && Object.keys(intObsOptions).length) {
-		 $.extend(intersectionObserverOptions, intObsOptions);
-		}
+        if (intObsOptions && Object.keys(intObsOptions).length) {
+            $.extend(intersectionObserverOptions, intObsOptions);
+        }
 
-		var observer = new IntersectionObserver(function (entries) {
-			for (var i = 0; i < entries.length; i++) {
-				var entry = entries[i];
+        var observer = new IntersectionObserver(function (entries) {
+            for (var i = 0; i < entries.length; i++) {
+                var entry = entries[i];
 
-				if (entry.intersectionRatio > 0) {
-					if (typeof fn === 'string') {
-						var func = Function('return ' + functionName)();
-					} else {
-						var callback = fn;
+                if (entry.intersectionRatio > 0) {
+                    if (typeof fn === 'string') {
+                        var func = Function('return ' + functionName)();
+                    } else {
+                        var callback = fn;
 
-						callback.call($(entry.target));
-					}
-				}
-			}
-		}, interSectionObserverOptions);
+                        callback.call($(entry.target));
+                    }
+                }
+            }
+        }, interSectionObserverOptions);
 
-		observer.observe(el);
+        observer.observe(el);
 
-		return this;
-	}
+        return this;
+    }
 
 
     /**
@@ -429,7 +429,7 @@ window.Coodect = {};
         // register scroll top button
         var domScrollTop = Coodect.byId('scroll-top');
 
-        if(domScrollTop){
+        if (domScrollTop) {
             domScrollTop.addEventListener('click', function (e) {
                 $('html, body').animate({ scrollTop: 0 }, 600);
                 e.preventDefault();
@@ -456,7 +456,7 @@ window.Coodect = {};
         maxWidth: 20000,
         top: false,
         hide: false,
-        scrollMode:true
+        scrollMode: true
     }
 
     Coodect.stickyToolboxOptions = {
@@ -466,7 +466,7 @@ window.Coodect = {};
         scrollMode: true
     }
 
-    Coodect.stickyProductOptions =  {
+    Coodect.stickyProductOptions = {
         minWidth: 0,
         maxWidth: 20000,
         scrollMode: true,
@@ -474,181 +474,181 @@ window.Coodect = {};
         hide: false
     }
 
-	/**
-	 * Check if window's width is really resized.
-	 *
-	 * @since 1.0
-	 * @param {number} timeStamp
-	 * @return {boolean}
-	 */
-	Coodect.windowResized = function (timeStamp) {
-		if (timeStamp == Coodect.resizeTimeStamp) {
-			return Coodect.resizeChanged;
-		}
-		Coodect.resizeChanged = Coodect.canvasWidth != window.innerWidth;
-		Coodect.canvasWidth = window.innerWidth;
-		Coodect.resizeTimeStamp = timeStamp;
-		return Coodect.resizeChanged;
+    /**
+     * Check if window's width is really resized.
+     *
+     * @since 1.0
+     * @param {number} timeStamp
+     * @return {boolean}
+     */
+    Coodect.windowResized = function (timeStamp) {
+        if (timeStamp == Coodect.resizeTimeStamp) {
+            return Coodect.resizeChanged;
+        }
+        Coodect.resizeChanged = Coodect.canvasWidth != window.innerWidth;
+        Coodect.canvasWidth = window.innerWidth;
+        Coodect.resizeTimeStamp = timeStamp;
+        return Coodect.resizeChanged;
     }
 
     /**
-	 * Initialize Sticky Content
-	 *
-	 * @class StickyContent
-	 * @since 1.0
-	 * @param {string, Object} selector
-	 * @param {Object} options
-	 * @return {void}
-	 */
-	Coodect.stickyContent = (function () {
-		function StickyContent($el, options) {
-			return this.init($el, options);
-		}
+     * Initialize Sticky Content
+     *
+     * @class StickyContent
+     * @since 1.0
+     * @param {string, Object} selector
+     * @param {Object} options
+     * @return {void}
+     */
+    Coodect.stickyContent = (function () {
+        function StickyContent($el, options) {
+            return this.init($el, options);
+        }
 
-		function refreshAll() {
-			Coodect.$window.trigger('sticky_refresh.Coodect', {
-				index: 0,
-				offsetTop: 0
-			});
-		}
+        function refreshAll() {
+            Coodect.$window.trigger('sticky_refresh.Coodect', {
+                index: 0,
+                offsetTop: 0
+            });
+        }
 
-		function refreshAllSize(e) {
-			if (!e || Coodect.windowResized(e.timeStamp)) {
-				Coodect.$window.trigger('sticky_refresh_size.Coodect');
-				refreshAll();
-			}
-		}
+        function refreshAllSize(e) {
+            if (!e || Coodect.windowResized(e.timeStamp)) {
+                Coodect.$window.trigger('sticky_refresh_size.Coodect');
+                refreshAll();
+            }
+        }
 
-		StickyContent.prototype.init = function ($el, options) {
-			this.$el = $el;
-			this.options = $.extend(true, {}, Coodect.stickyDefaultOptions, options, Coodect.parseOptions($el.attr('data-sticky-options')));
-			Coodect.$window
-				.on('sticky_refresh.Coodect', this.refresh.bind(this))
-				.on('sticky_refresh_size.Coodect', this.refreshSize.bind(this));
-		}
+        StickyContent.prototype.init = function ($el, options) {
+            this.$el = $el;
+            this.options = $.extend(true, {}, Coodect.stickyDefaultOptions, options, Coodect.parseOptions($el.attr('data-sticky-options')));
+            Coodect.$window
+                .on('sticky_refresh.Coodect', this.refresh.bind(this))
+                .on('sticky_refresh_size.Coodect', this.refreshSize.bind(this));
+        }
 
-		StickyContent.prototype.refreshSize = function (e) {
-			var beWrap = window.innerWidth >= this.options.minWidth && window.innerWidth <= this.options.maxWidth;
-			this.scrollPos = window.pageYOffset;
-			if (typeof this.top == 'undefined') {
-				this.top = this.options.top;
-			}
+        StickyContent.prototype.refreshSize = function (e) {
+            var beWrap = window.innerWidth >= this.options.minWidth && window.innerWidth <= this.options.maxWidth;
+            this.scrollPos = window.pageYOffset;
+            if (typeof this.top == 'undefined') {
+                this.top = this.options.top;
+            }
 
-			if (window.innerWidth >= 768 && this.getTop) {
-				this.top = this.getTop();
-			} else if (!this.options.top) {
-				this.top = this.isWrap ?
-					this.$el.parent().offset().top :
-					this.$el.offset().top + this.$el[0].offsetHeight;
+            if (window.innerWidth >= 768 && this.getTop) {
+                this.top = this.getTop();
+            } else if (!this.options.top) {
+                this.top = this.isWrap ?
+                    this.$el.parent().offset().top :
+                    this.$el.offset().top + this.$el[0].offsetHeight;
 
-				// if sticky header has toggle dropdown menu, increase top
-				if (this.$el.hasClass('has-dropdown')) {
+                // if sticky header has toggle dropdown menu, increase top
+                if (this.$el.hasClass('has-dropdown')) {
 
-					this.top += this.$el.find('.category-dropdown .dropdown-box')[0].offsetHeight;
-				}
-			}
+                    this.top += this.$el.find('.category-dropdown .dropdown-box')[0].offsetHeight;
+                }
+            }
 
-			if (!this.isWrap) {
-				beWrap && this.wrap();
-			} else {
-				beWrap || this.unwrap();
+            if (!this.isWrap) {
+                beWrap && this.wrap();
+            } else {
+                beWrap || this.unwrap();
             }
 
             Coodect.sticky_top_height = 0;
 
-			e && setTimeout(this.refreshSize.bind(this), 50);
-		}
+            e && setTimeout(this.refreshSize.bind(this), 50);
+        }
 
-		StickyContent.prototype.wrap = function () {
+        StickyContent.prototype.wrap = function () {
             this.$el.wrap('<div class="sticky-content-wrapper"></div>');
             this.isWrap = true;
-		}
+        }
 
-		StickyContent.prototype.unwrap = function () {
-			this.$el.unwrap('.sticky-content-wrapper');
-			this.isWrap = false;
-		}
+        StickyContent.prototype.unwrap = function () {
+            this.$el.unwrap('.sticky-content-wrapper');
+            this.isWrap = false;
+        }
 
-		StickyContent.prototype.refresh = function (e, data) {
-			var pageYOffset = window.pageYOffset + data.offsetTop;
-			var $el = this.$el;
+        StickyContent.prototype.refresh = function (e, data) {
+            var pageYOffset = window.pageYOffset + data.offsetTop;
+            var $el = this.$el;
 
-			this.refreshSize();
+            this.refreshSize();
 
-			// Make sticky
-			if (pageYOffset > this.top && this.isWrap) {
+            // Make sticky
+            if (pageYOffset > this.top && this.isWrap) {
 
-				// calculate height
-				this.height = $el[0].offsetHeight;
-				$el.hasClass('fixed') || $el.parent().css('height', this.height + 'px');
+                // calculate height
+                this.height = $el[0].offsetHeight;
+                $el.hasClass('fixed') || $el.parent().css('height', this.height + 'px');
 
-				// update sticky order
-				if ($el.hasClass('fix-top')) {
-					$el.css('margin-top', data.offsetTop + 'px');
-					this.zIndex = this.options.max_index - data.index;
-				} else if ($el.hasClass('fix-bottom')) {
-					$el.css('margin-bottom', data.offsetBottom + 'px');
-					this.zIndex = this.options.max_index - data.index;
-				} else {
-					$el.css({ 'transition': 'opacity .5s', 'z-index': this.zIndex });
-				}
+                // update sticky order
+                if ($el.hasClass('fix-top')) {
+                    $el.css('margin-top', data.offsetTop + 'px');
+                    this.zIndex = this.options.max_index - data.index;
+                } else if ($el.hasClass('fix-bottom')) {
+                    $el.css('margin-bottom', data.offsetBottom + 'px');
+                    this.zIndex = this.options.max_index - data.index;
+                } else {
+                    $el.css({ 'transition': 'opacity .5s', 'z-index': this.zIndex });
+                }
 
-				// update sticky status
-				if (this.options.scrollMode) {
-					if (this.scrollPos >= pageYOffset && $el.hasClass('fix-top') ||
-						this.scrollPos <= pageYOffset && $el.hasClass('fix-bottom')) {
+                // update sticky status
+                if (this.options.scrollMode) {
+                    if (this.scrollPos >= pageYOffset && $el.hasClass('fix-top') ||
+                        this.scrollPos <= pageYOffset && $el.hasClass('fix-bottom')) {
 
-						$el.addClass('fixed');
+                        $el.addClass('fixed');
                         this.onFixed && this.onFixed();
 
                         // for only sticky cart form.
                         $el.hasClass('product-sticky-content') && Coodect.$body.addClass('addtocart-fixed');
-					} else {
-						$el.removeClass('fixed').css('margin-top', '').css('margin-bottom', '');
-						this.onUnfixed && this.onUnfixed();
+                    } else {
+                        $el.removeClass('fixed').css('margin-top', '').css('margin-bottom', '');
+                        this.onUnfixed && this.onUnfixed();
 
                         // for only sticky cart form.
                         $el.hasClass('product-sticky-content') && Coodect.$body.removeClass('addtocart-fixed');
-					}
-					this.scrollPos = pageYOffset;
-				} else {
-					$el.addClass('fixed');
-					this.onFixed && this.onFixed();
-				}
+                    }
+                    this.scrollPos = pageYOffset;
+                } else {
+                    $el.addClass('fixed');
+                    this.onFixed && this.onFixed();
+                }
 
-				// stack offset
-				if ($el.is('.fixed.fix-top')) {
+                // stack offset
+                if ($el.is('.fixed.fix-top')) {
                     data.offsetTop += $el[0].offsetHeight;
 
                     Coodect.sticky_top_height = data.offsetTop;
-				} else if ($el.is('.fixed.fix-bottom')) {
-					data.offsetBottom += $el[0].offsetHeight;
-				}
-			} else {
-				$el.parent().css('height', '');
-				$el.removeClass('fixed').css({ 'margin-top': '', 'margin-bottom': '', 'z-index': '' });
-				this.onUnfixed && this.onUnfixed();
+                } else if ($el.is('.fixed.fix-bottom')) {
+                    data.offsetBottom += $el[0].offsetHeight;
+                }
+            } else {
+                $el.parent().css('height', '');
+                $el.removeClass('fixed').css({ 'margin-top': '', 'margin-bottom': '', 'z-index': '' });
+                this.onUnfixed && this.onUnfixed();
 
                 // for only sticky cart form.
                 $el.hasClass('product-sticky-content') && Coodect.$body.removeClass('addtocart-fixed');
-			}
-		}
+            }
+        }
 
-		Coodect.$window.on('Coodect_complete', function () {
-			window.addEventListener('scroll', refreshAll, { passive: true });
-			Coodect.$window.on('resize', refreshAllSize);
-            setTimeout(function(){
+        Coodect.$window.on('Coodect_complete', function () {
+            window.addEventListener('scroll', refreshAll, { passive: true });
+            Coodect.$window.on('resize', refreshAllSize);
+            setTimeout(function () {
                 refreshAllSize();
             }, 300);
-		})
+        })
 
-		return function (selector, options) {
-			Coodect.$(selector).each(function () {
-				var $this = $(this);
-				$this.data('sticky-content') || $this.data('sticky-content', new StickyContent($this, options));
-			})
-		}
-	})()
+        return function (selector, options) {
+            Coodect.$(selector).each(function () {
+                var $this = $(this);
+                $this.data('sticky-content') || $this.data('sticky-content', new StickyContent($this, options));
+            })
+        }
+    })()
 
     /**
      * parallax
@@ -669,42 +669,42 @@ window.Coodect = {};
         }
     }
 
-    Coodect.skrollrParallax = function() {
+    Coodect.skrollrParallax = function () {
         if (Coodect.isMobile) {
-			return;
-		}
+            return;
+        }
 
-        if ( typeof skrollr == 'undefined' ) {
-			return;
-		}
+        if (typeof skrollr == 'undefined') {
+            return;
+        }
 
-		if ( Coodect.$('.skrollable').length ) {
-			skrollr.init( { forceHeight: false } );
-		}
+        if (Coodect.$('.skrollable').length) {
+            skrollr.init({ forceHeight: false });
+        }
     }
 
     /**
-	 * Initialize floating elements
-	 *
-	 * @since 1.0
-	 * @param {string|jQuery} selector
-	 * @return {void}
-	 */
-	Coodect.initFloatingParallax = function ( ) {
-		if ( $.fn.parallax ) {
-			Coodect.$('.floating-item' ).each( function ( e ) {
-				var $this = $( this );
-				if ( $this.data( 'parallax' ) ) {
-					$this.parallax( 'disable' );
-					$this.removeData( 'parallax' );
-					$this.removeData( 'options' );
-				}
-				$this.children().addClass( 'layer' ).attr( 'data-depth', $this.attr( 'data-child-depth' ) );
-				$this.parallax( $this.data( 'options' ) );
-			} );
-		}
+     * Initialize floating elements
+     *
+     * @since 1.0
+     * @param {string|jQuery} selector
+     * @return {void}
+     */
+    Coodect.initFloatingParallax = function () {
+        if ($.fn.parallax) {
+            Coodect.$('.floating-item').each(function (e) {
+                var $this = $(this);
+                if ($this.data('parallax')) {
+                    $this.parallax('disable');
+                    $this.removeData('parallax');
+                    $this.removeData('options');
+                }
+                $this.children().addClass('layer').attr('data-depth', $this.attr('data-child-depth'));
+                $this.parallax($this.data('options'));
+            });
+        }
 
-	}
+    }
 
 
     Coodect.isotopeOptions = {
@@ -789,7 +789,7 @@ window.Coodect = {};
         var els = Coodect.byClass('ratings-full', root ? root : document.body),
             len = els.length;
         var ratingHandler = function () {
-            var res = parseInt( this.firstElementChild.style.width.slice( 0, -1 ) ) / 20;
+            var res = parseInt(this.firstElementChild.style.width.slice(0, -1)) / 20;
             this.lastElementChild.innerText = res ? res.toFixed(2) : res;
         }
         for (var i = 0; i < len; ++i) {
@@ -920,7 +920,7 @@ window.Coodect = {};
                         el.style['animation-duration'] = settings.duration;
                         el.classList.add(settings.name);
                         el.classList.add('appear-animation-visible');
-                    }, settings.delay ? Number(settings.delay.slice(0, -1)) * 1000 : 0 );
+                    }, settings.delay ? Number(settings.delay.slice(0, -1)) * 1000 : 0);
                 }
             });
         });
@@ -960,7 +960,7 @@ window.Coodect = {};
                     format: dateFormat,
                     padZeroes: true,
                     compact: compact,
-                    compactLabels: [' y', ' m', ' w', ' '+labelDays+', '],
+                    compactLabels: [' y', ' m', ' w', ' ' + labelDays + ', '],
                     timeSeparator: ' : ',
                     labels: newLabels,
                     labels1: newLabels1
@@ -1031,7 +1031,7 @@ window.Coodect = {};
     Coodect.stickySidebar = function (selector) {
         if ($.fn.themeSticky) {
             var top = 0;
-            if ( ! $('.sticky-sidebar > .filter-actions').length && $(window).width() >= 992) {
+            if (!$('.sticky-sidebar > .filter-actions').length && $(window).width() >= 992) {
                 $('.sticky-content.fix-top').each(function (e) {
                     if (!$(this).hasClass('sticky-toolbox')) {
                         var $fixed = $(this).hasClass('fixed');
@@ -1043,7 +1043,7 @@ window.Coodect = {};
 
             Coodect.$(selector).each(function () {
                 var $this = $(this);
-                $this.themeSticky($.extend({}, Coodect.stickySidebarOptions, {padding: {top: top}}, Coodect.parseOptions($this.attr('data-sticky-options'))));
+                $this.themeSticky($.extend({}, Coodect.stickySidebarOptions, { padding: { top: top } }, Coodect.parseOptions($this.attr('data-sticky-options'))));
             });
 
             function recalcSticky() {
@@ -1085,7 +1085,7 @@ window.Coodect = {};
                     var $this = $(this);
                     Coodect.zoomImageOptions.target = $this.parent();
                     Coodect.zoomImageOptions.url = $this.attr('data-zoom-image');
-                    $this.zoom( Coodect.zoomImageOptions );
+                    $this.zoom(Coodect.zoomImageOptions);
                     Coodect.zoomImageObjects.push($this);
                 });
         }
@@ -1167,42 +1167,42 @@ window.Coodect = {};
         }
 
         // Video popup
-        Coodect.$body.on( 'click', '.btn-iframe', function ( e ) {
+        Coodect.$body.on('click', '.btn-iframe', function (e) {
             e.preventDefault();
-            Coodect.popup( {
+            Coodect.popup({
                 items: {
-                    src: '<video src="' + $( e.currentTarget ).attr( 'href' ) + '" autoplay loop controls>',
+                    src: '<video src="' + $(e.currentTarget).attr('href') + '" autoplay loop controls>',
                     type: "inline"
                 },
                 mainClass: "mfp-video-popup"
-            }, "video" )
-        } );
+            }, "video")
+        });
 
         // Login popup
         Coodect.$body
-            .on('click', '.sign-in', function(e) {
+            .on('click', '.sign-in', function (e) {
                 e.preventDefault();
 
-                Coodect.popup ( {
+                Coodect.popup({
                     items: {
-                        src: $( e.currentTarget ).attr( 'href' )
+                        src: $(e.currentTarget).attr('href')
                     }
-                }, 'login' )
+                }, 'login')
             })
 
-            .on( 'click', '.register', function ( e ) {
+            .on('click', '.register', function (e) {
                 e.preventDefault();
-                Coodect.popup( {
+                Coodect.popup({
                     items: {
-                        src: $( e.currentTarget ).attr( 'href' )
+                        src: $(e.currentTarget).attr('href')
                     },
                     callbacks: {
                         ajaxContentAdded: function () {
-                            this.wrap.find( '[href="#sign-up"]' ).click();
+                            this.wrap.find('[href="#sign-up"]').click();
                         }
                     }
-                }, 'login' )
-            } );
+                }, 'login')
+            });
 
     }
 
@@ -1260,20 +1260,20 @@ window.Coodect = {};
         // template
 
         template: '<div class="minipopup-box">' +
-                    '<div class="product product-list-sm {{productClass}}">' +
-                    '<figure class="product-media">' +
-                    '<a href="{{imageLink}}">' +
-                    '<img loading="lazy" src="{{imageSrc}}" alt="Product" width="80" height="90" />' +
-                    '</a></figure>' +
-                    '<div class="product-details">' +
-                    '<h4 class="product-name"><a href="{{nameLink}}">{{name}}</a></h4>' +
-                    '{{message}}</div></div>' +
-                    '<div class="product-action">{{actionTemplate}}</div></div>',
+            '<div class="product product-list-sm {{productClass}}">' +
+            '<figure class="product-media">' +
+            '<a href="{{imageLink}}">' +
+            '<img loading="lazy" src="{{imageSrc}}" alt="Product" width="80" height="90" />' +
+            '</a></figure>' +
+            '<div class="product-details">' +
+            '<h4 class="product-name"><a href="{{nameLink}}">{{name}}</a></h4>' +
+            '{{message}}</div></div>' +
+            '<div class="product-action">{{actionTemplate}}</div></div>',
 
     }
     /**
-	 * @class MiniPopup
-	 */
+     * @class MiniPopup
+     */
     Coodect.Minipopup = (function () {
         // Private Members
         var $area,
@@ -1396,44 +1396,44 @@ window.Coodect = {};
      * @param {String} selector
      */
 
-    Coodect.headerToggleSearch = function ( selector ) {
-        var $search = Coodect.$( selector );
-        $search.find( '.form-control' )
-            .on( 'focusin', function ( e ) {
-                $search.addClass( 'show' );
-            } )
-            .on( 'focusout', function ( e ) {
-                $search.removeClass( 'show' );
-            } );
+    Coodect.headerToggleSearch = function (selector) {
+        var $search = Coodect.$(selector);
+        $search.find('.form-control')
+            .on('focusin', function (e) {
+                $search.addClass('show');
+            })
+            .on('focusout', function (e) {
+                $search.removeClass('show');
+            });
 
         // Initialize sticky footer's search toggle.
-        Coodect.$body.on( 'click', '.sticky-footer .search-toggle', function ( e ) {
-            $( this ).parent().toggleClass( 'show' );
+        Coodect.$body.on('click', '.sticky-footer .search-toggle', function (e) {
+            $(this).parent().toggleClass('show');
             e.preventDefault();
-        } );
+        });
     }
     Coodect.scrollTo = function (target, duration) {
-		var _duration = typeof duration == 'undefined' ? 0 : duration;
-		var offset;
+        var _duration = typeof duration == 'undefined' ? 0 : duration;
+        var offset;
 
-		if (typeof target == 'number') {
-			offset = target;
-		} else {
-			var $target = Coodect.$(target);
-			if (!$target.length || $target.css('display') == 'none') {
-				return;
-			}
+        if (typeof target == 'number') {
+            offset = target;
+        } else {
+            var $target = Coodect.$(target);
+            if (!$target.length || $target.css('display') == 'none') {
+                return;
+            }
 
-			var offset = $target.offset().top;
-			var $wpToolbar = $('#wp-toolbar');
-			window.innerWidth > 600 && $wpToolbar.length && (offset -= $wpToolbar.parent().outerHeight());
-			$('.sticky-content.fix-top.fixed').each(function () {
-				offset -= this.offsetHeight;
-			})
-		}
+            var offset = $target.offset().top;
+            var $wpToolbar = $('#wp-toolbar');
+            window.innerWidth > 600 && $wpToolbar.length && (offset -= $wpToolbar.parent().outerHeight());
+            $('.sticky-content.fix-top.fixed').each(function () {
+                offset -= this.offsetHeight;
+            })
+        }
 
-		$('html,body').stop().animate({ scrollTop: offset }, _duration);
-	}
+        $('html,body').stop().animate({ scrollTop: offset }, _duration);
+    }
 })(jQuery);
 
 (function ($) {
@@ -1616,10 +1616,10 @@ function Slider($el, options) {
 
     // Private Properties
     var onInitialize = function (e) {
-        var cls = this.getAttribute( 'class' );
-        var match = cls.match( /row|gutter\-\w\w|cols\-\d|cols\-\w\w-\d/g );
-        if ( match ) {
-            this.setAttribute( 'class', cls.replace( /row|gutter\-\w\w|cols\-\d|cols\-\w\w-\d/g, '' ).replace( /\s+/, ' ' ) );
+        var cls = this.getAttribute('class');
+        var match = cls.match(/row|gutter\-\w\w|cols\-\d|cols\-\w\w-\d/g);
+        if (match) {
+            this.setAttribute('class', cls.replace(/row|gutter\-\w\w|cols\-\d|cols\-\w\w-\d/g, '').replace(/\s+/, ' '));
         }
         if (this.classList.contains("animation-slider")) {
             var els = this.children,
@@ -1643,28 +1643,28 @@ function Slider($el, options) {
             }
         }
     }
-    var onTranslated = function ( e ) {
-        $( window ).trigger( 'appear.check' );
+    var onTranslated = function (e) {
+        $(window).trigger('appear.check');
 
         // Video Play
-        var $el = $( e.currentTarget ),
-            $activeVideos = $el.find( '.owl-item.active video' );
+        var $el = $(e.currentTarget),
+            $activeVideos = $el.find('.owl-item.active video');
 
-        $el.find( '.owl-item:not(.active) video' ).each( function () {
-            if ( !this.paused ) {
-                $el.trigger( 'play.owl.autoplay' );
+        $el.find('.owl-item:not(.active) video').each(function () {
+            if (!this.paused) {
+                $el.trigger('play.owl.autoplay');
             }
             this.pause();
             this.currentTime = 0;
-        } );
+        });
 
-        if ( $activeVideos.length ) {
-            if ( true === $el.data( 'owl.carousel' ).options.autoplay ) {
-                $el.trigger( 'stop.owl.autoplay' );
+        if ($activeVideos.length) {
+            if (true === $el.data('owl.carousel').options.autoplay) {
+                $el.trigger('stop.owl.autoplay');
             }
-            $activeVideos.each( function () {
+            $activeVideos.each(function () {
                 this.paused && this.play();
-            } );
+            });
         }
     }
     var onSliderInitialized = function (e) {
@@ -1714,56 +1714,56 @@ function Slider($el, options) {
     }
     var onSliderTranslate = function (e) {
         var self = this,
-            $el = $( e.currentTarget );
+            $el = $(e.currentTarget);
         self.translateFlag = 1;
         self.prev = self.next;
-        $el.find( '.owl-item .slide-animate' ).each( function () {
-            var $animation_item = $( this ),
-                settings = $.extend( true, {}, Coodect.animationOptions, Coodect.parseOptions( $animation_item.data( 'animation-options' ) ) );
-            $animation_item.removeClass( settings.name );
-        } );
+        $el.find('.owl-item .slide-animate').each(function () {
+            var $animation_item = $(this),
+                settings = $.extend(true, {}, Coodect.animationOptions, Coodect.parseOptions($animation_item.data('animation-options')));
+            $animation_item.removeClass(settings.name);
+        });
     }
     var onSliderTranslated = function (e) {
         var self = this,
-            $el = $( e.currentTarget );
-        if ( 1 == self.translateFlag ) {
-            self.next = $el.find( '.owl-item' ).eq( e.item.index ).children().attr( 'data-index' );
-            $el.find( '.show-content' ).removeClass( 'show-content' );
-            if ( self.prev != self.next ) {
-                $el.find( '.show-content' ).removeClass( 'show-content' );
+            $el = $(e.currentTarget);
+        if (1 == self.translateFlag) {
+            self.next = $el.find('.owl-item').eq(e.item.index).children().attr('data-index');
+            $el.find('.show-content').removeClass('show-content');
+            if (self.prev != self.next) {
+                $el.find('.show-content').removeClass('show-content');
                 /* clear all animations that are running. */
-                if ( $el.hasClass( "animation-slider" ) ) {
-                    for ( var i = 0; i < self.timers.length; i++ ) {
-                        Coodect.deleteTimeout( self.timers[ i ] );
+                if ($el.hasClass("animation-slider")) {
+                    for (var i = 0; i < self.timers.length; i++) {
+                        Coodect.deleteTimeout(self.timers[i]);
                     }
                     self.timers = [];
                 }
-                $el.find( '.owl-item.active .slide-animate' ).each( function () {
-                    var $animation_item = $( this ),
-                        settings = $.extend( true, {}, Coodect.animationOptions, Coodect.parseOptions( $animation_item.data( 'animation-options' ) ) ),
+                $el.find('.owl-item.active .slide-animate').each(function () {
+                    var $animation_item = $(this),
+                        settings = $.extend(true, {}, Coodect.animationOptions, Coodect.parseOptions($animation_item.data('animation-options'))),
                         duration = settings.duration,
                         delay = settings.delay,
                         aniName = settings.name;
 
-                    $animation_item.css( 'animation-duration', duration );
-                    $animation_item.css( 'animation-delay', delay );
-                    $animation_item.css( 'transition-property', 'visibility, opacity' );
-                    $animation_item.css( 'transition-delay', delay );
-                    $animation_item.css( 'transition-duration', duration );
-                    $animation_item.addClass( aniName );
+                    $animation_item.css('animation-duration', duration);
+                    $animation_item.css('animation-delay', delay);
+                    $animation_item.css('transition-property', 'visibility, opacity');
+                    $animation_item.css('transition-delay', delay);
+                    $animation_item.css('transition-duration', duration);
+                    $animation_item.addClass(aniName);
 
                     duration = duration ? duration : '0.75s';
-                    $animation_item.addClass( 'show-content' );
-                    var temp = Coodect.requestTimeout( function () {
-                        $animation_item.css( 'transition-property', '' );
-                        $animation_item.css( 'transition-delay', '' );
-                        $animation_item.css( 'transition-duration', '' );
-                        self.timers.splice( self.timers.indexOf( temp ), 1 )
-                    }, ( delay ? Number( ( delay ).slice( 0, -1 ) ) * 1000 + Number( ( duration ).slice( 0, -1 ) ) * 500 : Number( ( duration ).slice( 0, -1 ) ) * 500 ) );
-                    self.timers.push( temp );
-                } );
+                    $animation_item.addClass('show-content');
+                    var temp = Coodect.requestTimeout(function () {
+                        $animation_item.css('transition-property', '');
+                        $animation_item.css('transition-delay', '');
+                        $animation_item.css('transition-duration', '');
+                        self.timers.splice(self.timers.indexOf(temp), 1)
+                    }, (delay ? Number((delay).slice(0, -1)) * 1000 + Number((duration).slice(0, -1)) * 500 : Number((duration).slice(0, -1)) * 500));
+                    self.timers.push(temp);
+                });
             } else {
-                $el.find( '.owl-item' ).eq( e.item.index ).find( '.slide-animate' ).addClass( 'show-content' );
+                $el.find('.owl-item').eq(e.item.index).find('.slide-animate').addClass('show-content');
             }
             self.translateFlag = 0;
         }
@@ -1826,65 +1826,65 @@ function Slider($el, options) {
         }
     }
 
-    Slider.prototype.init = function ( $el, options ) {
+    Slider.prototype.init = function ($el, options) {
         this.timers = [];
         this.translateFlag = 0;
         this.prev = 1;
         this.next = 1;
 
-        Coodect.lazyLoad( $el, true );
+        Coodect.lazyLoad($el, true);
 
-        var classes = $el.attr( 'class' ).split( ' ' ),
-            settings = $.extend( true, {}, Slider.presets, Slider.defaults );
+        var classes = $el.attr('class').split(' '),
+            settings = $.extend(true, {}, Slider.presets, Slider.defaults);
 
         // extend preset options
-        classes.forEach( function ( className ) {
-            var preset = Slider.presets[ className ];
-            preset && $.extend( true, settings, preset );
-        } );
+        classes.forEach(function (className) {
+            var preset = Slider.presets[className];
+            preset && $.extend(true, settings, preset);
+        });
 
-        var $videos = $el.find( 'video' );
-        $videos.each( function () {
+        var $videos = $el.find('video');
+        $videos.each(function () {
             this.loop = true;
-        } );
+        });
 
         // extend user options
-        $.extend( true, settings, Coodect.parseOptions( $el.attr( 'data-owl-options' ) ), options );
+        $.extend(true, settings, Coodect.parseOptions($el.attr('data-owl-options')), options);
 
-        onSliderInitialized = onSliderInitialized.bind( this );
-        onSliderTranslate = onSliderTranslate.bind( this );
-        onSliderTranslated = onSliderTranslated.bind( this );
+        onSliderInitialized = onSliderInitialized.bind(this);
+        onSliderTranslate = onSliderTranslate.bind(this);
+        onSliderTranslated = onSliderTranslated.bind(this);
 
         // init
-        $el.on( 'initialize.owl.carousel', onInitialize )
-            .on( 'initialized.owl.carousel', onInitialized )
-            .on( 'translated.owl.carousel', onTranslated );
+        $el.on('initialize.owl.carousel', onInitialize)
+            .on('initialized.owl.carousel', onInitialized)
+            .on('translated.owl.carousel', onTranslated);
 
         // if animation slider
-        $el.hasClass( 'animation-slider' ) &&
-            $el.on( 'initialized.owl.carousel', onSliderInitialized )
-                .on( 'resized.owl.carousel', onSliderResized )
-                .on( 'translate.owl.carousel', onSliderTranslate )
-                .on( 'translated.owl.carousel', onSliderTranslated );
+        $el.hasClass('animation-slider') &&
+            $el.on('initialized.owl.carousel', onSliderInitialized)
+                .on('resized.owl.carousel', onSliderResized)
+                .on('translate.owl.carousel', onSliderTranslate)
+                .on('translated.owl.carousel', onSliderTranslated);
 
-        $el.owlCarousel( settings );
+        $el.owlCarousel(settings);
 
         // if slider has custom dots container
-        if ( settings.dotsContainer ) {
-            var $dots = $( settings.dotsContainer );
-            $dots.find( 'a' ).on( 'click', function ( e ) {
+        if (settings.dotsContainer) {
+            var $dots = $(settings.dotsContainer);
+            $dots.find('a').on('click', function (e) {
                 e.preventDefault();
 
-                var $this = $( this );
+                var $this = $(this);
 
-                if ( !$this.hasClass( 'active' ) ) {
+                if (!$this.hasClass('active')) {
                     var index = $this.index(),
-                        $carousel = $dots.parent().find( '.owl-carousel' );
+                        $carousel = $dots.parent().find('.owl-carousel');
 
-                    $carousel.trigger( 'to.owl.carousel', [index] );
-                    $this.addClass( 'active' ).siblings().removeClass( 'active' );
+                    $carousel.trigger('to.owl.carousel', [index]);
+                    $this.addClass('active').siblings().removeClass('active');
                 }
-            } )
+            })
         }
     }
 
@@ -1898,12 +1898,12 @@ function Slider($el, options) {
         });
     }
 
-    Coodect.reloadCarouselProductSingle = function(){
+    Coodect.reloadCarouselProductSingle = function () {
         $(".owl-carousel").owlCarousel('destroy');
         let intervalCarousel = setInterval(() => {
             Coodect.slider('.owl-carousel');
             let carouselComplet = document.querySelectorAll('.product-single-carousel > owl-stage-outer');
-            if(carouselComplet){
+            if (carouselComplet) {
                 clearInterval(intervalCarousel);
             }
         }, 1000);
@@ -2050,104 +2050,104 @@ function Sidebar(name) {
         var selector = '.select-menu';
 
         // show or hide select menu
-        Coodect.$body.on( 'mousedown', '.select-menu', function ( e ) {
-            var $selectMenu = $( e.currentTarget ),
-                $target = $( e.target ),
-                isOpened = $selectMenu.hasClass( 'opened' );
+        Coodect.$body.on('mousedown', '.select-menu', function (e) {
+            var $selectMenu = $(e.currentTarget),
+                $target = $(e.target),
+                isOpened = $selectMenu.hasClass('opened');
 
             // close all select menu
-            $( '.select-menu' ).removeClass( 'opened' );
+            $('.select-menu').removeClass('opened');
 
-            if ( $selectMenu.is( $target.parent() ) ) { // if select menu toggle is clicked
-                !isOpened && $selectMenu.addClass( 'opened' );
+            if ($selectMenu.is($target.parent())) { // if select menu toggle is clicked
+                !isOpened && $selectMenu.addClass('opened');
 
                 e.stopPropagation();
             } else { // if select menu item is clicked
 
-                $target.parent().toggleClass( 'active' ); // add active class to li tag
+                $target.parent().toggleClass('active'); // add active class to li tag
 
-                if ( $target.parent().hasClass( 'active' ) ) {
+                if ($target.parent().hasClass('active')) {
 
                     // if only clean all button remains
-                    if ( $( '.selected-items' ).children().length < 2 ) {
+                    if ($('.selected-items').children().length < 2) {
                         // show selected items
-                        $( '.selected-items' ).show();
+                        $('.selected-items').show();
                     }
 
                     // add selected item
-                    $( '<a href="#" class="selected-item">' + $target.text().split( '(' )[0] + '<i class="la la-close"></i></a>' )
-                        .insertBefore( '.selected-items .filter-clean' )
+                    $('<a href="#" class="selected-item">' + $target.text().split('(')[0] + '<i class="la la-close"></i></a>')
+                        .insertBefore('.selected-items .filter-clean')
                         .hide().fadeIn()  // hide and show item with effect - fadeIn
-                        .data( 'link', $target.parent() );
+                        .data('link', $target.parent());
                 } else {
                     // remove selected item from selected items
-                    $( '.selected-items > .selected-item' ).filter( function ( i, el ) {
-                        return el.innerText == $target.text().split( '(' )[0];
-                    } ).fadeOut( function () {
-                        $( this ).remove();
+                    $('.selected-items > .selected-item').filter(function (i, el) {
+                        return el.innerText == $target.text().split('(')[0];
+                    }).fadeOut(function () {
+                        $(this).remove();
 
                         // if only clean all buttpn remains
-                        if ( $( '.selected-items' ).children().length < 2 ) {
+                        if ($('.selected-items').children().length < 2) {
                             // then hide selected items
-                            $( '.selected-items' ).hide();
+                            $('.selected-items').hide();
                         }
-                    } )
+                    })
                 }
             }
-        } );
+        });
 
         // Clean selected items
-        $( '.selected-items .filter-clean' ).on( 'click', function ( e ) {
-            var $clean = $( this );
-            $clean.siblings().each( function () {
-                var $link = $( this ).data( 'link' );
-                $link && $link.removeClass( 'active' );
-            } );
-            $clean.parent().fadeOut( function () {
+        $('.selected-items .filter-clean').on('click', function (e) {
+            var $clean = $(this);
+            $clean.siblings().each(function () {
+                var $link = $(this).data('link');
+                $link && $link.removeClass('active');
+            });
+            $clean.parent().fadeOut(function () {
                 $clean.siblings().remove();
-            } );
+            });
             e.preventDefault();
-        } );
+        });
 
-        $( '.filter-clean' ).on( 'click', function ( e ) {
-            $( '.shop-sidebar .filter-items .active' ).removeClass( 'active' );
+        $('.filter-clean').on('click', function (e) {
+            $('.shop-sidebar .filter-items .active').removeClass('active');
             e.preventDefault();
-        } );
+        });
 
-        Coodect.$body.on( 'click', '.select-menu a', function ( e ) {
+        Coodect.$body.on('click', '.select-menu a', function (e) {
             e.preventDefault();
-        } );
+        });
 
-        Coodect.$body.on( 'click', '.selected-item i', function ( e ) {
-            $( e.currentTarget ).parent().fadeOut( function () {
-                var $this = $( this ),
-                    $link = $this.data( 'link' );
+        Coodect.$body.on('click', '.selected-item i', function (e) {
+            $(e.currentTarget).parent().fadeOut(function () {
+                var $this = $(this),
+                    $link = $this.data('link');
 
-                $link && $link.toggleClass( 'active' );
+                $link && $link.toggleClass('active');
                 $this.remove();
 
                 // if only clean all button remains
-                if ( $( '.select-items' ).children().length < 2 ) {
+                if ($('.select-items').children().length < 2) {
                     // then hide select-items
-                    $( '.select-items' ).hide();
+                    $('.select-items').hide();
                 }
-            } );
+            });
 
             e.preventDefault();
-        } );
+        });
 
         // if click outside of select menu, hide select menu
-        Coodect.$body.on( 'mousedown', function ( e ) {
-            $( '.select-menu' ).removeClass( 'opened' );
-        } );
+        Coodect.$body.on('mousedown', function (e) {
+            $('.select-menu').removeClass('opened');
+        });
 
-        Coodect.$body.on( 'click', '.filter-items a', function ( e ) {
-            var $ul = $( this ).closest( '.filter-items' );
-            if ( !$ul.hasClass( 'search-ul' ) && !$ul.parent().hasClass( 'select-menu' ) ) {
-                $( this ).parent().toggleClass( 'active' );
+        Coodect.$body.on('click', '.filter-items a', function (e) {
+            var $ul = $(this).closest('.filter-items');
+            if (!$ul.hasClass('search-ul') && !$ul.parent().hasClass('select-menu')) {
+                $(this).parent().toggleClass('active');
                 e.preventDefault();
             }
-        } );
+        });
     }
 
     var initProductCartAction = function () {
@@ -2159,7 +2159,7 @@ function Sidebar(name) {
                 $product = $this.closest('.product, .product-popup');
 
             if ($this.hasClass('disabled')) {
-                alert( 'Please select some product options before adding this product to your cart.' );
+                alert('Please select some product options before adding this product to your cart.');
                 return;
             }
 
@@ -2197,7 +2197,7 @@ function Sidebar(name) {
 
     var initProductQuickview = function () {
         var $popup = $('.product-popup');
-        if ( !$popup.length) {
+        if (!$popup.length) {
             return;
         }
         Coodect.$body.on('click', '.btn-quickview', function (e) {
@@ -2209,7 +2209,7 @@ function Sidebar(name) {
                 callbacks: {
                     open: function () {
                         // this.wrap.imagesLoaded(function () {
-                            Coodect.productSingle($('.mfp-product .product-single'));
+                        Coodect.productSingle($('.mfp-product .product-single'));
                         // });
                         Popup.defaults.callbacks.open();
                     }
@@ -2226,7 +2226,7 @@ function Sidebar(name) {
             Coodect.call(Coodect.setProgressBar('.progress-bar'), 500);
             this.initProductType('slideup');
             this.initVariation();
-            this.initProductsScrollLoad( '.scroll-load' );
+            this.initProductsScrollLoad('.scroll-load');
 
             // Functions for shop page
             initSelectMenu();
@@ -2250,22 +2250,22 @@ function Sidebar(name) {
                 // });
 
                 // $(Coodect.byClass('product-slideup-content'))
-                    // .on('mouseenter touchstart', function (e) {
-                    //     console.log("Mouse enter");
-                    //     var $this = $(this),
-                    //         hidden_height = $this.find('.product-hidden-details').outerHeight(true);
+                // .on('mouseenter touchstart', function (e) {
+                //     console.log("Mouse enter");
+                //     var $this = $(this),
+                //         hidden_height = $this.find('.product-hidden-details').outerHeight(true);
 
-                    //     $this.find('.product-details').css('transform', 'translateY(' + (-hidden_height) + 'px)');
-                    //     $this.find('.product-hidden-details').css('transform', 'translateY(' + (-hidden_height) + 'px)');
-                    // })
-                    // .on('mouseleave touchleave', function (e) {
-                    //     var $this = $(this);
-                    //     console.log("Mouse leave");
-                    //         // hidden_height = $this.find('.product-hidden-details').outerHeight(true);
+                //     $this.find('.product-details').css('transform', 'translateY(' + (-hidden_height) + 'px)');
+                //     $this.find('.product-hidden-details').css('transform', 'translateY(' + (-hidden_height) + 'px)');
+                // })
+                // .on('mouseleave touchleave', function (e) {
+                //     var $this = $(this);
+                //     console.log("Mouse leave");
+                //         // hidden_height = $this.find('.product-hidden-details').outerHeight(true);
 
-                    //     $this.find('.product-details').css('transform', 'translateY(0)');
-                    //     $this.find('.product-hidden-details').css('transform', 'translateY(0)');
-                    // });
+                //     $this.find('.product-details').css('transform', 'translateY(0)');
+                //     $this.find('.product-hidden-details').css('transform', 'translateY(0)');
+                // });
             }
         },
 
@@ -2288,47 +2288,47 @@ function Sidebar(name) {
                 e.preventDefault();
             })
         },
-        initProductsScrollLoad: function ( $obj ) {
-            var $wrapper = Coodect.$( $obj )
+        initProductsScrollLoad: function ($obj) {
+            var $wrapper = Coodect.$($obj)
                 , top;
-            var url = $( $obj ).data( 'url' );
-            if ( !url ) {
+            var url = $($obj).data('url');
+            if (!url) {
                 url = 'assets/ajax/products.html';
             }
-            var loadProducts = function ( e ) {
-                if ( window.pageYOffset > top + $wrapper.outerHeight() - window.innerHeight - 150 && 'loading' != $wrapper.data( 'load-state' ) ) {
-                    $.ajax( {
+            var loadProducts = function (e) {
+                if (window.pageYOffset > top + $wrapper.outerHeight() - window.innerHeight - 150 && 'loading' != $wrapper.data('load-state')) {
+                    $.ajax({
                         url: url,
-                        success: function ( result ) {
-                            var $newItems = $( result );
-                            $wrapper.data( 'load-state', 'loading' );
-                            if ( !$wrapper.next().hasClass( 'load-more-overlay' ) ) {
-                                $( '<div class="mt-4 mb-4 load-more-overlay loading"></div>' ).insertAfter( $wrapper );
+                        success: function (result) {
+                            var $newItems = $(result);
+                            $wrapper.data('load-state', 'loading');
+                            if (!$wrapper.next().hasClass('load-more-overlay')) {
+                                $('<div class="mt-4 mb-4 load-more-overlay loading"></div>').insertAfter($wrapper);
                             } else {
-                                $wrapper.next().addClass( 'loading' );
+                                $wrapper.next().addClass('loading');
                             }
-                            setTimeout( function () {
-                                $wrapper.next().removeClass( 'loading' );
-                                $wrapper.append( $newItems );
-                                setTimeout( function () {
-                                    $wrapper.find( '.product-wrap.fade:not(.in)' ).addClass( 'in' );
-                                }, 200 );
-                                $wrapper.data( 'load-state', 'loaded' );
+                            setTimeout(function () {
+                                $wrapper.next().removeClass('loading');
+                                $wrapper.append($newItems);
+                                setTimeout(function () {
+                                    $wrapper.find('.product-wrap.fade:not(.in)').addClass('in');
+                                }, 200);
+                                $wrapper.data('load-state', 'loaded');
                                 Coodect.countDown($newItems.find('.product-countdown'));
-                            }, 500 );
-                            var loadCount = parseInt( $wrapper.data( 'load-count' ) ? $wrapper.data( 'load-count' ) : 0 );
-                            $wrapper.data( 'load-count', ++loadCount );
-                            loadCount > 2 && window.removeEventListener( 'scroll', loadProducts, { passive: true } );
+                            }, 500);
+                            var loadCount = parseInt($wrapper.data('load-count') ? $wrapper.data('load-count') : 0);
+                            $wrapper.data('load-count', ++loadCount);
+                            loadCount > 2 && window.removeEventListener('scroll', loadProducts, { passive: true });
                         },
                         failure: function () {
-                            $this.text( "Sorry something went wrong." );
+                            $this.text("Sorry something went wrong.");
                         }
-                    } );
+                    });
                 }
             }
-            if ( $wrapper.length > 0 ) {
+            if ($wrapper.length > 0) {
                 top = $wrapper.offset().top;
-                window.addEventListener( 'scroll', loadProducts, { passive: true } );
+                window.addEventListener('scroll', loadProducts, { passive: true });
             }
         }
     }
@@ -2490,7 +2490,7 @@ function Popup(options, preset) {
             mainClass: 'mfp-product mfp-fade',
             tLoading: 'Loading...'
         },
-        'video' : {
+        'video': {
             type: 'iframe',
             mainClass: "mfp-fade",
             preloader: false,
@@ -2644,46 +2644,46 @@ function ProductSingle($el) {
             // enable thumbs carousel
             self.$thumbs.removeAttr('style');
             self.$thumbs.hasClass('owl-carousel') || self.$thumbs.addClass('owl-carousel')
-            .attr( 'class', self.$thumbs.attr('class').replace( /row|gutter\-\w\w|cols\-\d|cols\-\w\w-\d/g, '' ).replace( /\s+/, ' ' ) )
-            .owlCarousel(
-                $.extend(
-                    true,
-                    self.isQuickView ? {
-                        onInitialized: recalcDetailsHeight,
-                        onResized: recalcDetailsHeight
-                    } : {},
-                    thumbsSliderOptions
-                )
-            );
+                .attr('class', self.$thumbs.attr('class').replace(/row|gutter\-\w\w|cols\-\d|cols\-\w\w-\d/g, '').replace(/\s+/, ' '))
+                .owlCarousel(
+                    $.extend(
+                        true,
+                        self.isQuickView ? {
+                            onInitialized: recalcDetailsHeight,
+                            onResized: recalcDetailsHeight
+                        } : {},
+                        thumbsSliderOptions
+                    )
+                );
         }
     }
 
     var variationInit = function (self) {
-        self.$selects = self.$wrapper.find( '.product-variations select' );
-        self.$items = self.$wrapper.find( '.product-variations' );
-        self.$priceWrap = self.$wrapper.find( '.product-variation-price' );
-        self.$clean = self.$wrapper.find( '.product-variation-clean' ),
-        self.$btnCart = self.$wrapper.find( '.btn-cart' );
+        self.$selects = self.$wrapper.find('.product-variations select');
+        self.$items = self.$wrapper.find('.product-variations');
+        self.$priceWrap = self.$wrapper.find('.product-variation-price');
+        self.$clean = self.$wrapper.find('.product-variation-clean'),
+            self.$btnCart = self.$wrapper.find('.btn-cart');
 
         // check
         self.variationCheck();
-        self.$selects.on( 'change', function ( e ) {
+        self.$selects.on('change', function (e) {
             self.variationCheck();
-        } );
-        self.$items.children( 'a' ).on( 'click', function ( e ) {
-            $( this ).toggleClass( 'active' ).siblings().removeClass( 'active' );
+        });
+        self.$items.children('a').on('click', function (e) {
+            $(this).toggleClass('active').siblings().removeClass('active');
             e.preventDefault();
             self.variationCheck();
-            if ( self.$items.parent('.product-image-swatch') ) {
+            if (self.$items.parent('.product-image-swatch')) {
                 self.swatchImage();
             }
-        } );
+        });
 
         // clean
-        self.$clean.on( 'click', function ( e ) {
+        self.$clean.on('click', function (e) {
             e.preventDefault();
-            self.variationClean( true );
-        } );
+            self.variationClean(true);
+        });
 
     }
 
@@ -2697,20 +2697,20 @@ function ProductSingle($el) {
     }
 
     var wishlistAction = function (e) {
-        var $this = $( this );
-        if ( $this.hasClass( 'added' ) ) {
+        var $this = $(this);
+        if ($this.hasClass('added')) {
             return;
         }
         e.preventDefault();
-        $this.addClass( 'load-more-overlay loading' );
+        $this.addClass('load-more-overlay loading');
 
-        setTimeout( function () {
+        setTimeout(function () {
             $this
-                .removeClass( 'load-more-overlay loading' )
+                .removeClass('load-more-overlay loading')
                 .toggleClass('w-icon-heart').toggleClass('w-icon-heart-full')
-                .addClass( 'added' )
-                .attr( 'href', 'wishlist.html' );
-        }, 500 );
+                .addClass('added')
+                .attr('href', 'wishlist.html');
+        }, 500);
     }
 
     // var goToReviewPan = function (e) {
@@ -2739,7 +2739,7 @@ function ProductSingle($el) {
         // init thumbs
         $slider.on('initialized.owl.carousel', function (e) {
             // if not quickview, make full image toggle
-            if(!document.body.classList.contains('home')) {
+            if (!document.body.classList.contains('home')) {
                 self.isQuickView || $slider.append('<a href="#" class="product-gallery-btn product-image-full"><i class="w-icon-zoom"></i></a>');
 
                 if ($slider.parent().hasClass('product-gallery-video')) {
@@ -2801,7 +2801,7 @@ function ProductSingle($el) {
                 }
             }
         } else { // if thumb carousel
-            Coodect.requestTimeout(function() {
+            Coodect.requestTimeout(function () {
                 self.$thumbs.data('owl.carousel') && self.$thumbs.data('owl.carousel').to(index);
             }, 100);
         }
@@ -2812,17 +2812,17 @@ function ProductSingle($el) {
             isAllSelected = true;
 
         // check all select variations are selected
-        self.$selects.each( function () {
-            return this.value || ( isAllSelected = false );
-        } );
+        self.$selects.each(function () {
+            return this.value || (isAllSelected = false);
+        });
 
         // check all item variations are selected
-        self.$items.each( function () {
-            var $this = $( this );
-            if ( $this.children( 'a:not(.size-guide)' ).length ) {
-                return $this.children( '.active' ).length || ( isAllSelected = false );
+        self.$items.each(function () {
+            var $this = $(this);
+            if ($this.children('a:not(.size-guide)').length) {
+                return $this.children('.active').length || (isAllSelected = false);
             }
-        } );
+        });
 
         isAllSelected ?
             self.variationMatch() :
@@ -2831,31 +2831,31 @@ function ProductSingle($el) {
 
     ProductSingle.prototype.variationMatch = function () {
         var self = this;
-        self.$priceWrap.find( 'span' ).text( '$' + ( Math.round( Math.random() * 50 ) + 200 ) + '.00' );
+        self.$priceWrap.find('span').text('$' + (Math.round(Math.random() * 50) + 200) + '.00');
         self.$priceWrap.slideDown();
         self.$clean.slideDown();
-        self.$btnCart.removeClass( 'disabled' );
+        self.$btnCart.removeClass('disabled');
     }
 
-    ProductSingle.prototype.variationClean = function ( reset ) {
-        reset && this.$selects.val( '' );
-        reset && this.$items.children( '.active' ).removeClass( 'active' );
+    ProductSingle.prototype.variationClean = function (reset) {
+        reset && this.$selects.val('');
+        reset && this.$items.children('.active').removeClass('active');
         this.$priceWrap.slideUp();
-        this.$clean.css( 'display', 'none' );
-        this.$btnCart.addClass( 'disabled');
+        this.$clean.css('display', 'none');
+        this.$btnCart.addClass('disabled');
 
     }
 
     ProductSingle.prototype.clickStickyThumbnail = function (e) {
         var self = this;
-        var $thumb = $( e.currentTarget );
+        var $thumb = $(e.currentTarget);
         var currentIndex = $thumb.parent().children('.active').index();
         var newIndex = $thumb.index() + 1;
 
         $thumb.addClass('active').siblings('.active').removeClass('active');
         this.isStickyScrolling = true;
         var target = $thumb.closest('.product-thumbs-sticky').find('.product-image-wrapper > :nth-child(' + newIndex + ')');
-        if ( target.length ) {
+        if (target.length) {
             target = target.offset().top + 10;
             Coodect.scrollTo(target, 500);
         }
@@ -2888,9 +2888,9 @@ function ProductSingle($el) {
     }
 
     Coodect.productSingle = function (selector) {
-        Coodect.$(selector).each(function() {
+        Coodect.$(selector).each(function () {
             var $this = $(this);
-            if ( ! $this.is('body > *') ) {
+            if (!$this.is('body > *')) {
                 $this.data('product-single', new ProductSingle($this));
             }
         })
@@ -2916,7 +2916,7 @@ function ProductSingle($el) {
         var $this = $(e.currentTarget),
             $product = $this.closest('.product-single'),
             $images, images;
-        if( $this.closest('.review-image').length) {
+        if ($this.closest('.review-image').length) {
             $images = $this.closest('.review-image').find('img');
         } else if ($product.find('.product-single-carousel').length) { // single carousel
             $images = $product.find('.product-single-carousel .owl-item:not(.cloned) img:first-child');
@@ -2962,50 +2962,50 @@ function ProductSingle($el) {
     // Open Video
     function openVideo(e) {
         e.preventDefault();
-        Coodect.popup( {
+        Coodect.popup({
             items: {
                 src: '<video src="assets/video/memory-of-a-woman.mp4" autoplay loop controls>',
                 type: "inline"
             },
             mainClass: "mfp-video-popup"
-        }, "video" )
+        }, "video")
     }
 
     // Open 360 Degree
     function open360DegreeView(e) {
-		e.preventDefault();
-		Coodect.popup({
-			type: 'inline',
-			mainClass: "product-popupbox wm-fade product-360-popup",
-			preloader: false,
-			items: {
-				src: '<div class="product-gallery-degree">\
+        e.preventDefault();
+        Coodect.popup({
+            type: 'inline',
+            mainClass: "product-popupbox wm-fade product-360-popup",
+            preloader: false,
+            items: {
+                src: '<div class="product-gallery-degree">\
 						<div class="w-loading"><i></i></div>\
 						<ul class="product-degree-images"></ul>\
 					</div>'
-			},
-			callbacks: {
-				open: function () {
-					this.container.find('.product-gallery-degree').ThreeSixty({
+            },
+            callbacks: {
+                open: function () {
+                    this.container.find('.product-gallery-degree').ThreeSixty({
                         imagePath: 'assets/images/products/video/',
                         filePrefix: '360-',
                         ext: '.jpg',
-						totalFrames: 18,
-						endFrame: 18,
-						currentFrame: 1,
-						imgList: this.container.find('.product-degree-images'),
-						progress: '.w-loading',
-						height: 500,
-						width: 830,
+                        totalFrames: 18,
+                        endFrame: 18,
+                        currentFrame: 1,
+                        imgList: this.container.find('.product-degree-images'),
+                        progress: '.w-loading',
+                        height: 500,
+                        width: 830,
                         navigation: true
-					});
-				},
-				beforeClose: function () {
-					this.container.empty();
-				}
-			}
-		});
-	}
+                    });
+                },
+                beforeClose: function () {
+                    this.container.empty();
+                }
+            }
+        });
+    }
 
     /**
      * Event handler when rating control is clicked in single product page's review form.
@@ -3029,19 +3029,19 @@ function ProductSingle($el) {
             productName;
 
         if ($this.hasClass('disabled')) {
-            alert( 'Please select some product options before adding this product to your cart.' );
+            alert('Please select some product options before adding this product to your cart.');
             return;
         }
 
         if ($alert.length) {
-            $alert.fadeOut(function() {
+            $alert.fadeOut(function () {
                 $alert.fadeIn();
             })
         } else {
             productName = $this.closest('.product-single').find('.product-title').text();
             var alertHtml = '<div class="alert alert-success alert-cart-product mb-2">\
                             <a href="cart.html" class="btn btn-success btn-rounded">View Cart</a>\
-                            <p class="mb-0 ls-normal">“'+ productName +'” has been added to your cart.</p>\
+                            <p class="mb-0 ls-normal">“'+ productName + '” has been added to your cart.</p>\
                             <a href="#" class="btn btn-link btn-close">\<i class="close-icon"></i>\</a>\
                             </div>'
             $this.closest('.product-single').before(alertHtml);
@@ -3050,7 +3050,7 @@ function ProductSingle($el) {
         $('.product-sticky-content').trigger('recalc.pin');
     }
 
-    function stickyProduct (selector) {
+    function stickyProduct(selector) {
 
         var $this = $(selector),
             $product = $this.closest('.product-single'),
@@ -3060,58 +3060,58 @@ function ProductSingle($el) {
             oldPrice = $product.find('.old-price').text(),
             stickyProductDetailsHtml = '<div class="product product-list-sm mr-auto">\
                                         <figure class="product-media">\
-                                        <img loading="lazy" src="'+ src +'" alt="Product" width="85" height="85" />\
+                                        <img loading="lazy" src="'+ src + '" alt="Product" width="85" height="85" />\
                                         </figure>\
                                         <div class="product-details pt-0 pl-2 pr-2">\
-                                        <h4 class="product-name font-weight-normal mb-1">'+ name +'</h4>\
+                                        <h4 class="product-name font-weight-normal mb-1">'+ name + '</h4>\
                                         <div class="product-price mb-0">\
-                                        <ins class="new-price">'+ newPrice +'</ins><del class="old-price">'+ oldPrice +'</del></div>\
+                                        <ins class="new-price">'+ newPrice + '</ins><del class="old-price">' + oldPrice + '</del></div>\
                                         </div></div>';
 
-            $this.find('.product-qty-form').before(stickyProductDetailsHtml);
+        $this.find('.product-qty-form').before(stickyProductDetailsHtml);
 
         function refreshStickyProduct() {
-            if ( $this.hasClass('fix-top') && window.innerWidth > 767 ) {
+            if ($this.hasClass('fix-top') && window.innerWidth > 767) {
                 $this.removeClass('fix-top').addClass('fix-bottom');
             }
 
-            if ( $this.hasClass('fix-bottom') && window.innerWidth > 767 ) {
+            if ($this.hasClass('fix-bottom') && window.innerWidth > 767) {
                 return;
             }
 
-            if ( $this.hasClass('fix-bottom') && window.innerWidth < 768 ) {
+            if ($this.hasClass('fix-bottom') && window.innerWidth < 768) {
                 $this.removeClass('fix-bottom').addClass('fix-top');
             }
 
-            if ( $this.hasClass('fix-top') && window.innerWidth < 768 ) {
+            if ($this.hasClass('fix-top') && window.innerWidth < 768) {
                 return;
             }
         }
 
-        window.addEventListener('resize', refreshStickyProduct, {passive: true});
+        window.addEventListener('resize', refreshStickyProduct, { passive: true });
         refreshStickyProduct();
     }
 
-    Coodect.initProductSinglePage = function() {
+    Coodect.initProductSinglePage = function () {
         // Zoom Image for grid type
         Coodect.zoomImage('.product-gallery .product-image');
 
         // stickyProduct('.product-sticky-content')
 
         // Register events
-        if(!document.body.classList.contains('home')) {
+        if (!document.body.classList.contains('home')) {
             Coodect.$body
                 .on('click', '.product-image-full', openImageGallery)
                 .on('click', '.review-image img', openImageGallery)
                 .on('click', '.product-video-viewer', openVideo)
                 .on('click', '.product-degree-viewer', function (e) {
                     e.preventDefault(e);
-                    if($.fn.ThreeSixty) {
+                    if ($.fn.ThreeSixty) {
                         open360DegreeView(e);
                     }
                 })
                 .on('click', '.rating-form .rating-stars > a', clickRatingForm)
-                // .on('click', '.product-single:not(.product-popup) .btn-cart', onAddToCartSingle);
+            // .on('click', '.product-single:not(.product-popup) .btn-cart', onAddToCartSingle);
         }
     }
 })(jQuery);
@@ -3310,7 +3310,7 @@ function Calendar(el, options) {
             var $searchWrapper = $btnSearchVendor.closest('.vendor-toolbox').next('.vendor-search-wrapper');
             if (!$searchWrapper.hasClass('open')) {
                 $searchWrapper.addClass('open').slideDown();
-            }else {
+            } else {
                 $searchWrapper.removeClass('open').slideUp();
             }
             e.preventDefault();
@@ -3325,16 +3325,16 @@ function Calendar(el, options) {
         var $this = $(selector),
             $content = $this.next();
 
-        $this.on('click', function(e) {
+        $this.on('click', function (e) {
             console.log('clicked ');
             // e.preventDefault();
             let customCheckbox = $this.find('.custom-checkbox');
-            if(customCheckbox.length) {
+            if (customCheckbox.length) {
                 customCheckbox.toggleClass('checked');
             }
-            if(!$content.hasClass('open')) {
+            if (!$content.hasClass('open')) {
                 $content.addClass('open').slideDown();
-            }else {
+            } else {
                 $content.removeClass('open').slideUp();
             }
         })
@@ -3353,7 +3353,7 @@ function Calendar(el, options) {
             $LoginVendorPanel.slideDown();
         });
 
-        $checkCustomer.on('click', function() {
+        $checkCustomer.on('click', function () {
             $this.find('#check-customer').addClass('active');
             $this.find('#check-seller').removeClass('active');
             $LoginVendorPanel.slideUp();
@@ -3392,7 +3392,7 @@ function Calendar(el, options) {
             hide: true,
             max_index: 2100
         });                                                                 // Initialize Sticky Footer
-        Coodect.stickyContent( '.sticky-toolbox', Coodect.stickyToolboxOptions );
+        Coodect.stickyContent('.sticky-toolbox', Coodect.stickyToolboxOptions);
         // Coodect.stickyContent('.product-sticky-content', Coodect.stickyProductOptions );
         Coodect.parallax('.parallax');                                      // Initialize Parallax
         Coodect.skrollrParallax();                                          // Initialize Skrollr Parallax

@@ -38,7 +38,7 @@
                                 x-model="option.name"
                                 type="text"
                                 class="form-control form-control-sm"
-                                placeholder="Color, Size...">
+                                placeholder="{{ __('Color, Size...') }}">
                         </div>
                         <div class="mb-2">
                             <label class="form-label required">
@@ -289,47 +289,47 @@
                                                                     <div class="row g-4">
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-bold">
-                                                                                <i class="fa-light fa-weight-hanging me-2"></i>{{ __('Weight (kg)') }}
+                                                                                <i class="fa-light fa-weight-hanging me-2"></i>{{ __('Weight') }} (kg)
                                                                             </label>
                                                                             <input type="number"
                                                                                    step="0.001"
                                                                                    class="form-control"
                                                                                    wire:model="productVariants.{{ $variantIndex }}.weight_kl"
                                                                                    placeholder="0.000">
-                                                                            <small class="text-muted">{{ __('Example: 1.500 kg') }}</small>
+                                                                            <small class="text-muted">{{ __('Example') }} 1.500 kg</small> 
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-bold">
-                                                                                <i class="fa-light fa-arrows-up-down me-2"></i>{{ __('Height (cm)') }}
+                                                                                <i class="fa-light fa-arrows-up-down me-2"></i>{{ __('Height') }} (cm)
                                                                             </label>
                                                                             <input type="number"
                                                                                    step="0.01"
                                                                                    class="form-control"
                                                                                    wire:model="productVariants.{{ $variantIndex }}.height"
                                                                                    placeholder="0.00">
-                                                                            <small class="text-muted">{{ __('Example: 15.50 cm') }}</small>
+                                                                            <small class="text-muted">{{ __('Example') }} 15.50 cm</small>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-bold">
-                                                                                <i class="fa-light fa-arrows-left-right me-2"></i>{{ __('Width (cm)') }}
+                                                                                <i class="fa-light fa-arrows-left-right me-2"></i>{{ __('Width') }} (cm)
                                                                             </label>
                                                                             <input type="number"
                                                                                    step="0.01"
                                                                                    class="form-control"
                                                                                    wire:model="productVariants.{{ $variantIndex }}.width"
                                                                                    placeholder="0.00">
-                                                                            <small class="text-muted">{{ __('Example: 10.00 cm') }}</small>
+                                                                            <small class="text-muted">{{ __('Example') }} 10.00 cm</small>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label class="form-label fw-bold">
-                                                                                <i class="fa-light fa-ruler-horizontal me-2"></i>{{ __('Length (cm)') }}
+                                                                                <i class="fa-light fa-ruler-horizontal me-2"></i>{{ __('Length') }} (cm)
                                                                             </label>
                                                                             <input type="number"
                                                                                    step="0.01"
                                                                                    class="form-control"
                                                                                    wire:model="productVariants.{{ $variantIndex }}.length"
                                                                                    placeholder="0.00">
-                                                                            <small class="text-muted">{{ __('Example: 20.00 cm') }}</small>
+                                                                            <small class="text-muted">{{ __('Example') }} 20.00 cm</small>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -359,10 +359,6 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <small class="text-muted d-block mt-2">
-                                                                                <i class="fa-light fa-circle-info me-1"></i>
-                                                                                {{ __('Accepts: JPG, PNG, GIF, WEBP. Max size: 2MB per file') }}
-                                                                            </small>
                                                                         </div>
                                                                     </div>
 
