@@ -2,24 +2,27 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class ProductOption extends Model
 {
+    use Sluggable;
+
+    public const TYPE_SELECT = 'select';
+    public const TYPE_BUTTON = 'button';
+    public const TYPE_COLOR = 'color';
+    public const TYPE_IMAGE = 'image';
+    
     protected $guarded = [];
 
-    protected static function boot() {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (empty($model->slug)) {
-                $model->slug = Str::slug($model->name);
-            }
-        });
+    public function sluggable(): array {
+        return [
+            'slug' => [
+                'source' => 'name',
+            ],
+        ];
     }
-
-    // Valores de esta opción
     public function productOptionValues() {
         return $this->hasMany(ProductOptionValue::class);
     }

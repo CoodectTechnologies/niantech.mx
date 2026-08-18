@@ -13,7 +13,8 @@
             <span class="tooltiptext tooltip-top"></span>
         </div>
         <a href="#product-tab-reviews" class="rating-reviews scroll-to">({{ count($product->comments) }})
-            {{ __('Comments') }}</a>
+            {{ __('Comments') }}
+        </a>
     </div>
     @if(count($product->productAttributes))
         <div class="title-detail mt-5 mb-0">
@@ -53,33 +54,92 @@
             </div>
         </div>
     @endif
-    
-    {{-- Opciones de variantes --}}
+    {{-- Opciones de variantes dinámicas --}}
     @if(count($this->allOptions) > 0)
         <hr class="product-divider">
+
         @foreach($this->allOptions as $option)
-            <div class="product-form product-variation-form product-size-swatch">
-                <label class="mb-1">{{ $option['name'] }}:</label>
-                <div class="flex-wrap d-flex align-items-center product-variations">
-                    @foreach($option['values'] as $value)
-                        <a 
-                            x-bind:class="{ 'active': selectedOptions[{{ $option['id'] }}] === {{ $value['id'] }} }"
+            @php
+                $type = $option['type'] ?? 'button';
+            @endphp
+
+            <div class="product-form product-variation-form mb-3">
+                <label class="form-label fw-bold text-dark fs-6 mb-2">
+                    {{ $option['name'] }}:
+                </label>
+
+                <div class="variation-type-group">
+                    
+                    {{-- 1. CASO: MUESTRA DE IMAGEN --}}
+                    @if($type === 'image')
+                        @foreach($option['values'] as $value)
+                            <a href="javascript:void(0)"
                             x-on:click="selectOption({{ $option['id'] }}, {{ $value['id'] }}, '{{ $value['value'] }}')"
-                            class="size"
-                            href="javascript:void(0)"> 
-                            {{ $value['value'] }}
-                        </a>
-                    @endforeach
+                            x-bind:class="{ 'active': selectedOptions[{{ $option['id'] }}] === {{ $value['id'] }} }"
+                            class="variation-type-btn variation-type-btn-circle"
+                            title="{{ $value['value'] }}">
+                                <span class="variation-type-content border">
+                                    @if(!empty($value['metadata']))
+                                        <img src="{{ $value['metadata'] }}" alt="{{ $value['value'] }}">
+                                    @else
+                                        <span class="fs-xs fw-bold text-uppercase">
+                                            {{ substr($value['value'], 0, 2) }}
+                                        </span>
+                                    @endif
+                                </span>
+                            </a>
+                        @endforeach
+
+                    {{-- 2. CASO: MUESTRA DE COLOR HEX --}}
+                    @elseif($type === 'color')
+                        @foreach($option['values'] as $value)
+                            <a href="javascript:void(0)"
+                            x-on:click="selectOption({{ $option['id'] }}, {{ $value['id'] }}, '{{ $value['value'] }}')"
+                            x-bind:class="{ 'active': selectedOptions[{{ $option['id'] }}] === {{ $value['id'] }} }"
+                            class="variation-type-btn variation-type-btn-circle"
+                            title="{{ $value['value'] }}">
+                                <span class="variation-type-content border" 
+                                    style="background-color: {{ $value['metadata'] ?? '#e1e1e1' }};">
+                                </span>
+                            </a>
+                        @endforeach
+
+                    {{-- 3. CASO: SELECT DESPLEGABLE --}}
+                    @elseif($type === 'select')
+                        <select x-on:change="selectOption({{ $option['id'] }}, parseInt($event.target.value), $event.target.options[$event.target.selectedIndex].text)"
+                                class="form-select form-select-sm variation-type-select">
+                            <option value="">{{ __('Select a option') }}</option>
+                            @foreach($option['values'] as $value)
+                                <option value="{{ $value['id'] }}" 
+                                        x-bind:selected="selectedOptions[{{ $option['id'] }}] === {{ $value['id'] }}">
+                                    {{ $value['value'] }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                    {{-- 4. CASO: BOTONES DE TEXTO / OTROS --}}
+                    @else
+                        @foreach($option['values'] as $value)
+                            <a href="javascript:void(0)"
+                            x-on:click="selectOption({{ $option['id'] }}, {{ $value['id'] }}, '{{ $value['value'] }}')"
+                            x-bind:class="{ 'active': selectedOptions[{{ $option['id'] }}] === {{ $value['id'] }} }"
+                            class="variation-type-btn variation-type-btn-text">
+                                {{ $value['value'] }}
+                            </a>
+                        @endforeach
+                    @endif
+
                 </div>
             </div>
         @endforeach
-        <button
-            x-on:click="clearAllOptions()"
-            x-show="Object.keys(selectedOptions).length > 0" 
-            type="button" 
-            class="product-variation-clean">
+
+        {{-- BOTÓN LIMPIAR SELECCIÓN --}}
+        <button x-on:click="clearAllOptions()"
+                x-show="Object.keys(selectedOptions).length > 0" 
+                type="button" 
+                class="btn btn-link btn-sm text-danger p-0 my-2 text-decoration-none d-flex align-items-center gap-1">
             <i class="w-icon-times-circle"></i>
-            {{ __('All clear') }}
+            <span>{{ __('Limpiar selección') }}</span>
         </button>
     @endif
 

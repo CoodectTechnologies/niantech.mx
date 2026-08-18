@@ -292,7 +292,7 @@ class ProductSeeder extends Seeder
                 try {
                     $extension = explode('.', $image);
                     $extension = end($extension);
-                    $location = 'public/catalog/product/';
+                    $location = 'catalog/product/';
                     $date = str_replace(':', '-', date('h:i:s')).rand(1, 100);
                     $name = filter_var($product->name, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                     $name = str_replace(['\\', '/', ' ', '"', "'", ':', '.', ';', '#', '&', '?'], '-', $name).rand(1, 100);

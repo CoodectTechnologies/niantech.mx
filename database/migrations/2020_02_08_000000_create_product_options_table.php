@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ProductOption;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name', 50); // "Color", "Medida", "Material"
             $table->string('slug', 50)->unique();
+            $table->string('type')->default(ProductOption::TYPE_BUTTON); // "select", "button", "color", "image"
             $table->timestamps();
         });
     }

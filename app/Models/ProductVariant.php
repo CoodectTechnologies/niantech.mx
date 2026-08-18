@@ -25,7 +25,7 @@ class ProductVariant extends Model
             'product_variant_options',
             'product_variant_id',
             'product_option_value_id'
-        );
+        )->withPivot('metadata');
     }
     public function productWarehouses() {
         return $this->belongsToMany(ProductWarehouse::class)

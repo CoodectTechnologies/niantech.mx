@@ -33,6 +33,11 @@
     font-weight: 500;
 }
 
+.app-sidebar .menu .menu-item>.menu-sub {
+    margin-left: 1.6rem;
+    margin-top: 0.1rem;
+}
+
 .menu-item {
     padding: 0;
 }

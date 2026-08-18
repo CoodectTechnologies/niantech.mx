@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('product_variant_id')->constrained()->onDelete('cascade'); // Variante de producto
             $table->foreignId('product_option_value_id')->constrained('product_option_values')->onDelete('cascade'); // "Rojo", "S", "Algodón"
-
+            $table->string('metadata')->nullable();
             // Búsquedas rápidas
             $table->index('product_variant_id');
             $table->index('product_option_value_id');

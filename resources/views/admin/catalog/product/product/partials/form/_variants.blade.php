@@ -7,69 +7,130 @@
     <div class="card-body pt-0">
         {{-- SWITCH --}}
         <div class="form-check form-switch form-check-custom form-check-solid mb-5">
-            <input x-on:click="toogleHasVariants" @checked($hasVariants) class="form-check-input" type="checkbox" id="hasVariants">
+            <input x-model="$wire.hasVariants" x-on:change="toogleHasVariants()" class="form-check-input" type="checkbox" id="hasVariants">
             <label class="form-check-label fw-bold text-gray-700" for="hasVariants">
                 {{ __('This product has multiple options, like different sizes or colors') }}
             </label>
         </div>
         {{-- VARIANTS FORM --}}
-        <div x-show="hasVariants" x-cloak x-transition>
+        <div x-show="$wire.hasVariants" x-cloak x-transition>
             {{-- OPTIONS --}}
             <div class="mb-7">
                 <h3 class="fw-bold mb-4">{{ __('Options') }}</h3>
-                <template x-for="(option, optionIndex) in productOptions" :key="'option-' + optionIndex">
+                <template x-for="(option, optionIndex) in $wire.productOptions" :key="'option-' + optionIndex">
                     <div class="border border-gray-300 rounded p-5 mb-4">
                         <div class="d-flex justify-content-between mb-4">
                             <h4 class="fw-bold mb-0" x-text="'{{ __('Option') }} ' + (optionIndex + 1)"></h4>
                             <button x-on:click="removeOption(optionIndex)"
-                                    x-show="productOptions.length > 1"
+                                    x-show="$wire.productOptions.length > 1"
                                     type="button"
                                     class="btn btn-sm btn-light-danger">
-                                <i class="fa-light fa-trash"></i>
-                                {{ __('Remove') }}
+                                <i class="fa-light fa-trash"></i> {{ __('Remove') }}
                             </button>
                         </div>
-                        <div class="mb-4">
-                            <label class="form-label required">
-                                {{ __('Option name') }}
-                            </label>
-                            <input
-                                x-on:blur="generateVariantsDebounced()"
-                                x-model="option.name"
-                                type="text"
-                                class="form-control form-control-sm"
-                                placeholder="{{ __('Color, Size...') }}">
+
+                        <div class="row g-3 mb-4">
+                            {{-- OPTION NAME --}}
+                            <div class="col-md-7">
+                                <label class="form-label required">{{ __('Option name') }}</label>
+                                <input x-on:blur="generateVariantsDebounced()"
+                                    x-model="option.name"
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    placeholder="{{ __('Color, Size...') }}">
+                            </div>
+
+                            {{-- OPTION TYPE --}}
+                            <div class="col-md-5">
+                                <label class="form-label required">{{ __('Type') }}</label>
+                                <select x-model="option.type" class="form-select form-select-sm">
+                                    <option value="select">{{ __('Dropdown') }}</option>
+                                    <option value="button">{{ __('Buttons') }}</option>
+                                    <option value="color">{{ __('Color') }}</option>
+                                    <option value="image">{{ __('Image') }}</option>
+                                </select>
+                            </div>
                         </div>
+
+                        {{-- OPTION VALUES --}}
                         <div class="mb-2">
-                            <label class="form-label required">
-                                {{ __('Option values') }}
-                            </label>
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                <template x-for="(value, valueIndex) in option.values" :key="'value-' + optionIndex + '-' + valueIndex">
-                                    <div class="badge badge-light-primary d-flex align-items-center gap-2 py-2 px-3">
-                                        <input 
-                                            x-on:input="updateValue(optionIndex, valueIndex, $event.target.value)"
+                            <label class="form-label required">{{ __('Option values') }}</label>
+                            <div class="d-flex flex-wrap gap-3 mb-3">
+                                <template x-for="(valObj, valueIndex) in option.values" :key="'value-' + optionIndex + '-' + valueIndex">
+                                    <div class="badge badge-light-primary d-flex align-items-center gap-2 py-2 px-3 border border-primary-subtle">
+                                        
+                                        {{-- COLOR PICKER IF TYPE == COLOR --}}
+                                        <template x-if="option.type === 'color'">
+                                            <input type="color" 
+                                                class="form-control form-control-color p-0 border-0 ms-1" 
+                                                style="width:24px; height:24px; cursor:pointer;"
+                                                x-model="valObj.metadata" 
+                                                title="{{ __('Choose Color') }}">
+                                        </template>
+
+                                        {{-- IMAGE INPUT IF TYPE == IMAGE --}}
+                                        <template x-if="option.type === 'image'">
+                                            <label class="mb-0 cursor-pointer position-relative d-inline-flex align-items-center justify-content-center"
+                                                style="width: 28px; height: 28px;"
+                                                x-data="{ isUploading: false, progress: 0 }">
+
+                                                {{-- Loader --}}
+                                                <template x-if="isUploading">
+                                                    <div class="spinner-border spinner-border-sm text-primary"
+                                                        role="status"
+                                                        style="width: 1.2rem; height: 1.2rem;">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </template>
+
+                                                {{-- 1. Vista previa de archivo temporal recién seleccionado (Blob local) --}}
+                                                <template x-if="!isUploading && valObj.metadata_image_preview">
+                                                    <img :src="valObj.metadata_image_preview"
+                                                        class="rounded-circle border border-primary shadow-sm"
+                                                        style="width: 26px; height: 28px; object-fit: cover;">
+                                                </template>
+
+                                                {{-- 2. Imagen guardada previamente en BD (URL procesada) --}}
+                                                <template x-if="!isUploading && !valObj.metadata_image_preview && valObj.metadata_url">
+                                                    <img :src="valObj.metadata_url"
+                                                        class="rounded-circle border border-primary shadow-sm"
+                                                        style="width: 26px; height: 28px; object-fit: cover;">
+                                                </template>
+
+                                                {{-- 3. Ícono si está totalmente vacío --}}
+                                                <template x-if="!isUploading && !valObj.metadata_image_preview && !valObj.metadata_url">
+                                                    <i class="fa-regular fa-image-circle-plus fs-5 text-primary"></i>
+                                                </template>
+
+                                                <input type="file"
+                                                    class="d-none"
+                                                    accept="image/*"
+                                                    x-on:change="uploadSwatchImage($event, optionIndex, valueIndex, $data)">
+                                            </label>
+                                        </template>
+
+                                        {{-- VALUE TEXT INPUT --}}
+                                        <input x-on:input="updateValue(optionIndex, valueIndex, $event.target.value)"
                                             x-on:keydown.enter.prevent="focusNextValue(optionIndex, valueIndex, $event)"
                                             x-on:blur="generateVariantsDebounced()"
-                                            x-bind:value="value"
+                                            x-model="valObj.value"
                                             type="text"
                                             class="border-0 bg-transparent fw-bold text-primary"
-                                            style="width: 90px; outline: none;"
+                                            style="width: 100px; outline: none;"
                                             placeholder="Value">
-                                        <button 
-                                            x-on:click="removeValue(optionIndex, valueIndex)"
-                                            type="button"
-                                            class="btn btn-sm btn-icon btn-light-danger p-0">
+
+                                        <button x-on:click="removeValue(optionIndex, valueIndex)"
+                                                type="button"
+                                                class="btn btn-sm btn-icon btn-light-danger p-0">
                                             <i class="fa-light fa-trash"></i>
                                         </button>
                                     </div>
                                 </template>
-                                <button 
-                                    x-on:click="addValue(optionIndex)"
-                                    type="button"
-                                    class="btn btn-sm btn-light-primary">
-                                    <i class="fa-light fa-plus"></i>
-                                    {{ __('Add value') }}
+
+                                <button x-on:click="addValue(optionIndex)"
+                                        type="button"
+                                        class="btn btn-sm btn-light-primary align-self-center">
+                                    <i class="fa-light fa-plus"></i> {{ __('Add value') }}
                                 </button>
                             </div>
                         </div>
@@ -122,20 +183,24 @@
 
                                         {{-- SKU --}}
                                         <td>
-                                            <span class="badge badge-light-info">{{ $variant['sku'] ?? __('Not set') }}</span>
+                                            {{-- <span class="badge badge-light-info">{{ $variant['sku'] ?? __('Not set') }}</span> --}}
+                                            <span class="badge badge-light-info" x-text="$wire.productVariants[{{ $variantIndex }}]?.sku || '{{ __('Not set') }}'"></span>
                                         </td>
 
                                         {{-- PRICE --}}
                                         <td>
-                                            <span class="fw-bold">{{ number_format($variant['price'], 2) }}</span>
-                                            @if($variant['price_promotion'])
-                                                <span class="badge badge-light-warning ms-1">{{ __('Promo') }} {{ $variant['price_promotion'] }}</span>
-                                            @endif
+                                            {{-- <span class="fw-bold">{{ number_format($variant['price'], 2) }}</span> --}}
+                                            <span class="fw-bold" x-text="parseFloat($wire.productVariants[{{ $variantIndex }}]?.price || 0).toFixed(2)"></span>
+                                            <template x-if="parseFloat($wire.productVariants[{{ $variantIndex }}]?.price_promotion || 0) > 0">
+                                                {{-- <span class="badge badge-light-warning ms-1">{{ __('Promo') }} {{ $variant['price_promotion'] }}</span> --}}
+                                                <span class="badge badge-light-warning ms-1" x-text="'{{ __('promo') }}: ' + parseFloat($wire.productVariants[{{ $variantIndex }}]?.price_promotion || 0).toFixed(2)"></span>
+                                            </template>
                                         </td>
 
                                         {{-- STOCK TOTAL --}}
                                         <td>
-                                            <span class="fw-bold">{{ number_format(array_sum($variant['warehouses'])) }}</span>
+                                            {{-- <span class="fw-bold">{{ number_format(array_sum($variant['warehouses'])) }}</span> --}}
+                                            <span class="fw-bold" x-text="Object.values($wire.productVariants[{{ $variantIndex }}]?.warehouses || {}).reduce((sum, qty) => sum + (parseInt(qty) || 0), 0)"></span>
                                             <span class="text-muted ms-1">{{ __('units') }}</span>
                                         </td>
 
@@ -159,7 +224,7 @@
                                                  class="modal fade"
                                                  id="editVariantModal{{ $variantIndex }}"
                                                  tabindex="-1">
-                                                <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                                     <div class="modal-content">
                                                         <div class="modal-header bg-primary">
                                                             <h5 class="text-white mb-0">

@@ -7,8 +7,8 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Services\Cart\CartService;
 use App\Services\Integrations\VadetoBrands\Product\CloudResourceService;
+use App\Services\Product\ProductVariantService;
 use Exception;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class Show extends Component
@@ -36,12 +36,9 @@ class Show extends Component
     public function mount(Product $product) {
         $this->product = $product;
         $this->loadType();
-        $this->loadPrice();
-        $this->loadSku();
-        $this->loadGallery();
-        $this->loadQuantityTotal();
         $this->loadAllOptions();
         $this->loadVariants();
+        $this->loadData();
         $this->loadCloudResources();
         $this->loadProductsSimilars();
         $this->loadProductsViewRecents();
@@ -77,7 +74,6 @@ class Show extends Component
             $this->dispatch('alert', 'warning', __($e->getMessage()));
         }
     }
-
     // LOADS
     private function loadType() {
         $this->type = $this->product->getType();
@@ -85,64 +81,26 @@ class Show extends Component
             $this->type = Product::TYPE_PHYSICAL;
         }
     }
-    private function loadPrice() {
+    private function loadVariants() {
+        $variantService = new ProductVariantService();
+        $this->variants = $variantService->getVariantsSummary($this->product);
+    }
+    private function loadData(): void {
         if ($this->variantSelected) {
             $this->price = $this->variantSelected->getPriceFinal();
             $this->priceToString = $this->variantSelected->getPriceToString();
+            $this->sku = $this->variantSelected->sku;
+            $this->quantityTotal = ($this->type == Product::TYPE_PHYSICAL) ? $this->variantSelected->getQuantityTotal() : 1;
         } else {
             $this->price = $this->product->getPriceFinal();
             $this->priceToString = $this->product->getPriceToString();
-        }
-    }
-    private function loadSku() {
-        if ($this->variantSelected) {
-            $this->sku = $this->variantSelected->sku;
-        } else {
             $this->sku = $this->product->sku;
+            $this->quantityTotal = ($this->type == Product::TYPE_PHYSICAL) ? $this->product->getQuantityTotal() : 1;
         }
-    }
-    public function loadGallery() {
-        $this->gallery = [];
-        if (! $this->variantSelected) {
-            $this->gallery = array_merge([$this->product->imagePreview()], $this->product->imagesPreview()->toArray());
-        } else {
-            if ($this->variantSelected && $this->variantSelected->images->count() > 0) {
-                $gallery = $this->variantSelected->images->pluck('url')->toArray();
-                foreach ($gallery as $key => $image) {
-                    $this->gallery[] = Storage::url($image);
-                }
-            } else {
-                $this->gallery = array_merge([$this->product->imagePreview()], $this->product->imagesPreview()->toArray());
-            }
-        }
+
+        $variantService = new ProductVariantService();
+        $this->gallery = $variantService->getGallery($this->product, $this->variantSelected);
         $this->dispatch('galleryUpdated');
-    }
-    private function loadQuantityTotal() {
-        if ($this->type == Product::TYPE_PHYSICAL) {
-            if ($this->variantSelected) {
-                $this->quantityTotal = $this->variantSelected->getQuantityTotal();
-            } else {
-                $this->quantityTotal = $this->product->getQuantityTotal();
-            }
-        } elseif ($this->type == Product::TYPE_DIGITAL) {
-            $this->quantityTotal = 1;
-        } else {
-            $this->quantityTotal = 0;
-        }
-    }
-    private function loadVariants() {
-        $this->variants = $this->product->productVariants
-            ->map(function ($variant) {
-                return [
-                    'id' => $variant->id,
-                    'variant_key' => $variant->variant_key,
-                    'sku' => $variant->sku,
-                    'price' => $variant->price,
-                    'price_promotion' => $variant->price_promotion,
-                    'quantity_total' => $variant->getQuantityTotal(),
-                    'option_values' => $variant->productOptionValues->pluck('id')->toArray(),
-                ];
-            })->toArray();
     }
     private function loadProductsSimilars() {
         if (count($this->product->productSimilars)) {
@@ -168,52 +126,13 @@ class Show extends Component
         $this->productsViewRecents = Product::getViewRecents();
     }
     public function loadAllOptions() {
-        // Obtener todas las opciones únicas de las variantes del producto
-        $this->allOptions = [];
-        $variants = $this->product->productVariants()
-            ->with('productOptionValues.productOption')
-            ->validateVariant()
-            ->get();
-        foreach ($variants as $variant) {
-            foreach ($variant->productOptionValues as $optionValue) {
-                $optionId = $optionValue->productOption->id;
-                $valueId = $optionValue->id;
-                if (! isset($this->allOptions[$optionId])) {
-                    $this->allOptions[$optionId] = [
-                        'id' => $optionId,
-                        'name' => $optionValue->productOption->name,
-                        'slug' => $optionValue->productOption->slug,
-                        'values' => [],
-                    ];
-                }
-                // Agregar valor si no existe
-                if (! isset($this->allOptions[$optionId]['values'][$valueId])) {
-                    $this->allOptions[$optionId]['values'][$valueId] = [
-                        'id' => $valueId,
-                        'value' => $optionValue->value,
-                        'slug' => $optionValue->slug,
-                    ];
-                }
-            }
-        }
-        $this->allOptions = array_values($this->allOptions);
+        $variantService = new ProductVariantService();
+        $this->allOptions = $variantService->getOptionsCatalog($this->product);
     }
-
     // GETS
     private function getOptionFormat($variant) {
-        $options = [];
-        foreach ($variant->productOptionValues as $optionValue) {
-            $optionId = $optionValue->productOption->id;
-            if (! isset($options[$optionId])) {
-                $options[$optionId] = [
-                    'id' => $optionId,
-                    'option_name' => $optionValue->productOption->name,
-                    'option_value' => $optionValue->value,
-                ];
-            }
-        }
-
-        return $options;
+        $variantService = new ProductVariantService();
+        return $variantService->formatForCart($variant);
     }
     public function getTypes() {
         $types = [];
@@ -240,16 +159,11 @@ class Show extends Component
 
         return $fileName;
     }
-
     // SELECT
     public function selectVariant($variantId = null) {
-        $this->variantSelected = null;
-        if ($variantId) {
-            $this->variantSelected = ProductVariant::with(['product.currency', 'images', 'productWarehouses'])->find($variantId);
-        }
-        $this->loadPrice();
-        $this->loadGallery();
-        $this->loadQuantityTotal();
-        $this->loadSku();
+       $this->variantSelected = $variantId 
+            ? ProductVariant::with(['product.currency', 'images', 'productWarehouses'])->find($variantId)
+            : null;
+        $this->loadData();
     }
 }

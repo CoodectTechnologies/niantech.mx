@@ -78,101 +78,120 @@
 @endassets
 
 @script
-    <script>
-        Alpine.data('form', () => ({
-            productOptions: $wire.entangle('productOptions'),
-            hasVariants: $wire.entangle('hasVariants'),
-            generateVariantsDebounced: null,
+<script>
+    Alpine.data('form', () => ({
+        init() {
+            // Cleanup nativo para Summernote
+            const $summernote = $('.description').summernote({
+                height: 400,
+                callbacks: {
+                    onBlur: () => {
+                        let contentHTML = $('.description').summernote('code');
+                        $wire.translations.description.{{ translatable() }} = contentHTML;
+                    }
+                }
+            });
+            $wire.$on('render', () => {
+                $('.modal').modal('hide');
+            });
+        },
 
-            init(){
-                $('.description').summernote({
-                    height: 400,
-                    callbacks: {
-                        onBlur: function(contents) {
-                            let contentHTML = $('.description').summernote('code');
-                            @this.set('translations.description.{{ translatable() }}', contentHTML);
-                        }
-                    }
-                });
-                this.generateVariantsDebounced = this.debounce(() => {
-                    $wire.generateVariants();
-                }, 800);
-                Livewire.on('render', function() {
-                    $('.modal').modal('hide');
-                });
-            },
-            toogleHasVariants(){
-                this.hasVariants = !this.hasVariants;
-                if(!this.hasVariants){
-                    this.productOptions = [];
-                    $wire.generateVariants();
-                }else{
-                    if(this.productOptions.length === 0){
-                        this.addOption();
-                    }
+        // Debounce nativo usando Alpine
+        generateVariantsDebounced: Alpine.debounce(function () {
+            $wire.generateVariants(); 
+        }, 300),
+
+        toogleHasVariants() {
+            if (!$wire.hasVariants) {
+                $wire.productOptions = [];
+                $wire.generateVariants(); // 1 sola petición
+            } else if ($wire.productOptions.length === 0) {
+                this.addOption();
+            }
+        },
+
+        addOption() {
+            // Reasignar el arreglo completo fuerza a Alpine y Livewire a detectar la mutación
+            $wire.productOptions = [
+                ...$wire.productOptions,
+                { name: '', type: 'button', values: [{ value: '', metadata: null }] }
+            ];
+        },
+
+        removeOption(optionIndex) {
+            let options = [...$wire.productOptions];
+            options.splice(optionIndex, 1);
+            $wire.productOptions = options;
+
+            this.generateVariantsDebounced();
+        },
+
+        addValue(optionIndex) {
+            let options = [...$wire.productOptions];
+            const defaultMeta = options[optionIndex].type === 'color' ? '#000000' : null;
+            
+            options[optionIndex].values.push({ value: '', metadata: defaultMeta });
+            $wire.productOptions = options;
+        },
+
+        updateValue(optionIndex, valueIndex, newValue) {
+            $wire.productOptions[optionIndex].values[valueIndex].value = newValue;
+            
+            if (valueIndex === ($wire.productOptions[optionIndex].values.length - 1) && newValue.trim()) {
+                this.addValue(optionIndex);
+            }
+        },
+
+        removeValue(optionIndex, valueIndex) {
+            let options = [...$wire.productOptions];
+            options[optionIndex].values.splice(valueIndex, 1);
+            $wire.productOptions = options;
+
+            this.generateVariantsDebounced();
+        },
+
+        uploadSwatchImage(event, optionIndex, valueIndex, uploadScope) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Muestra de previsualización local instantánea
+            $wire.productOptions[optionIndex].values[valueIndex].metadata_image_preview = URL.createObjectURL(file);
+
+            uploadScope.isUploading = true;
+            uploadScope.progress = 0;
+
+            // $wire.upload gestiona la transferencia temporal de forma aislada
+            $wire.upload(`productOptions.${optionIndex}.values.${valueIndex}.metadata_image`, file,
+                () => {
+                    uploadScope.isUploading = false;
+                    uploadScope.progress = 100;
+                },
+                () => {
+                    uploadScope.isUploading = false;
+                },
+                (progressEvent) => {
+                    uploadScope.progress = progressEvent.detail.progress;
                 }
-                console.log('toogleHasVariants()');
-            },
-            addOption(){
-                this.productOptions.push({ name: '', values: [] });
-                console.log('addOption()');
-            },
-            removeOption(optionIndex){
-                this.productOptions.splice(optionIndex, 1);
-                this.$nextTick(() => {
-                    $wire.generateVariants();
-                });
-                console.log('removeOption()');
-            },
-            addValue(optionIndex){
-                this.productOptions[optionIndex].values.push('');
-                console.log('addValue()');
-            },
-            updateValue(optionIndex, valueIndex, newValue){
-                this.productOptions[optionIndex].values[valueIndex] = newValue;
-                // Si es el último campo y no está vacío, agregar uno nuevo
-                if(valueIndex === (this.productOptions[optionIndex].values.length - 1) && newValue.trim()){
-                    this.addValue(optionIndex);
-                }
-                console.log('updateValue()');
-            },
-            removeValue(optionIndex, valueIndex){
-                this.productOptions[optionIndex].values.splice(valueIndex, 1);
-                this.$nextTick(() => {
-                    $wire.generateVariants();
-                });
-                console.log('removeValue()');
-            },
-            focusNextValue(optionIndex, valueIndex, event){
-                const currentValue = this.productOptions[optionIndex].values[valueIndex];  
-                if(!currentValue.trim()) return;
+            );
+        },
+
+        focusNextValue(optionIndex, valueIndex, event) {
+                const currentValue = $wire.productOptions[optionIndex].values[valueIndex].value;  
+                if (!currentValue.trim()) return;
                 const nextValueIndex = valueIndex + 1;
-                if(nextValueIndex >= this.productOptions[optionIndex].values.length){
+                if (nextValueIndex >= $wire.productOptions[optionIndex].values.length) {
                     this.addValue(optionIndex);
                 }
                 this.$nextTick(() => {
                     const currentInput = event.target;
-                    const allInputs = Array.from(currentInput.closest('.mb-2').querySelectorAll('input[type=\"text\"]'));
+                    const allInputs = Array.from(currentInput.closest('.mb-2').querySelectorAll('input[type="text"]'));
                     const currentInputIndex = allInputs.indexOf(currentInput);
                     const nextInput = allInputs[currentInputIndex + 1];   
-                    if(nextInput){
+                    if (nextInput) {
                         nextInput.focus();
                     }
                 });
-                console.log('focusNextValue()');
             },
-            debounce(func, wait){
-                let timeout;
-                console.log('debounce()');
-                return function executedFunction(...args){
-                    const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
-                    };
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                };
-            }
-        }));
-    </script>
+    }));
+</script>
 @endscript
