@@ -701,10 +701,6 @@ button[disabled] {
     border-color: transparent;
 }
 
-.tab-pane {
-    color: var(--bs-white);
-}
-
 /* CATEGORIES PLAIN */
 .category-classic .category-content {
     bottom: 0;
@@ -1283,7 +1279,7 @@ span.amount,
 }
 
 #account-orders .order-action .btn {
-    color: var(--bs-white) !important;
+    color: var(--bs-dark);
 }
 
 .mfp-content {

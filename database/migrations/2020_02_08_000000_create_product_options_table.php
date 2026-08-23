@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->id();
             $table->string('name', 50); // "Color", "Medida", "Material"
             $table->string('slug', 50)->unique();
-            $table->string('type')->default(ProductOption::TYPE_BUTTON); // "select", "button", "color", "image"
             $table->timestamps();
         });
     }

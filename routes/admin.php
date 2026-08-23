@@ -50,7 +50,6 @@ use App\Http\Controllers\Admin\Setting\Country\CountryController;
 use App\Http\Controllers\Admin\Setting\Currency\CurrencyController;
 use App\Http\Controllers\Admin\Setting\General\GeneralController;
 use App\Http\Controllers\Admin\Setting\Integration\IntegrationController;
-use App\Http\Controllers\Admin\Setting\Invoice\CredentialController;
 use App\Http\Controllers\Admin\Setting\Log\LogController;
 use App\Http\Controllers\Admin\Setting\ModuleWeb\ModuleWebController;
 use App\Http\Controllers\Admin\Setting\Notification\NotificationController as SettingNotificationController;
@@ -116,7 +115,6 @@ Route::prefix('setting')->name('setting.')->group(function () {
     Route::middleware(['can:producto almacenes'])->get('/warehouse', [WarehouseController::class, 'index'])->name('warehouse');
     Route::middleware(['can:popup'])->get('/popup', [PopupController::class, 'index'])->name('popup');
     Route::middleware(['can:configurador'])->get('/configurator', [ConfiguratorController::class, 'index'])->name('configurator');
-    Route::middleware(['can:facturas credenciales fiel'])->get('/invoice-credential', [CredentialController::class, 'index'])->name('invoice.credential');
     Route::middleware(['permission:proveedor erp|proveedor pch|proveedor vadeto brands'])->get('/integrations', [IntegrationController::class, 'index'])->name('integration.index');
     // Payment
     Route::middleware(['can:monedas'])->get('/currency', [CurrencyController::class, 'index'])->name('currency');

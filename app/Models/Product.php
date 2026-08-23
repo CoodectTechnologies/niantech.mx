@@ -131,6 +131,9 @@ class Product extends Model implements Sitemapable, Viewable
     public function productCharacteristics() {
         return $this->hasMany(ProductCharacteristic::class);
     }
+    public function productOptions(){
+        return $this->belongsToMany(ProductOption::class)->withPivot('type', 'position')->withTimestamps();
+    }
     public function productVariants() {
         return $this->hasMany(ProductVariant::class)->orderBy('position');
     }

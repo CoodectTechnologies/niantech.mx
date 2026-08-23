@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductBrand;
 use App\Models\ProductCategory;
 use App\Models\ProductGender;
+use App\Models\ProductOption;
 use App\Models\ProductWarehouse;
 use App\Models\ShippingClass;
 use App\Models\UnitType;
@@ -57,6 +58,7 @@ class Form extends Component
 
     // Variantes
     public $hasVariants = false;
+    public $options = [];
     public $productOptions = [];
     public $productVariants = [];
 
@@ -94,16 +96,16 @@ class Form extends Component
             'fileDigitalTmp' => ($this->product->getIsDigital() && ! $this->product->file_digital) ? 'required' : 'nullable',
         ];
     }
-
     public function mount(Product $product, $method, ProductVariantService $variantService) {
         $this->product = $product;
         $this->method = $method;
-
         $this->product->load([
             'productCategories',
             'productGenders',
             'productWarehouses',
+            'images',
             'productVariants.productOptionValues.productOption',
+            'productVariants.productImages',
         ]);
 
         $this->loadRandomImagesTmpInputId();
@@ -117,11 +119,9 @@ class Form extends Component
         $this->generateVariants($variantService);
         $this->loadTranslations($this->product);
     }
-
     public function render() {
         return view('livewire.admin.catalog.product.product.form');
     }
-
     public function store(ProductService $productService) {
         $this->validate();
         $this->saveProduct($productService);
@@ -130,7 +130,6 @@ class Form extends Component
         Session::flash('alert-type', 'success');
         Redirect::route('admin.catalog.product.show', $this->product);
     }
-
     public function update(ProductService $productService) {
         $this->validate();
         $this->saveProduct($productService);
@@ -139,10 +138,8 @@ class Form extends Component
         Session::flash('alert-type', 'success');
         Redirect::route('admin.catalog.product.show', $this->product);
     }
-
     private function saveProduct(ProductService $productService) {
         $productService->sanitizeData($this->product, $this->catalogCategoryArray, $this->catalogGenderArray);
-
         $dtoData = [
             'technicalDatasheetTmp' => $this->technicalDatasheetTmp,
             'fileDigitalTmp' => $this->fileDigitalTmp,
@@ -156,17 +153,14 @@ class Form extends Component
             'productOptions' => $this->productOptions,
             'productVariants' => $this->productVariants,
         ];
-
         $productService->saveProduct(
             $this->product,
             $dtoData,
             fn($prod) => $this->saveTranslations($prod)
         );
-
         $this->loadRandomImagesTmpInputId();
         $this->reset('imagesTmp');
     }
-
     public function generateVariants(ProductVariantService $variantService) {
         $this->productVariants = $variantService->generateVariants(
             $this->product,
@@ -174,25 +168,14 @@ class Form extends Component
             $this->productVariants
         );
     }
-
     public function deleteVariant($variantIndex, ProductVariantService $variantService) {
-        $this->productVariants = $variantService->deleteVariant($this->product, $this->productVariants, $variantIndex);
+        $this->productVariants = $variantService->deleteVariant($this->productVariants, $variantIndex);
         
         $variantData = $variantService->getOptionsForForm($this->product);
         $this->hasVariants = $variantData['hasVariants'];
         $this->productOptions = $variantData['productOptions'];
         $this->generateVariants($variantService);
     }
-
-    public function removeVariantGalleryImage($variantIndex, $imageIndex, ProductVariantService $variantService) {
-        if (isset($this->productVariants[$variantIndex])) {
-            $this->productVariants[$variantIndex] = $variantService->removeVariantGalleryImage(
-                $this->productVariants[$variantIndex],
-                $imageIndex
-            );
-        }
-    }
-
     public function loadProductImagesBrands(ProductService $productService) {
         $this->reset('imageTmp', 'imagesTmp', 'imagesTmpBrands');
         $files = $productService->fetchBrandImages($this->product);
@@ -203,19 +186,16 @@ class Form extends Component
             $this->dispatch('alert', 'warning', __('Not found images'));
         }
     }
-
     public function removeImageTemp($variantKey) {
         if (array_splice($this->imagesTmp, $variantKey, 1)) {
             $this->dispatch('alert', 'success', __('Image successfully deleted'));
         }
     }
-
     public function removeImageMain(ProductService $productService) {
         $productService->removeMainImage($this->product);
         $this->reset('imageTmp');
         $this->dispatch('alert', 'success', __('Image successfully deleted'));
     }
-
     public function removeImage(Image $image) {
         try {
             $image->delete();
@@ -224,19 +204,16 @@ class Form extends Component
             $this->dispatch('alert', 'warning', $e->getMessage());
         }
     }
-
     public function removeTechnicalDatasheet(ProductService $productService) {
         $productService->removeTechnicalDatasheet($this->product);
         $this->reset('technicalDatasheetTmp');
         $this->dispatch('alert', 'success', __('Successful elimination'));
     }
-
     public function removeFileDigital(ProductService $productService) {
         $productService->removeFileDigital($this->product);
         $this->reset('fileDigitalTmp');
         $this->dispatch('alert', 'success', __('Successful elimination'));
     }
-
     private function loadCatalogData() {
         $this->categories = json_decode(ProductCategory::getCache(), true);
         $this->catalogCategoryArray = $this->product->productCategories->pluck('id')->toArray();
@@ -249,15 +226,14 @@ class Form extends Component
         $this->product->type = $this->product->type ?? Product::TYPE_PHYSICAL;
         $this->currencies = Currency::getCache();
         $this->brands = ProductBrand::orderBy('name')->get();
+        $this->options = ProductOption::orderBy('name')->get();
         $this->shippingClasses = ShippingClass::orderBy('id', 'desc')->get();
         $this->productImages = $this->product->images->sortBy('id');
-
         $this->warehouses = ProductWarehouse::get();
         foreach ($this->product->productWarehouses as $warehouse) {
             $this->catalogProductWarehousesArray[$warehouse->id] = $warehouse->pivot->quantity;
         }
     }
-
     private function loadRandomImagesTmpInputId() {
         $this->imagesTmpInputId = rand(1, 1000).'-'.$this->product->id;
     }

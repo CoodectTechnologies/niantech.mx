@@ -60,15 +60,16 @@ class ProductService
         $this->saveCategories($product, $dtoData['catalogCategoryArray'] ?? []);
         $this->saveGenders($product, $dtoData['catalogGenderArray'] ?? []);
         $this->saveMainImage($product, $dtoData['imageTmp'] ?? null);
-        $this->saveGalleryImages($product, $dtoData['imagesTmp'] ?? []);
+        $galleryImageIds = $this->saveGalleryImages($product, $dtoData['imagesTmp'] ?? []);
         $this->saveImagesBrands($product, $dtoData['imagesTmpBrands'] ?? []);
 
-        // Guardar variantes vía el servicio secundario
+        // Guardar variantes
         $this->variantService->saveVariants(
             $product,
             $dtoData['hasVariants'] ?? false,
             $dtoData['productOptions'] ?? [],
-            $dtoData['productVariants'] ?? []
+            $dtoData['productVariants'] ?? [],
+            $galleryImageIds
         );
 
         return $product;
@@ -107,14 +108,19 @@ class ProductService
         }
     }
 
-    public function saveGalleryImages(Product $product, array $imagesTmp): void
+    public function saveGalleryImages(Product $product, array $imagesTmp): array
     {
+        $imageIds = [];
         if ($imagesTmp) {
             foreach ($imagesTmp as $imgTmp) {
                 $url = $imgTmp->store('catalog/product/gallery');
-                imagesManager($url, 800, $product);
+                $image = imagesManager($url, 800, $product);
+                if ($image) {
+                    $imageIds[] = $image->id;
+                }
             }
         }
+        return $imageIds;
     }
 
     public function saveImagesBrands(Product $product, array $imagesTmpBrands): void

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin\Test;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Order\OrderCreate;
+use App\Models\Order;
 use App\Services\Integrations\Odoo\Address\AddressService;
 use App\Services\Integrations\Odoo\Customer\CustomerService;
 use App\Services\Integrations\Odoo\Order\OrderService;
@@ -14,11 +16,15 @@ use App\Services\Integrations\VadetoBrands\Product\ProductService as ProductProd
 use App\Services\Synchronizers\Catalog\ProductController;
 use App\Services\User\RegistrationService;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 
 class TestController extends Controller
 {
     public function __construct() {}
     public function index() {
+        $order = Order::first();
+        Mail::to('rigo.villa52@gmail.com')->send(new OrderCreate($order));
+        return new OrderCreate($order);
         // BRANDS PRODUCTOS
         // $productService = new ProductProductService();
         // $res = $productService->getAllContent();

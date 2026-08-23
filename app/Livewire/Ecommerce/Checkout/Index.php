@@ -144,6 +144,7 @@ class Index extends Component
             case 'shipping.create.diferent':
                 $this->loadAddress($id);
                 $this->loadAddresses();
+                $this->loadPrices();
                 $this->addressDiferentCreate = false;
                 if ($this->address->is_billing) {
                     $this->billingRequire = true;
@@ -183,7 +184,7 @@ class Index extends Component
         $this->shippingZoneId = collect($this->shippingMethods)->where('default', true)->first()['id'] ?? null;
         $this->loadShippingPrice($this->shippingZoneId);
     }
-    public function loadShippingPrice(int $shippingZoneId){
+    public function loadShippingPrice(int|null $shippingZoneId){
         // if(config('services.odoo.status')):
         if (config('services.odoo.status') && false) {
             // TODO: BORRAME EL false y desarrolla lo de los métodos de envío de ODOO
@@ -197,6 +198,7 @@ class Index extends Component
                 $this->shippingDays = $days.' '.__('days').', '.$estimatedDate;
             }
         } else {
+            if(!$shippingZoneId) return;
             $shippingZone = ShippingZone::findOrFail($shippingZoneId);
             $this->shippingPrice = ShippingService::getShippingPriceByZone($shippingZone);
             $this->shippingMethod = $shippingZone->alias;

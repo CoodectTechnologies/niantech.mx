@@ -32,16 +32,16 @@ class Invoice extends Model
         $status = '';
         switch ($this->status) {
             case 'Vigente':
-                $status = '<div class="badge badge-success">'.__($this->status).'</div>';
+                $status = '<div class="badge bg-success">'.__($this->status).'</div>';
                 break;
             case 'Cancelado':
-                $status = '<div class="badge badge-danger">'.__($this->status).'</div>';
+                $status = '<div class="badge bg-danger">'.__($this->status).'</div>';
                 break;
             case 'Pendiente':
-                $status = '<div class="badge badge-warning">'.__($this->status).'</div>';
+                $status = '<div class="badge bg-warning">'.__($this->status).'</div>';
                 break;
             default:
-                $status = '<div class="badge badge-secondary">Status no encontrado</div>';
+                $status = '<div class="badge bg-secondary">Status no encontrado</div>';
                 break;
         }
 
@@ -51,13 +51,13 @@ class Invoice extends Model
         $statusSat = '';
         switch ($this->status_sat) {
             case 'Vigente':
-                $statusSat = '<div class="badge badge-success">'.__($this->status_sat).'</div>';
+                $statusSat = '<div class="badge bg-success">'.__($this->status_sat).'</div>';
                 break;
             case 'Cancelado':
-                $statusSat = '<div class="badge badge-danger">'.__($this->status_sat).'</div>';
+                $statusSat = '<div class="badge bg-danger">'.__($this->status_sat).'</div>';
                 break;
             case 'Pendiente':
-                $statusSat = '<div class="badge badge-warning">'.__($this->status_sat).'</div>';
+                $statusSat = '<div class="badge bg-warning">'.__($this->status_sat).'</div>';
                 break;
             default:
                 $statusSat = '';
@@ -70,13 +70,13 @@ class Invoice extends Model
         $isCancellable = '';
         switch ($this->is_cancellable) {
             case 'Cancelable con aceptación':
-                $isCancellable = '<div class="badge badge-success">'.__($this->is_cancellable).'</div>';
+                $isCancellable = '<div class="badge bg-success">'.__($this->is_cancellable).'</div>';
                 break;
             case 'Cancelable sin aceptación':
-                $isCancellable = '<div class="badge badge-success">'.__($this->is_cancellable).'</div>';
+                $isCancellable = '<div class="badge bg-success">'.__($this->is_cancellable).'</div>';
                 break;
             case 'No cancelable':
-                $isCancellable = '<div class="badge badge-danger">'.__($this->is_cancellable).'</div>';
+                $isCancellable = '<div class="badge bg-danger">'.__($this->is_cancellable).'</div>';
                 break;
             default:
                 $isCancellable = '';
@@ -89,19 +89,19 @@ class Invoice extends Model
         $statusCancellation = '';
         switch ($this->is_cancellable) {
             case 'En proceso':
-                $statusCancellation = '<div class="badge badge-info">'.__($this->is_cancellable).'</div>';
+                $statusCancellation = '<div class="badge bg-info">'.__($this->is_cancellable).'</div>';
                 break;
             case 'Plazo vencido':
-                $statusCancellation = '<div class="badge badge-warning">'.__($this->is_cancellable).'</div>';
+                $statusCancellation = '<div class="badge bg-warning">'.__($this->is_cancellable).'</div>';
                 break;
             case 'Solicitud rechazada':
-                $statusCancellation = '<div class="badge badge-danger">'.__($this->is_cancellable).'</div>';
+                $statusCancellation = '<div class="badge bg-danger">'.__($this->is_cancellable).'</div>';
                 break;
             case 'Cancelado sin aceptación':
-                $statusCancellation = '<div class="badge badge-dark">'.__($this->is_cancellable).'</div>';
+                $statusCancellation = '<div class="badge bg-dark">'.__($this->is_cancellable).'</div>';
                 break;
             case 'Cancelado con aceptación':
-                $statusCancellation = '<div class="badge badge-success">'.__($this->is_cancellable).'</div>';
+                $statusCancellation = '<div class="badge bg-success">'.__($this->is_cancellable).'</div>';
                 break;
             default:
                 $statusCancellation = '';

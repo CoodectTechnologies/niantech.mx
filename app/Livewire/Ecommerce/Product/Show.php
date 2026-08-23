@@ -9,20 +9,26 @@ use App\Services\Cart\CartService;
 use App\Services\Integrations\VadetoBrands\Product\CloudResourceService;
 use App\Services\Product\ProductVariantService;
 use Exception;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Show extends Component
 {
     public $product;
     public $type;
+    #[Locked] 
     public $price;
     public $sku;
+    #[Locked] 
     public $quantityTotal = 0;
+    #[Locked] 
     public $quantitySelected = 1;
     public $variantSelected;
     public $gallery = [];
+    #[Locked] 
     public $allOptions = [];
     public $variants = [];
+    #[Locked] 
     public $priceToString;
     public $productsSimilars = [];
     public $productsViewRecents = [];
@@ -68,7 +74,7 @@ class Show extends Component
         try {
             CartService::add($this->product, $this->quantitySelected, $this->price, $options);
             $this->dispatch('render')->to('ecommerce.layouts.cart');
-            $this->dispatch('notify-add-cart', $this->product->name, route('ecommerce.product.show', $this->product), $this->product->imagePreview());
+            $this->dispatch('notify-add-cart', $this->product->name, route('ecommerce.product.show', $this->product), $options['image']);
             $this->reset('quantitySelected');
         } catch (Exception $e) {
             $this->dispatch('alert', 'warning', __($e->getMessage()));
@@ -162,7 +168,7 @@ class Show extends Component
     // SELECT
     public function selectVariant($variantId = null) {
        $this->variantSelected = $variantId 
-            ? ProductVariant::with(['product.currency', 'images', 'productWarehouses'])->find($variantId)
+            ? ProductVariant::with(['product.currency', 'productImages', 'productWarehouses'])->find($variantId)
             : null;
         $this->loadData();
     }

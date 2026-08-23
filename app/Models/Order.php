@@ -108,25 +108,25 @@ class Order extends Model
         $status = '';
         switch ($this->status) {
             case 'Confirmado':
-                $status = '<div class="badge badge-success">'.$this->status.'</div>';
+                $status = '<div class="badge bg-success">'.$this->status.'</div>';
                 break;
             case 'Procesando':
-                $status = '<div class="badge badge-success">'.$this->status.'</div>';
+                $status = '<div class="badge bg-success">'.$this->status.'</div>';
                 break;
             case 'Enviado':
-                $status = '<div class="badge badge-primary">'.$this->status.'</div>';
+                $status = '<div class="badge bg-primary">'.$this->status.'</div>';
                 break;
             case 'Completado':
-                $status = '<div class="badge badge-primary">'.$this->status.'</div>';
+                $status = '<div class="badge bg-primary">'.$this->status.'</div>';
                 break;
             case 'Devolución':
-                $status = '<div class="badge badge-info">'.$this->status.'</div>';
+                $status = '<div class="badge bg-info">'.$this->status.'</div>';
                 break;
             case 'Cancelado':
-                $status = '<div class="badge badge-danger">'.$this->status.'</div>';
+                $status = '<div class="badge bg-danger">'.$this->status.'</div>';
                 break;
             default:
-                $status = '<div class="badge badge-warning">Status no encontrado</div>';
+                $status = '<div class="badge bg-warning">Status no encontrado</div>';
                 break;
         }
 
@@ -136,16 +136,16 @@ class Order extends Model
         $paymentStatus = '';
         switch ($this->payment_status) {
             case 'Aprobado':
-                $paymentStatus = '<div class="badge badge-success">'.$this->payment_status.'</div>';
+                $paymentStatus = '<div class="badge bg-success">'.$this->payment_status.'</div>';
                 break;
             case 'Pendiente':
-                $paymentStatus = '<div class="badge badge-warning">'.$this->payment_status.'</div>';
+                $paymentStatus = '<div class="badge bg-warning">'.$this->payment_status.'</div>';
                 break;
             case 'Rechazado':
-                $paymentStatus = '<div class="badge badge-danger">'.$this->payment_status.'</div>';
+                $paymentStatus = '<div class="badge bg-danger">'.$this->payment_status.'</div>';
                 break;
             default:
-                $paymentStatus = '<div class="badge badge-warning">Status no encontrado</div>';
+                $paymentStatus = '<div class="badge bg-warning">Status no encontrado</div>';
                 break;
         }
 

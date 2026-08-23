@@ -34,7 +34,7 @@
                                 @endif
                                 @if($orderProduct->productVariant)
                                     @foreach($orderProduct->productVariant->productOptionValues as $optionValue)
-                                        {{ $productOption->productOption->name }}: {{ $optionValue->value }} <br>
+                                        {{ $optionValue->productOption->name }}: {{ $optionValue->value }} <br>
                                     @endforeach
                                 @endif
                             </td>

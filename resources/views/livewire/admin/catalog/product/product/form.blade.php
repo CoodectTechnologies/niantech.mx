@@ -150,7 +150,7 @@
             this.generateVariantsDebounced();
         },
 
-        uploadSwatchImage(event, optionIndex, valueIndex, uploadScope) {
+        uploadImage(event, optionIndex, valueIndex, uploadScope) {
             const file = event.target.files[0];
             if (!file) return;
 

@@ -1,7 +1,7 @@
 @component('mail::message')
 
 <div style="text-align:center; margin-bottom: 24px;">
-	<img loading="lazy" src="{{ asset('') . $model->imagePreview() }}" alt="{{ $model->name }}" width="100%">
+<img loading="lazy" src="{{ asset('') . $model->imagePreview() }}" alt="{{ $model->name }}" width="100%">
 </div>
 
 @component('mail::panel')

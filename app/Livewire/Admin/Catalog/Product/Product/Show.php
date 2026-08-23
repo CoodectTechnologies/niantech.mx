@@ -26,6 +26,7 @@ class Show extends Component
             'user',
             'productVariants.productOptionValues.productOption',
             'productVariants.productWarehouses',
+            'productVariants.productImages',
         ]);
         $this->submodule = $request->submodule ?? null;
         $this->currencyDefault = Currency::getDefault();

@@ -43,7 +43,7 @@
     @if($product->getIsDigital())
         <div class=""></div>
         <hr class="product-divider">
-        <div class="product-form product-variation-form product-type-swatch">
+        <div class="product-form product-variation-form product-type">
             <label class="mb-1">{{ __('Type') }}: </label>
             <div class="flex-wrap d-flex align-items-center product-variations w-100">
                 <select x-model="type" class="form-control type input-sm">

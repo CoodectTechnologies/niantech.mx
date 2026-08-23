@@ -15,7 +15,7 @@ class Show extends Component
     public function mount(Order $order) {
         $this->user = User::find(Auth::id());
         $this->order = $order;
-        $this->order->load(['products', 'invoice', 'address.state.country', 'billingAddress.state.country']);
+        $this->order->load(['products', 'address.state.country', 'billingAddress.state.country']);
     }
     public function render() {
         return view('livewire.ecommerce.account.order.show');

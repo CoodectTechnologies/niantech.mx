@@ -37,9 +37,9 @@
                                     x-model="option.name"
                                     type="text"
                                     class="form-control form-control-sm"
+                                    list="default-option-names"
                                     placeholder="{{ __('Color, Size...') }}">
                             </div>
-
                             {{-- OPTION TYPE --}}
                             <div class="col-md-5">
                                 <label class="form-label required">{{ __('Type') }}</label>
@@ -105,7 +105,7 @@
                                                 <input type="file"
                                                     class="d-none"
                                                     accept="image/*"
-                                                    x-on:change="uploadSwatchImage($event, optionIndex, valueIndex, $data)">
+                                                    x-on:change="uploadImage($event, optionIndex, valueIndex, $data)">
                                             </label>
                                         </template>
 
@@ -142,6 +142,11 @@
                     <i class="fa-light fa-plus"></i>
                     {{ __('Add another option') }}
                 </button>
+                <datalist id="default-option-names">
+                    @foreach ($options as $option)
+                        <option value="{{ $option->name }}">
+                    @endforeach
+                </datalist>
             </div>
             {{-- VARIANTS --}}
             @if(count($productVariants))
@@ -399,86 +404,46 @@
                                                                     </div>
                                                                 </div>
 
-                                                                {{-- IMÁGENES --}}
+                                                                    {{-- IMÁGENES DE LA GALERÍA GENERAL --}}
                                                                 <div wire:ignore.self class="tab-pane fade" id="images_tab_{{ $variantIndex }}" role="tabpanel">
-                                                                    {{-- Upload --}}
-                                                                    <div class="card mb-4 shadow-sm">
-                                                                        <div class="card-body">
-                                                                            <label class="form-label fw-bold mb-3">
-                                                                                <i class="fa-light fa-cloud-arrow-up me-2"></i>{{ __('Upload images') }}
-                                                                            </label>
-                                                                            <div x-data="{ isUploading: false, progress: 0 }"
-                                                                                 x-on:livewire-upload-start="isUploading = true"
-                                                                                 x-on:livewire-upload-finish="isUploading = false"
-                                                                                 x-on:livewire-upload-error="isUploading = false"
-                                                                                 x-on:livewire-upload-progress="progress = $event.detail.progress">
-                                                                                <input type="file"
-                                                                                       multiple
-                                                                                       class="form-control"
-                                                                                       wire:model="productVariants.{{ $variantIndex }}.gallery_images_tmp"
-                                                                                       accept="image/*">
-                                                                                <div x-show="isUploading" class="progress h-6px w-100 mt-3">
-                                                                                    <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated"
-                                                                                         role="progressbar"
-                                                                                         :style="`width: ${progress}%;`">
-                                                                                    </div>
+                                                                    @if($productImages->count() || count($imagesTmp))
+                                                                        <div class="row g-3">
+                                                                            @foreach($productImages as $productImage)
+                                                                                <div class="col-6 col-md-4">
+                                                                                    <label class="d-block cursor-pointer">
+                                                                                        <input type="checkbox"
+                                                                                               class="form-check-input me-2"
+                                                                                               wire:model="productVariants.{{ $variantIndex }}.product_image_ids"
+                                                                                               value="{{ $productImage->id }}">
+                                                                                        <img src="{{ $productImage->imagePreview() }}"
+                                                                                             class="img-fluid rounded border"
+                                                                                             alt="{{ __('Product image') }}"
+                                                                                             style="aspect-ratio: 1 / 1; object-fit: cover;">
+                                                                                    </label>
                                                                                 </div>
-                                                                            </div>
+                                                                            @endforeach
+                                                                            @foreach($imagesTmp as $temporaryIndex => $temporaryImage)
+                                                                                <div class="col-6 col-md-4">
+                                                                                    <label class="d-block cursor-pointer">
+                                                                                        <input type="checkbox"
+                                                                                               class="form-check-input me-2"
+                                                                                               wire:model="productVariants.{{ $variantIndex }}.product_image_ids"
+                                                                                               value="tmp:{{ $temporaryIndex }}">
+                                                                                        <img src="{{ $temporaryImage->temporaryUrl() }}"
+                                                                                             class="img-fluid rounded border border-warning"
+                                                                                             alt="{{ __('Temporary product image') }}"
+                                                                                             style="aspect-ratio: 1 / 1; object-fit: cover;">
+                                                                                        <span class="badge bg-warning mt-1">{{ __('Pending save') }}</span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            @endforeach
                                                                         </div>
-                                                                    </div>
-
-                                                                    {{-- Galería existente --}}
-                                                                    @if(!empty($variant['gallery_images']))
-                                                                        <div class="mb-4">
-                                                                            <h6 class="fw-bold mb-3">
-                                                                                <i class="fa-light fa-images me-2"></i>{{ __('Current images') }}
-                                                                            </h6>
-                                                                            <div class="row g-3">
-                                                                                @foreach($variant['gallery_images'] as $imgIndex => $img)
-                                                                                    <div class="col-md-3 col-sm-4">
-                                                                                        <div class="position-relative">
-                                                                                            <img src="{{ $img['url'] }}" class="img-fluid rounded border shadow-sm" alt="Image" style="aspect-ratio: 1/1; object-fit: cover;">
-                                                                                            <button wire:click="removeVariantGalleryImage({{ $variantIndex }}, {{ $imgIndex }})"
-                                                                                                    type="button"
-                                                                                                    class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle"
-                                                                                                    style="width: 30px; height: 30px; padding: 0;">
-                                                                                                <i class="fa-light fa-trash"></i>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                @endforeach
-                                                                            </div>
+                                                                    @else
+                                                                        <div class="alert alert-light">
+                                                                            {{ __('Upload images in the general product gallery first.') }}
                                                                         </div>
                                                                     @endif
 
-                                                                    {{-- Imágenes temporales --}}
-                                                                    @if(!empty($variant['gallery_images_tmp']))
-                                                                        <div class="mb-4">
-                                                                            <h6 class="fw-bold mb-3">
-                                                                                <i class="fa-light fa-clock me-2"></i>{{ __('New images') }}
-                                                                                <span class="badge badge-warning">{{ __('Pending save') }}</span>
-                                                                            </h6>
-                                                                            <div class="row g-3">
-                                                                                @foreach($variant['gallery_images_tmp'] as $tmpIndex => $tmpImg)
-                                                                                    @if(is_object($tmpImg))
-                                                                                        <div class="col-md-3 col-sm-4">
-                                                                                            <div class="position-relative">
-                                                                                                <img src="{{ $tmpImg->temporaryUrl() }}" class="img-fluid rounded border border-warning border-2 shadow-sm" alt="Temp Image" style="aspect-ratio: 1/1; object-fit: cover;">
-                                                                                                <span class="badge bg-warning position-absolute top-0 start-0 m-2">{{ __('New') }}</span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    @endif
-                                                                                @endforeach
-                                                                            </div>
-                                                                        </div>
-                                                                    @endif
-
-                                                                    @if(empty($variant['gallery_images']) && empty($variant['gallery_images_tmp']))
-                                                                        <div class="alert alert-light d-flex align-items-center">
-                                                                            <i class="fa-light fa-image fs-2x text-muted me-3"></i>
-                                                                            <div class="text-muted">{{ __('No images uploaded yet. Upload images to create a gallery for this variant.') }}</div>
-                                                                        </div>
-                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </div>

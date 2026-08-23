@@ -68,7 +68,7 @@
                 @livewire('ecommerce.cart.mini', ['product' => $product], key('cart-' . $product->id))
             @elseif($isInStock && $hasVariants)
                 <div class="d-grid mt-5">
-                    <button class="btn btn-primary btn-ellipse">{{ __('Ver detalle') }}</button>
+                    <a href="{{ route('ecommerce.product.show', $product) }}" class="btn btn-primary btn-ellipse">{{ __('View detail') }}</a>
                 </div>
             @else
                 <div class="d-grid mt-5">

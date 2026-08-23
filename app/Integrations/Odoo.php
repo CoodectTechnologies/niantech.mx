@@ -16,7 +16,7 @@ class Odoo
     public function __construct() {
         $this->client = new Client([
             'base_uri' => config('services.odoo.url'),
-            'verify' => app()->environment('production'),
+            'verify' => app()->isProduction(),
             'cookies' => true,
             'headers' => [
                 'Authorization' => 'Bearer '.config('services.odoo.key'),
@@ -41,12 +41,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST getCountries', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('warning', 'BADREQUEST getCountries', $url, $options, $response);
             return [];
-        }
-
+        endif;
         return $response;
     }
     public function getStates(array $domain = [], array $params = []): array {
@@ -60,12 +58,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST getStates', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('warning', 'BADREQUEST getStates', $url, $options, $response);
             return [];
-        }
-
+        endif;
         return $response;
     }
 
@@ -83,12 +79,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST getUseCfdis', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('warning', 'BADREQUEST getUseCfdis', $url, $options, $response);
             return [];
-        }
-
+        endif;
         return $response['l10n_mx_edi_usage']['selection'];
     }
     public function getFiscalRegimes(): array {
@@ -102,12 +96,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST getUseCfdis', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('warning', 'BADREQUEST getUseCfdis', $url, $options, $response);
             return [];
-        }
-
+        endif;
         return $response['l10n_mx_edi_fiscal_regime']['selection'];
     }
 
@@ -125,12 +117,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST getProducts', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('warning', 'BADREQUEST getProducts', $url, $options, $response);
             return [];
-        }
-
+        endif;
         return $response;
     }
     public function getWarehouses(array $domain = [], array $params = []): array {
@@ -143,12 +133,10 @@ class Odoo
             ...array_merge(['offset' => 0, 'limit' => 200], $params),
         ]];
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST getWarehouses: ', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('warning', 'BADREQUEST getWarehouses: ', $url, $options, $response);
             return [];
-        }
-
+        endif;
         return $response;
     }
 
@@ -171,12 +159,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST getCustomers', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('warning', 'BADREQUEST getCustomers', $url, $options, $response);
             return [];
-        }
-
+        endif;
         return $response;
     }
     public function createCustomer(array $data): array|int {
@@ -187,12 +173,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST createCustomer', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('error', 'BADREQUEST createCustomer', $url, $options, $response);
             return [];
-        }
-
+        endif;
         return $response;
     }
     public function updateCustomer(int $customerId, array $data): bool {
@@ -204,12 +188,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST updateCustomer', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('error', 'BADREQUEST updateCustomer', $url, $options, $response);
             return false;
-        }
-
+        endif;
         return true;
     }
 
@@ -232,12 +214,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST getAddresses', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('warning', 'BADREQUEST getAddresses', $url, $options, $response);
             return [];
-        }
-
+        endif;
         return $response;
     }
     public function createAddress(array $data): array|int {
@@ -248,12 +228,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST createAddress', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('error', 'BADREQUEST createAddress', $url, $options, $response);
             return [];
-        }
-
+        endif;
         return $response;
     }
     public function updateAddress(int $addressId, array $data): bool {
@@ -265,12 +243,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST updateAddress', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('warning', 'BADREQUEST updateAddress', $url, $options, $response);
             return false;
-        }
-
+        endif;
         return $response;
     }
     public function deleteAddress(int $addressId): bool {
@@ -281,12 +257,10 @@ class Odoo
         ]];
 
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST deleteAddress', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('warning', 'BADREQUEST deleteAddress', $url, $options, $response);
             return false;
-        }
-
+        endif;
         return (bool) $response;
     }
 
@@ -308,12 +282,10 @@ class Odoo
             ...array_merge(['offset' => 0, 'limit' => 200, 'order' => 'date_order desc'], $params),
         ]];
         $response = $this->request($method, $url, $options);
-        if (isset($response['debug'])) {
-            $this->log('BADREQUEST getOrders', $url, $options, $response);
-
+        if(isset($response['debug'])):
+            $this->log('warning', 'BADREQUEST getOrders', $url, $options, $response);
             return [];
-        }
-
+        endif;
         return $response;
     }
 
@@ -324,21 +296,14 @@ class Odoo
         try {
             $response = $this->client->request($method, $url, $options);
             $result = json_decode($response->getBody()->getContents(), true);
-
             return $result ?? [];
         } catch (RequestException $e) {
             $response = $e->getResponse();
             $result = json_decode($response->getBody(), true);
-            $this->log('REQUESTEXCEPTION request: '.$e->getMessage(), $url, $options, $result, $e);
-
+            $this->log('error', 'REQUESTEXCEPTION request: '.$e->getMessage(), $url, $options, $result, $e);
             return $result;
-        } catch (Exception $e) {
-            $this->log('EXCEPTION request: '.$e->getMessage(), $url, $options, [], $e);
-
-            return [];
         } catch (Throwable $e) {
-            $this->log('THROWABLE request: '.$e->getMessage(), $url, $options, [], $e);
-
+            $this->log('error', 'THROWABLE request: '.$e->getMessage(), $url, $options, [], $e);
             return [];
         }
     }
@@ -346,14 +311,14 @@ class Odoo
     /* ========================================================================= */
     /* LOG */
     /* ========================================================================= */
-    private function log(string $title, string $url, array $data = [], array $response = [], ?Throwable $exception = null) {
-        Log::channel('odoo.api')->info($title);
-        Log::channel('odoo.api')->info(config('services.erp.url').$url);
-        Log::channel('odoo.api')->info('data', $data);
-        Log::channel('odoo.api')->info('response', (array) $response);
-        if ($exception) {
-            Log::channel('odoo.api')->info('exception', ['message' => $exception->getMessage(), 'file' => $exception->getFile(), 'line' => $exception->getLine()]);
-        }
-        Log::channel('odoo.api')->info('================================================================================');
+    private function log(string $level, string $title, string $url, array $data = [], array $response = [], ?Throwable $exception = null) {
+        Log::channel('odoo.api')->$level($title, [
+            'url' => config('services.erp.url').$url,
+            'data' => $data,
+            'response' => (array) $response,
+            'exception' => $exception 
+                ? ['message' => $exception->getMessage(), 'file' => $exception->getFile(), 'line' => $exception->getLine()] 
+                : []
+        ]);
     }
 }

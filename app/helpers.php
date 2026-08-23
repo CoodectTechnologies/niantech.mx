@@ -156,7 +156,7 @@ if (! function_exists('imagesManager')) {
             }
         }
         // Crea el modelo de imagen
-        $model->images()->create(['url' => $url, 'name' => $name]);
+        return $model->images()->create(['url' => $url, 'name' => $name]);
     }
 }
 if (! function_exists('sectionMenuIsVisible')) {

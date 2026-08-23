@@ -43,6 +43,17 @@
                         <!--end::Wrapper-->
                     </div>
                     <!--end::Notice-->
+                    <button wire:click="sendEmail" wire:loading.attr="disabled" wire:target="sendEmail"
+                        class="btn btn-primary">
+                        <span class="indicator-label">
+                            @if ($order->send_email)
+                                {{ __('Resending mail manually') }}    
+                            @else
+                                {{ __('Sending mail manually') }}
+                            @endif
+                        </span>
+                        <span wire:loading wire:target="sendEmail" class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                    </button>
                 @else
                     <!--begin::Notice-->
                     <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-9 p-6">

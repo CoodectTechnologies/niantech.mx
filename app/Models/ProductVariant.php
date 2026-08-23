@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Image;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -20,25 +21,22 @@ class ProductVariant extends Model
         return $this->hasMany(ProductVariantOption::class);
     }
     public function productOptionValues() {
-        return $this->belongsToMany(
-            ProductOptionValue::class,
-            'product_variant_options',
-            'product_variant_id',
-            'product_option_value_id'
-        )->withPivot('metadata');
+        return $this->belongsToMany(ProductOptionValue::class, 'product_variant_options', 'product_variant_id', 'product_option_value_id')->withPivot('metadata')->withTimestamps();
     }
     public function productWarehouses() {
         return $this->belongsToMany(ProductWarehouse::class)
             ->withPivot('quantity')
             ->withTimestamps();
     }
-    public function images() {
-        return $this->morphMany(Image::class, 'imageable')->whereNull('main');
+    public function productImages() {
+        return $this->belongsToMany(Image::class, 'product_variant_image')
+            ->withPivot('position')
+            ->orderBy('product_variant_image.position');
     }
 
     // Helpers images
     public function imagePreview() {
-        foreach ($this->images as $image) {
+        foreach ($this->productImages as $image) {
             return Storage::url($image->url);
         }
 

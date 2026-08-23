@@ -17,38 +17,36 @@ class VadetoBrands
         $url = 'productos/datos';
         $data = ['marca' => ''];
         try {
-            if (! config('services.vadeto_brands.status')) {
+            if(!config('services.vadeto_brands.status')):
                 return [];
-            }
+            endif;
             $response = $this->request('POST', $url, $data);
-            if (isset($response['productos'])) {
+            if(isset($response['productos'])):
                 return $response;
-            } else {
-                $this->log('ERROR AL OBTENER LOS PRODUCTOS', $url, $data, $response);
-            }
+            else:
+                $this->log('warning', 'ERROR AL OBTENER LOS PRODUCTOS', $url, $data, $response);
+            endif;
         } catch (Exception $e) {
-            $this->log('Exception getProducts: '.$e->getMessage(), $url, $data);
+            $this->log('warning', 'Exception getProducts: '.$e->getMessage(), $url, $data);
         }
-
         return [];
     }
     public function getTemplates() {
         $url = 'plantillas';
         $data = ['marca' => ''];
         try {
-            if (! config('services.vadeto_brands.status')) {
+            if(!config('services.vadeto_brands.status')):
                 return [];
-            }
+            endif;
             $response = $this->request('POST', $url, $data);
-            if (isset($response['plantillas'])) {
+            if(isset($response['plantillas'])):
                 return $response;
-            } else {
-                $this->log('ERROR AL OBTENER LAS PLANTILLAS', $url, $data, $response);
-            }
+            else:
+                $this->log('warning', 'ERROR AL OBTENER LAS PLANTILLAS', $url, $data, $response);
+            endif;
         } catch (Exception $e) {
-            $this->log('Exception getTemplates: '.$e->getMessage(), $url, $data);
+            $this->log('warning', 'Exception getTemplates: '.$e->getMessage(), $url, $data);
         }
-
         return [];
     }
 
@@ -64,22 +62,21 @@ class VadetoBrands
             'sku' => $sku,
         ];
         try {
-            if (! config('services.vadeto_brands.status')) {
+            if(!config('services.vadeto_brands.status')):
                 return $result;
-            }
-            if (! in_array(strtolower($brand), config('services.vadeto_brands.allowed', []))) {
+            endif;
+            if(!in_array(strtolower($brand), config('services.vadeto_brands.allowed', []))):
                 return $result;
-            }
+            endif;
             $response = $this->request('POST', $url, $data);
-            if (isset($response['resources'])) {
+            if(isset($response['resources'])):
                 $result = $response;
-            } else {
-                $this->log('ERROR AL OBTENER LOS RECURSOS DE BRANDS', $url, $data, $response);
-            }
+            else:
+                $this->log('warning', 'ERROR AL OBTENER LOS RECURSOS DE BRANDS', $url, $data, $response);
+            endif;
         } catch (Exception $e) {
-            $this->log('Exception getCloudResources: '.$e->getMessage(), $url, $data, $result);
+            $this->log('warning', 'Exception getCloudResources: '.$e->getMessage(), $url, $data, $result);
         }
-
         return $result;
     }
 
@@ -93,19 +90,17 @@ class VadetoBrands
             'sku' => $sku,
         ];
         try {
-            if (! config('services.vadeto_brands.status')) {
+            if(!config('services.vadeto_brands.status')):
                 return [];
-            }
-            if (! in_array(strtolower($brand), config('services.vadeto_brands.allowed'))) {
+            endif;
+            if(!in_array(strtolower($brand), config('services.vadeto_brands.allowed'))):
                 return [];
-            }
+            endif;
             $response = $this->request('POST', $url, $data);
-
             return $response;
         } catch (Exception $e) {
-            $this->log('Exception getImages: '.$e->getMessage(), $url, $data);
+            $this->log('warning', 'Exception getImages: '.$e->getMessage(), $url, $data);
         }
-
         return [];
     }
 
@@ -126,11 +121,11 @@ class VadetoBrands
     /*  ========================================================================= */
     /*  LOG */
     /*  ========================================================================= */
-    private function log(string $title, string $url, array $data = [], array $response = []) {
-        Log::channel('vadeto_brands')->info($title);
-        Log::channel('vadeto_brands')->info(config('services.vadeto_brands.url').$url);
-        Log::channel('vadeto_brands')->info('data', $data);
-        Log::channel('vadeto_brands')->info('response', $response);
-        Log::channel('vadeto_brands')->info('================================================================================');
+    private function log(string $level, string $title, string $url, array $data = [], array $response = []) {
+        Log::channel('vadeto_brands')->$level($title, [
+            'url' => config('services.vadeto_brands.url').$url,
+            'data' => $data,
+            'response' => $response
+        ]);
     }
 }

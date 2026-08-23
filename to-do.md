@@ -63,7 +63,7 @@ NIANTECH
 🟢 Que se puedan poner videos en el banner
 🟢 Mejorar throw para excepciones de Odoo en registros/ediciones/eliminaciones, generando un throw especifico
 🟢 Los iconos de los contadores del ecommerce, remover la bolita si no tiene nada, y ponerla en el color primario
-🟡 Rediseño
+🟢 Rediseño
     - 🟢 Limpiar css custom dark
     - 🟢 Mejorar dark css
     - 🟢 El botón de categorías dirá: "Productos" y eliminar el botón de productos ho ver como es la mejor manera.
@@ -71,8 +71,8 @@ NIANTECH
     - 🟢 página de carrito
     - 🟢 Placeholder de imagenes a productos sin imagen con marca del logo
     - 🟢 Grafica de analiticas la de pastel, se ve muy grande
-    - Los calendarios de rangos no se ven bien en modo oscuro
-    - Graficas anteriores
+    - 🟢 Los calendarios de rangos no se ven bien en modo oscuro
+    - 🟢 Graficas anteriores
 🟢 Usar vite
 🟢 Actualizar livewire v4 
 🟢 Instalar echo 
@@ -88,8 +88,10 @@ NIANTECH
 🟢 Agregar logs para pasarelas de pago
 🟢 Generar un buen diseño para el modal del popup
 🟢 Mejorar filtro de precios ya que si hay productos en USD, ya no es consistente el filtro ya que filtra por el valor guardado de la base de datos ejemplo 10usd, y si el filtro de de 0 a 100, 100 dolares en pesos son como 1700, entonces esos productos de 1700 pesos se seguiran mostrando ya que su valor es 10 usd, me doy a entender?
+🟢 Método de envío por default el más caro
+🟢 Formulario con variaciones de tipo dinamico
+🟡 Orden sin pago, se reintenta despues de 2 meses? que pasaria si ya cambiaron los precios?
 🟡 Mejora absoluta de los filtros del sidebar del catálogo de productos
-🟡 Método de envío por default, el más barato pero solo si no han escogido ya alguno
 🟡 Cancelación de ordenes a la semana de no haberlas pagado
 🟡 Sinonimos
 🟡 ¿El Rastreo como funcionará ya con odoo integrado?

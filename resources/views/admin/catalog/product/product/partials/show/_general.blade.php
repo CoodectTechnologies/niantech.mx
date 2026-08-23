@@ -534,21 +534,21 @@
                         {{-- Body --}}
                         <div class="card-body">
                             {{-- Galería --}}
-                            @if($variant->images->count() > 0)
+                            @if($variant->productImages->count() > 0)
                                 <div class="mb-4">
                                     <label class="text-muted fw-bold fs-7 mb-2">
                                         <i class="fa-light fa-images me-1"></i>{{ __('Gallery') }}
                                     </label>
                                     <div class="d-flex flex-wrap gap-2">
-                                        @foreach($variant->images->take(4) as $galleryImage)
+                                        @foreach($variant->productImages->take(4) as $galleryImage)
                                             <div class="symbol symbol-60px" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#galleryModal{{ $variant->id }}">
                                                 <img src="{{ $galleryImage->imagePreview() }}" alt="{{ $variant->sku }}" class="rounded" style="width: 60px; height: 60px; object-fit: cover;">
                                             </div>
                                         @endforeach
-                                        @if($variant->images->count() > 4)
+                                        @if($variant->productImages->count() > 4)
                                             <div class="symbol symbol-60px" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#galleryModal{{ $variant->id }}">
                                                 <span class="symbol-label bg-light-primary text-primary fw-bold fs-7">
-                                                    +{{ $variant->images->count() - 4 }}
+                                                    +{{ $variant->productImages->count() - 4 }}
                                                 </span>
                                             </div>
                                         @endif
@@ -567,7 +567,7 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="row g-3">
-                                                        @foreach($variant->images as $galleryImage)
+                                                        @foreach($variant->productImages as $galleryImage)
                                                             <div class="col-md-3 col-sm-4 col-6">
                                                                 <a href="{{ $galleryImage->imagePreview() }}" target="_blank">
                                                                     <img src="{{ $galleryImage->imagePreview() }}" 
