@@ -16,22 +16,6 @@
                 <small class="form-text text-danger" role="alert">{{ $message }}</small>
             @enderror
         </div>
-        @if(config('services.erp.status'))
-            <!--begin::Input group-->
-            <div class="fv-row mb-7">
-                <label class="fs-6 fw-bold form-label mb-2">
-                    <span class="">PayPal - ERP ID</span>
-                </label>
-                <input wire:model="paypalErpId"
-                    class="form-control form-control-solid @error('paypalErpId') invalid-feedback @enderror"
-                    placeholder="Ejem: Aaom6OSz_cvoi7C72DFaxwxKuAclEBeXA7ua-j1EenB73XoSBOIYKTcA6_uFbpJc5N46-bXehUdLVeZM"
-                    name="" />
-                @error('paypalErpId')
-                    <small class="form-text text-danger" role="alert">{{ $message }}</small>
-                @enderror
-            </div>
-            <!--end::Input group-->
-        @endif
         <!--begin::Input group-->
         <div class="fv-row mb-7">
             <label class="fs-6 fw-bold form-label mb-2">

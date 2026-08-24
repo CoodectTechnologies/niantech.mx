@@ -115,7 +115,7 @@
                                             x-on:blur="generateVariantsDebounced()"
                                             x-model="valObj.value"
                                             type="text"
-                                            class="border-0 bg-transparent fw-bold text-primary"
+                                            class="border-0 bg-transparent fw-bold text-primary form-control form-control-sm"
                                             style="width: 100px; outline: none;"
                                             placeholder="Value">
 

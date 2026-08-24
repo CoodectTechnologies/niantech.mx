@@ -11,14 +11,12 @@ class Form extends Component
 {
     public $method;
     public $stripeStatus;
-    public $stripeErpId;
     public $stripePublic;
     public $stripeSecret;
 
     protected function rules() {
         return [
             'stripeStatus' => 'nullable',
-            'stripeErpId' => 'nullable',
             'stripePublic' => 'nullable',
             'stripeSecret' => 'nullable',
         ];
@@ -26,7 +24,6 @@ class Form extends Component
     public function mount($method) {
         $this->method = $method;
         $this->stripeStatus = config('services.stripe.status');
-        $this->stripeErpId = config('services.stripe.erp_id');
         $this->stripePublic = config('services.stripe.public');
         $this->stripeSecret = config('services.stripe.secret');
     }
@@ -37,7 +34,6 @@ class Form extends Component
         $this->validate();
         try {
             setEnvValue('STRIPE_STATUS', $this->stripeStatus);
-            setEnvValue('STRIPE_ERP_ID', $this->stripeErpId);
             setEnvValue('STRIPE_KEY', $this->stripePublic);
             setEnvValue('STRIPE_SECRET', $this->stripeSecret);
             if (file_exists(App::getCachedConfigPath())) {

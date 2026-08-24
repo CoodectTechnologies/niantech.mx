@@ -14,6 +14,16 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="order-summary-wrapper">
+                        @if(!$isOrderValid)
+                            <div class="alert alert-danger" role="alert">
+                                <strong>{{ __('Payment unavailable') }}</strong>
+                                <ul class="mb-0 mt-2">
+                                    @foreach($paymentValidationErrors as $validationError)
+                                        <li>{{ $validationError }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         @include('ecommerce.checkout.partials.payment.payment._index')
                     </div>
                 </div>

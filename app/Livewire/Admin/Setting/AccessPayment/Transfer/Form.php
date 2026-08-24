@@ -11,7 +11,6 @@ class Form extends Component
 {
     public $method;
     public $paymentStatus;
-    public $paymentErpId;
     public $paymentBank;
     public $paymentAccountBank;
     public $paymentTarget;
@@ -20,7 +19,6 @@ class Form extends Component
     protected function rules() {
         return [
             'paymentStatus' => 'required',
-            'paymentErpId' => 'required',
             'paymentAccountBank' => 'required',
             'paymentTarget' => 'required',
             'paymentBank' => 'required',
@@ -30,7 +28,6 @@ class Form extends Component
     public function mount($method) {
         $this->method = $method;
         $this->paymentStatus = config('services.transfer.status');
-        $this->paymentErpId = config('services.transfer.erp_id');
         $this->paymentAccountBank = config('services.transfer.account_bank');
         $this->paymentTarget = config('services.transfer.target');
         $this->paymentBank = config('services.transfer.bank');
@@ -43,7 +40,6 @@ class Form extends Component
         $this->validate();
         try {
             setEnvValue('TRANSFER_STATUS', $this->paymentStatus);
-            setEnvValue('TRANSFER_ERP_ID', $this->paymentErpId);
             setEnvValue('TRANSFER_BANK', $this->paymentBank);
             setEnvValue('TRANSFER_ACCOUNT_BANK', $this->paymentAccountBank);
             setEnvValue('TRANSFER_TARGET', $this->paymentTarget);

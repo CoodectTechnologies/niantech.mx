@@ -75,6 +75,13 @@ class CartService
             self::validateItem($item->model, $item->options);
         }
     }
+    public static function currentItemPrice(Product $product, int $quantity, ?int $variantId = null): float {
+        $price = $variantId
+            ? ProductVariant::with('product')->findOrFail($variantId)->getPriceFinal()
+            : $product->getPriceFinal();
+
+        return (float) ($price - self::priceWholesale($product, $quantity, $price));
+    }
     private static function validateOptions($product, $options): void {
         if (! isset($options['variant']) && $product->productVariants()->count()) {
             throw new Exception(__('This product has variations, please select the options indicated'));

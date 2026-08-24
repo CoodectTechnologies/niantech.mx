@@ -16,21 +16,6 @@
                 <small class="form-text text-danger" role="alert">{{ $message }}</small>
             @enderror
         </div>
-        @if(config('services.erp.status'))
-            <!--begin::Input group-->
-            <div class="fv-row mb-7">
-                <label class="fs-6 fw-bold form-label mb-2">
-                    <span class="">Stripe - ERP ID</span>
-                </label>
-                <input wire:model="stripeErpId"
-                    class="form-control form-control-solid @error('stripeErpId') invalid-feedback @enderror"
-                    placeholder="Ejem: pk_test_WUYDZRAxUFDfIhtYShxshVcZ00j9lAoooz" name="" />
-                @error('stripeErpId')
-                    <small class="form-text text-danger" role="alert">{{ $message }}</small>
-                @enderror
-            </div>
-            <!--end::Input group-->
-        @endif
         <!--begin::Input group-->
         <div class="fv-row mb-7">
             <label class="fs-6 fw-bold form-label mb-2">

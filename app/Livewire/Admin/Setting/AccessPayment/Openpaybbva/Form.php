@@ -13,7 +13,6 @@ class Form extends Component
     protected $listeners = ['render'];
     public $method;
     public $openpaybbvaStatus;
-    public $openpaybbvaErpId;
     public $openpaybbvaId;
     public $openpaybbvaPublic;
     public $openpaybbvaPrivate;
@@ -22,7 +21,6 @@ class Form extends Component
     protected function rules() {
         return [
             'openpaybbvaStatus' => 'nullable',
-            'openpaybbvaErpId' => 'nullable',
             'openpaybbvaId' => 'nullable',
             'openpaybbvaPublic' => 'nullable',
             'openpaybbvaPrivate' => 'nullable',
@@ -32,7 +30,6 @@ class Form extends Component
     public function mount($method) {
         $this->method = $method;
         $this->openpaybbvaStatus = config('services.openpay_bbva.status');
-        $this->openpaybbvaErpId = config('services.openpay_bbva.erp_id');
         $this->openpaybbvaId = config('services.openpay_bbva.id');
         $this->openpaybbvaPublic = config('services.openpay_bbva.public');
         $this->openpaybbvaPrivate = config('services.openpay_bbva.private');
@@ -47,7 +44,6 @@ class Form extends Component
         $this->validate();
         try {
             setEnvValue('OPENPAY_BBVA_STATUS', $this->openpaybbvaStatus);
-            setEnvValue('OPENPAY_BBVA_ERP_ID', $this->openpaybbvaErpId);
             setEnvValue('OPENPAY_BBVA_ID', $this->openpaybbvaId);
             setEnvValue('OPENPAY_BBVA_PUBLIC_KEY', $this->openpaybbvaPublic);
             setEnvValue('OPENPAY_BBVA_PRIVATE_KEY', $this->openpaybbvaPrivate);

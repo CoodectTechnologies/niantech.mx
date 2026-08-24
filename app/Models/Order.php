@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Services\Cart\CartService;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
@@ -181,6 +183,51 @@ class Order extends Model
         }
 
         return $products;
+    }
+    public function validateForPayment(): array {
+        $errors = [];
+        $this->load([
+            'orderProducts.product',
+            'orderProducts.productVariant.product',
+            'orderProducts.productVariant.productWarehouses',
+        ]);
+
+        if (in_array($this->status, [self::STATUS_CANCELED, self::STATUS_REFUND], true)) {
+            $errors[] = __('This order is no longer available for payment.');
+        }
+        if ($this->payment_status === self::PAYMENT_STATUS_APPROVED) {
+            $errors[] = __('This order has already been paid.');
+        }
+
+        foreach ($this->orderProducts as $orderProduct) {
+            $product = $orderProduct->product;
+            if (!$product || !$product->status) {
+                $errors[] = __('The product :product is no longer available.', ['product' => $product?->name ?? 'N/A']);
+                continue;
+            }
+
+            $variant = $orderProduct->productVariant;
+            if ($orderProduct->product_variant_id && (!$variant || $variant->product_id !== $product->id || !$variant->is_active)) {
+                $errors[] = __('The selected variant for :product is no longer available.', ['product' => $product->name]);
+                continue;
+            }
+
+            $currentPrice = CartService::currentItemPrice($product, $orderProduct->quantity, $variant?->id);
+            if (abs((float) $orderProduct->price - $currentPrice) > 0.01) {
+                $errors[] = __('The price of :product has changed.', ['product' => $product->name]);
+            }
+
+            if ($orderProduct->type !== Product::TYPE_DIGITAL) {
+                $availableQuantity = $variant
+                    ? $variant->getQuantityTotal()
+                    : $product->getQuantityTotal();
+                if ($availableQuantity < $orderProduct->quantity) {
+                    $errors[] = __('The stock for :product is no longer sufficient.', ['product' => $product->name]);
+                }
+            }
+        }
+
+        return array_values(array_unique($errors));
     }
     public function getProvidersCode() {
         $providersCode = [];

@@ -19,19 +19,6 @@
         <!--begin::Input group-->
         <div class="fv-row mb-7">
             <label class="fs-6 fw-bold form-label mb-2">
-                <span class="">ERP ID</span>
-            </label>
-            <input wire:model="mercadoPagoErpId"
-                class="form-control form-control-solid @error('mercadoPagoErpId') invalid-feedback @enderror"
-                placeholder="Ejem: 8 " name="" />
-            @error('mercadoPagoErpId')
-                <small class="form-text text-danger" role="alert">{{ $message }}</small>
-            @enderror
-        </div>
-        <!--end::Input group-->
-        <!--begin::Input group-->
-        <div class="fv-row mb-7">
-            <label class="fs-6 fw-bold form-label mb-2">
                 <span class="">Public key</span>
             </label>
             <input wire:model="mercadoPagoKey"

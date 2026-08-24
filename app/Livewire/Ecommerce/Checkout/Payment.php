@@ -6,6 +6,7 @@ use App\Http\Controllers\Ecommerce\Checkout\CheckoutController;
 use App\Models\Order;
 use Exception;
 use Illuminate\Support\Facades\Redirect;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\Exceptions\MPApiException;
@@ -22,21 +23,31 @@ class Payment extends Component
     public $stripeURL = null;
     public $mercadoPagoId = null;
     public $openpayBbvaURL = null;
+    public array $paymentValidationErrors = [];
+    #[Locked]
+    public $isOrderValid = true;
 
     public function mount(Order $order) {
         $this->order = $order;
-        $this->order->with(['productVariant', 'orderProducts', 'address', 'billingAddress']);
+        $this->order->load(['orderProducts', 'address', 'billingAddress']);
         $this->loadCurrency();
-        $this->loadProductProrate();
-        $this->loadStripe();
-        $this->loadMercadoPago();
-        $this->loadBbvaOpenpay();
+        $this->loadIsValidOrder();
+        if ($this->isOrderValid) {
+            $this->loadProductProrate();
+            $this->loadStripe();
+            $this->loadMercadoPago();
+            $this->loadBbvaOpenpay();
+        }
     }
     public function render() {
         return view('livewire.ecommerce.checkout.payment');
     }
     private function loadCurrency() {
         $this->currency = strtoupper($this->order->currency);
+    }
+    private function loadIsValidOrder(){
+        $this->paymentValidationErrors = $this->order->validateForPayment();
+        $this->isOrderValid = empty($this->paymentValidationErrors);
     }
     public function paymentPayPal($data) {
         $data = json_decode(json_encode($data));
@@ -46,7 +57,6 @@ class Payment extends Component
         $this->order->payment_data = json_encode($data);
         $this->order->update();
         CheckoutController::processOrder($this->order);
-
         return Redirect::route('ecommerce.checkout.complete', $this->order);
     }
     public function paymentTransfer() {
@@ -55,7 +65,6 @@ class Payment extends Component
         $this->order->update();
         CheckoutController::sendEmailInfoBank($this->order);
         CheckoutController::sendNotificationAdmin($this->order);
-
         return Redirect::route('ecommerce.checkout.complete', $this->order);
     }
     private function loadStripe() {

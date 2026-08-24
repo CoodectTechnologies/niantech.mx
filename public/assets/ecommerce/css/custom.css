@@ -754,6 +754,27 @@ span.product-category.sku {
     background: transparent;
 }
 
+.gallery-card .gallery-overlay {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    backdrop-filter: blur(2px);
+    transition: opacity 0.2s ease-in-out;
+}
+
+.gallery-card:hover .gallery-overlay {
+    opacity: 1 !important;
+}
+
+.object-fit-contain {
+    object-fit: contain;
+}
+
+.transition-all {
+    transition: all 0.2s ease-in-out;
+}
+
 .product-variations>.disabled,
 button.color:disabled,
 button[disabled].btn-cart {

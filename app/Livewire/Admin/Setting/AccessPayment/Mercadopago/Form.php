@@ -11,7 +11,6 @@ class Form extends Component
 {
     public $method;
     public $mercadoStatus;
-    public $mercadoPagoErpId;
     public $mercadoPagoKey;
     public $mercadoPagoToken;
     public $mercadoPagoCountryCode;
@@ -20,7 +19,6 @@ class Form extends Component
     protected function rules() {
         return [
             'mercadoStatus' => 'nullable',
-            'mercadoPagoErpId' => 'nullable',
             'mercadoPagoKey' => 'nullable',
             'mercadoPagoToken' => 'nullable',
             'mercadoPagoCountryCode' => 'nullable',
@@ -30,7 +28,6 @@ class Form extends Component
     public function mount($method) {
         $this->method = $method;
         $this->mercadoStatus = config('services.mercadopago.status');
-        $this->mercadoPagoErpId = config('services.mercadopago.erp_id');
         $this->mercadoPagoKey = config('services.mercadopago.key');
         $this->mercadoPagoToken = config('services.mercadopago.token');
         $this->mercadoPagoCountryCode = config('services.mercadopago.country_code');
@@ -43,7 +40,6 @@ class Form extends Component
         $this->validate();
         try {
             setEnvValue('MERCADOPAGO_STATUS', $this->mercadoStatus);
-            setEnvValue('MERCADOPAGO_ERP_ID', $this->mercadoPagoErpId);
             setEnvValue('MERCADOPAGO_PUBLIC_KEY', $this->mercadoPagoKey);
             setEnvValue('MERCADOPAGO_ACCESS_TOKEN', $this->mercadoPagoToken);
             setEnvValue('MERCADOPAGO_COUNTRY_CODE', $this->mercadoPagoCountryCode);

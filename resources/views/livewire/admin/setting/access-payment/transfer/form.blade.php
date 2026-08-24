@@ -17,19 +17,6 @@
             @enderror
         </div>
         <!--begin::Input group-->
-        @if(config('services.erp.status'))
-            <div class="fv-row mb-7">
-                <label class="fs-6 fw-bold form-label mb-2">
-                    <span class="required">ERP ID</span>
-                </label>
-                <input wire:model="paymentErpId"
-                    class="form-control form-control-solid @error('paymentErpId') invalid-feedback @enderror"
-                    placeholder="Ejem: BBVA" name="" />
-                @error('paymentErpId')
-                    <small class="form-text text-danger" role="alert">{{ $message }}</small>
-                @enderror
-            </div>
-        @endif
         <div class="fv-row mb-7">
             <label class="fs-6 fw-bold form-label mb-2">
                 <span class="required">{{ __('Bank name') }}</span>

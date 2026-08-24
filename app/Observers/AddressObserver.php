@@ -55,23 +55,33 @@ class AddressObserver
         }
     }
     private function removeDefaultOthers(Address $address) {
-        $updateData = [];
+        $updateOthers = [];
         if ($address->is_default) {
-            $updateData['is_default'] = false;
+            $updateOthers['is_default'] = false;
         }
         if ($address->is_billing_default) {
-            $updateData['is_billing_default'] = false;
+            $updateOthers['is_billing_default'] = false;
         }
         if (config('services.odoo.status')) {
             if ($address->is_billing) {
-                $updateData['is_billing'] = false;
+                $updateOthers['is_billing'] = false;
             }
         }
-        if ($updateData && $address->user_id) {
+        if ($updateOthers && $address->user_id) {
             Address::query()
                 ->where('user_id', $address->user_id)
                 ->where('id', '<>', $address->id)
-                ->update($updateData);
+                ->update($updateOthers);
+        }
+        if ($address->is_billing && $address->user_id) {
+            $existsDefault = Address::query()
+                ->where('user_id', $address->user_id)
+                ->where('is_billing', true)
+                ->where('is_billing_default', true)
+                ->exists();
+            if(!$existsDefault){
+                $address->update(['is_billing_default' => true]);
+            }
         }
     }
 }

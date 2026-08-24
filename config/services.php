@@ -46,14 +46,12 @@ return [
 
     'stripe' => [
         'status' => (bool) env('STRIPE_STATUS'),
-        'erp_id' => env('STRIPE_ERP_ID'),
         'public' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
 
     'mercadopago' => [
         'status' => (bool) env('MERCADOPAGO_STATUS'),
-        'erp_id' => env('MERCADOPAGO_ERP_ID'),
         'url' => env('MERCADOPAGO_URL'),
         'key' => env('MERCADOPAGO_PUBLIC_KEY'),
         'token' => env('MERCADOPAGO_ACCESS_TOKEN'),
@@ -63,13 +61,11 @@ return [
 
     'paypal' => [
         'status' => (bool) env('PAYPAL_STATUS'),
-        'erp_id' => env('PAYPAL_ERP_ID'),
         'client_id' => env('PAYPAL_CLIENT_ID'),
     ],
 
     'openpay_bbva' => [
         'status' => (bool) env('OPENPAY_BBVA_STATUS'),
-        'erp_id' => env('OPENPAY_BBVA_ERP_ID'),
         'url' => env('OPENPAY_BBVA_URL'),
         'id' => env('OPENPAY_BBVA_ID'),
         'private' => env('OPENPAY_BBVA_PRIVATE_KEY'),
@@ -79,7 +75,6 @@ return [
 
     'transfer' => [
         'status' => (bool) env('TRANSFER_STATUS'),
-        'erp_id' => env('TRANSFER_ERP_ID'),
         'account_bank' => env('TRANSFER_ACCOUNT_BANK'),
         'target' => env('TRANSFER_TARGET'),
         'bank' => env('TRANSFER_BANK'),

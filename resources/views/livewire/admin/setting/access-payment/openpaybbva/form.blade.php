@@ -16,21 +16,6 @@
                 <small class="form-text text-danger" role="alert">{{ $message }}</small>
             @enderror
         </div>
-        @if(config('services.erp.status'))
-            <!--begin::Input group-->
-            <div class="fv-row mb-7">
-                <label class="fs-6 fw-bold form-label mb-2">
-                    <span class="">ERP ID</span>
-                </label>
-                <input wire:model="openpaybbvaErpId"
-                    class="form-control form-control-solid @error('openpaybbvaErpId') invalid-feedback @enderror"
-                    placeholder="Ejem: m9pzu6k94flw7actfvip" name="" />
-                @error('openpaybbvaErpId')
-                    <small class="form-text text-danger" role="alert">{{ $message }}</small>
-                @enderror
-            </div>
-            <!--end::Input group-->
-        @endif
         <!--begin::Input group-->
         <div class="fv-row mb-7">
             <label class="fs-6 fw-bold form-label mb-2">

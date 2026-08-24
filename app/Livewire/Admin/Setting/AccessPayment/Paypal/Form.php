@@ -11,20 +11,17 @@ class Form extends Component
 {
     public $method;
     public $paypalStatus;
-    public $paypalErpId;
     public $paypalClientId;
 
     protected function rules() {
         return [
             'paypalStatus' => 'nullable',
-            'paypalErpId' => 'nullable',
             'paypalClientId' => 'nullable',
         ];
     }
     public function mount($method) {
         $this->method = $method;
         $this->paypalStatus = config('services.paypal.status');
-        $this->paypalErpId = config('services.paypal.erp_id');
         $this->paypalClientId = config('services.paypal.client_id');
     }
     public function render() {
@@ -34,7 +31,6 @@ class Form extends Component
         $this->validate();
         try {
             setEnvValue('PAYPAL_STATUS', $this->paypalStatus);
-            setEnvValue('PAYPAL_ERP_ID', $this->paypalErpId);
             setEnvValue('PAYPAL_CLIENT_ID', $this->paypalClientId);
             if (file_exists(App::getCachedConfigPath())) {
                 Artisan::call('config:cache');
