@@ -10,7 +10,7 @@ use App\Models\Order;
 use App\Models\OrderProviderError;
 
 // TODO: Sincronizador de ordenes
-class OrderController extends Controller
+class OrderService 
 {
     public $odoo;
 

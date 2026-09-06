@@ -56,32 +56,32 @@ class LocationService extends Controller
         foreach ($this->countryResource->getAll(domain: $domain) as $countries) {
             $chunkNow = now();
 
-            $providerIds = array_values(array_filter(array_map(function ($countryData) { return $countryData['provider_id']; }, $countries)));
+            $externalIds = array_values(array_filter(array_map(function ($countryData) { return $countryData['external_id']; }, $countries)));
             $codes = array_values(array_filter(array_map(function ($countryData) { return $countryData['code']; }, $countries)));
 
-            $existingByProvider = Country::query()->where('provider', OdooClient::$code)->whereIn('provider_id', $providerIds)->get()->keyBy('provider_id');
+            $existingByProvider = Country::query()->where('external', OdooClient::$code)->whereIn('external_id', $externalIds)->get()->keyBy('external_id');
             $existingByCode = Country::query()->whereIn('code', $codes)->get()->keyBy('code');
 
             $toUpdate = [];
             $toCreate = [];
             foreach ($countries as $countryData) {
                 try {
-                    $providerId = $countryData['provider_id'];
-                    if (! $providerId) {
+                    $externalId = $countryData['external_id'];
+                    if (! $externalId) {
                         $result['skipped_countries'] += 1;
 
                         continue;
                     }
 
                     $code = $countryData['code'];
-                    $existingCountry = $existingByProvider[$providerId] ?? null;
+                    $existingCountry = $existingByProvider[$externalId] ?? null;
                     if (! $existingCountry && $code) {
                         $existingCountry = $existingByCode[$code] ?? null;
                     }
 
                     $updateRow = [
-                        'provider' => $countryData['provider'],
-                        'provider_id' => $providerId,
+                        'external' => $countryData['external'],
+                        'external_id' => $externalId,
                         'name' => $countryData['name'],
                         'code' => $code,
                         'phonecode' => $countryData['phone_code'],
@@ -117,43 +117,43 @@ class LocationService extends Controller
         Country::query()->whereNotIn('code', $countriesAvaliables)->delete();
     }
     protected function syncStates(array &$result): void {
-        $countriesByProvider = Country::query()->whereNotNull('provider_id')->get()->keyBy('provider_id');
-        $countryProviderIds = $countriesByProvider->keys()->all();
+        $countriesByProvider = Country::query()->whereNotNull('external_id')->get()->keyBy('external_id');
+        $countryExternalIds = $countriesByProvider->keys()->all();
 
-        if (empty($countryProviderIds)) {
+        if (empty($countryExternalIds)) {
             return;
         }
 
-        $domain = [['country_id', 'in', array_values($countryProviderIds)]];
+        $domain = [['country_id', 'in', array_values($countryExternalIds)]];
         foreach ($this->stateResource->getAll(domain: $domain) as $states) {
             $chunkNow = now();
-            $providerIds = array_values(array_filter(array_map(function ($stateData) { return $stateData['provider_id']; }, $states)));
-            $existingByProvider = State::query()->whereIn('provider_id', $providerIds)->get()->keyBy('provider_id');
+            $externalIds = array_values(array_filter(array_map(function ($stateData) { return $stateData['external_id']; }, $states)));
+            $existingByProvider = State::query()->whereIn('external_id', $externalIds)->get()->keyBy('external_id');
 
             $toUpdate = [];
             $toCreate = [];
             foreach ($states as $stateData) {
                 try {
-                    $countryProviderId = $stateData['country_provider_id'];
-                    $country = $countriesByProvider[$countryProviderId] ?? null;
+                    $countryExternalId = $stateData['country_external_id'];
+                    $country = $countriesByProvider[$countryExternalId] ?? null;
                     if (! $country) {
                         $result['skipped_states'] += 1;
 
                         continue;
                     }
 
-                    $providerId = $stateData['provider_id'];
-                    if (! $providerId) {
+                    $externalId = $stateData['external_id'];
+                    if (! $externalId) {
                         $result['skipped_states'] += 1;
 
                         continue;
                     }
 
-                    $state = $existingByProvider[$providerId] ?? null;
+                    $state = $existingByProvider[$externalId] ?? null;
 
                     $row = [
-                        'provider' => OdooClient::$code,
-                        'provider_id' => $providerId,
+                        'external' => OdooClient::$code,
+                        'external_id' => $externalId,
                         'country_id' => $country->id,
                         'name' => $stateData['name'],
                         'updated_at' => $chunkNow,
@@ -184,6 +184,6 @@ class LocationService extends Controller
                 $result['created_states'] += count($toCreate);
             }
         }
-        State::query()->whereNull('provider_id')->delete();
+        State::query()->whereNull('external_id')->delete();
     }
 }

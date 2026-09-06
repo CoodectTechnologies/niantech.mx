@@ -2,7 +2,6 @@
 
 namespace App\Services\Synchronizers\Catalog;
 
-use App\Http\Controllers\Controller;
 use App\Integrations\Odoo\Client\OdooClient;
 use App\Integrations\Odoo\Resources\Catalog\ProductResource;
 use App\Integrations\Odoo\Resources\Catalog\WarehouseResource;
@@ -13,9 +12,9 @@ use App\Models\ProductCategory;
 use App\Models\ProductCharacteristic;
 use App\Models\UnitType;
 use App\Integrations\VadetoBrands\Resources\Catalog\ProductResource as ContentProductResource;
-use App\Services\Synchronizers\Currency\CurrencyController;
+use App\Services\Synchronizers\Currency\CurrencyService;
 
-class ProductController extends Controller
+class ProductService
 {
     public ProductResource $productService;
     public WarehouseResource $warehouseService;
@@ -39,14 +38,14 @@ class ProductController extends Controller
                 'products' => ['created' => 0, 'updated' => 0],
                 'categories' => ['attached' => 0, 'detached' => 0, 'updated' => 0],
             ];
-            $products = Product::with('productCategories')->where('provider', OdooClient::$code)->whereNotNull('provider_id')->get()->keyBy('provider_id');
+            $products = Product::with('productCategories')->where('external', OdooClient::$code)->whereNotNull('external_id')->get()->keyBy('external_id');
             foreach ($this->productService->getAll() as $productsProvider) {
                 foreach ($productsProvider as $productProvider) {
-                    if (! isset($products[$productProvider['provider_id']])) {
+                    if (! isset($products[$productProvider['external_id']])) {
                         $product = $this->create($productProvider);
                         $result['products']['created'] += 1;
                     } else {
-                        $product = $products[$productProvider['provider_id']];
+                        $product = $products[$productProvider['external_id']];
                         $isUpdate = $this->update($product, $productProvider);
                         if ($isUpdate) {
                             $result['products']['updated'] += 1;
@@ -70,16 +69,16 @@ class ProductController extends Controller
         });
     }
     protected function create($productProvider) {
-        $brandId = BrandController::save($productProvider['brand']);
-        $currencyId = CurrencyController::save($productProvider['currency']);
+        $brandId = BrandService::save($productProvider['brand']);
+        $currencyId = CurrencyService::save($productProvider['currency']);
         $unitTypeId = UnitType::getUnitTypeIdByCode('H87'); // Pieza
         $product = Product::create([
             'product_brand_id' => $brandId,
             'currency_id' => $currencyId,
             'unit_type_id' => $unitTypeId,
             'sku' => strval($productProvider['sku']),
-            'provider' => $productProvider['provider'],
-            'provider_id' => $productProvider['provider_id'],
+            'external' => $productProvider['external'],
+            'external_id' => $productProvider['external_id'],
             'name' => $productProvider['name'],
             'name_commercial' => $productProvider['name_commercial'],
             'cost' => $productProvider['cost'],
@@ -115,12 +114,12 @@ class ProductController extends Controller
                 $product->setTranslation('description', $languageCode, $productProvider['description'][$languageCode]);
             }
         }
-        $brandId = BrandController::save($productProvider['brand']);
+        $brandId = BrandService::save($productProvider['brand']);
         if ($brandId != $product->product_brand_id) {
             $product->product_brand_id = $brandId;
             $isUpdate = true;
         }
-        $currencyId = CurrencyController::save($productProvider['currency']);
+        $currencyId = CurrencyService::save($productProvider['currency']);
         if ($currencyId != $product->currency_id) {
             $product->currency_id = $currencyId;
             $isUpdate = true;
@@ -129,12 +128,12 @@ class ProductController extends Controller
         //     $product->unit_type_id = UnitType::getUnitTypeIdByCode('H87');
         //     $isUpdate = true;
         // endif;
-        if ($product->provider != $productProvider['provider']) {
-            $product->provider = $productProvider['provider'];
+        if ($product->external != $productProvider['external']) {
+            $product->external = $productProvider['external'];
             $isUpdate = true;
         }
-        if ($product->provider_id != $productProvider['provider_id']) {
-            $product->provider_id = $productProvider['provider_id'];
+        if ($product->external_id != $productProvider['external_id']) {
+            $product->external_id = $productProvider['external_id'];
             $isUpdate = true;
         }
         if (abs($product->price - $productProvider['price']) > 0.00001 && $productProvider['price']) {
@@ -173,7 +172,7 @@ class ProductController extends Controller
     /*  ========================================================================= */
     protected function categories($product, $productProvider, $result) {
         if (isset($productProvider['categories']) && count($productProvider['categories'])) {
-            $syncCategories = CategoryController::save($productProvider['categories']);
+            $syncCategories = CategoryService::save($productProvider['categories']);
             $currentSyncData = $product->productCategories->pluck('product_category_id')->toArray();
             if (array_diff($currentSyncData, $syncCategories) || array_diff($syncCategories, $currentSyncData)) {
                 $resultSync = $product->productCategories()->sync($syncCategories);
@@ -192,31 +191,31 @@ class ProductController extends Controller
     public function status() {
         return activity()->withoutLogs(function () {
             $startTime = microtime(true);
-            $products = Product::where('provider', OdooClient::$code)->whereNotNull('provider_id')->get()->keyBy('provider_id');
+            $products = Product::where('external', OdooClient::$code)->whereNotNull('external_id')->get()->keyBy('external_id');
             $toPublish = [];
             foreach ($this->productService->getAll() as $productsProvider) {
                 foreach ($productsProvider as $productProvider) {
-                    $providerId = $productProvider['provider_id'];
-                    if (isset($products[$providerId])) {
-                        $product = $products[$providerId];
+                    $externalId = $productProvider['external_id'];
+                    if (isset($products[$externalId])) {
+                        $product = $products[$externalId];
                         if ($product->status == Product::STATUS_DRAFT) {
-                            $toPublish[] = ['provider_id' => $product->provider_id, 'status' => Product::STATUS_PUBLISHED];
+                            $toPublish[] = ['external_id' => $product->external_id, 'status' => Product::STATUS_PUBLISHED];
                         }
-                        unset($products[$providerId]);
+                        unset($products[$externalId]);
                     }
                 }
             }
             $toDraft = [];
             foreach ($products as $product) {
                 if ($product->status == Product::STATUS_PUBLISHED) {
-                    $toDraft[] = ['provider_id' => $product->provider_id, 'status' => Product::STATUS_DRAFT];
+                    $toDraft[] = ['external_id' => $product->external_id, 'status' => Product::STATUS_DRAFT];
                 }
             }
             if (! empty($toDraft)) {
-                Product::batchUpdate($toDraft, 'provider_id');
+                Product::batchUpdate($toDraft, 'external_id');
             }
             if (! empty($toPublish)) {
-                Product::batchUpdate($toPublish, 'provider_id');
+                Product::batchUpdate($toPublish, 'external_id');
             }
             if (! empty($toDraft) || ! empty($toPublish)) {
                 ProductCategory::regenerateCache();
@@ -237,9 +236,9 @@ class ProductController extends Controller
         return activity()->withoutLogs(function () {
             $result = ['attached' => 0, 'detached' => 0, 'updated' => 0];
             $products = Product::with('productWarehouses')
-                ->whereNotNull('provider_id')
+                ->whereNotNull('external_id')
                 ->get()
-                ->keyBy('provider_id');
+                ->keyBy('external_id');
             $seen = [];
             foreach ($this->warehouseService->getAll() as $warehousesByProduct) {
                 foreach ($warehousesByProduct as $providerProductId => $warehouses) {
@@ -248,7 +247,7 @@ class ProductController extends Controller
                         continue;
                     }
                     $product = $products[$providerProductId];
-                    $syncWarehouses = WarehouseController::save($warehouses);
+                    $syncWarehouses = WarehouseService::save($warehouses);
                     $currentSyncData = $product->productWarehouses->mapWithKeys(function ($item) {
                         return [$item->id => ['quantity' => floatval($item->pivot->quantity)]];
                     })->toArray();
@@ -286,8 +285,8 @@ class ProductController extends Controller
             ];
             $products = Product::query()
                 ->with(['productAttributes', 'productCharacteristics'])
-                ->where('provider', OdooClient::$code)
-                ->whereNotNull('provider_id')
+                ->where('external', OdooClient::$code)
+                ->whereNotNull('external_id')
                 ->whereNotNull('sku')
                 ->get()
                 ->keyBy('sku');
@@ -457,8 +456,8 @@ class ProductController extends Controller
         return activity()->withoutLogs(function () {
             $result = ['created' => 0];
             Product::query()
-                ->where('provider', OdooClient::$code)
-                ->whereNotNull('provider_id')
+                ->where('external', OdooClient::$code)
+                ->whereNotNull('external_id')
                 ->whereNotNull('sku')
                 ->whereDoesntHave('image')
                 ->with('productBrand')
@@ -484,8 +483,8 @@ class ProductController extends Controller
                 'imagesVadetoBrands' => $this->imageService->getAll($brand, config('translatable.fallback'), $sku),
             ];
         }
-        foreach ($images as $provider => $imagesProvider) {
-            if ($onlyProvider && $onlyProvider !== $provider) {
+        foreach ($images as $external => $imagesProvider) {
+            if ($onlyProvider && $onlyProvider !== $external) {
                 continue;
             }
             $files = [];
@@ -505,13 +504,13 @@ class ProductController extends Controller
                     if ($i == 0) {
                         $urlLocal = 'catalog/product/'.$imgName;
                         if (mediaManagerSeeder($file, $urlLocal)) {
-                            imageManager($urlLocal, 800, $product, $provider);
+                            imageManager($urlLocal, 800, $product, $external);
                             $result['created'] += 1;
                         }
                     } else {
                         $urlLocal = 'catalog/product/gallery/'.$imgName;
                         if (mediaManagerSeeder($file, $urlLocal)) {
-                            imagesManager($urlLocal, 800, $product, $provider);
+                            imagesManager($urlLocal, 800, $product, $external);
                             $result['created'] += 1;
                         }
                     }

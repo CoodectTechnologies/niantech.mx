@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Order\Provider;
 
 use App\Models\Order;
-use App\Services\Synchronizers\Order\OrderController as OrderControllerProvider;
+use App\Services\Synchronizers\Order\OrderService;
 use Livewire\Component;
 
 class Error extends Component
@@ -21,7 +21,7 @@ class Error extends Component
         return view('livewire.admin.order.provider.error', compact('orderProviderErrors'));
     }
     public function resendOrdersProvider() {
-        OrderControllerProvider::create($this->order);
+        OrderService::create($this->order);
         $this->dispatch('render');
     }
 }

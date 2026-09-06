@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->id();
             // Data contact
             $table->string('folio')->index();
-            $table->integer('provider_id')->index();
+            $table->integer('external_id')->index();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('state_id')->nullable()->constrained()->onDelete('set null');
             $table->string('municipality');

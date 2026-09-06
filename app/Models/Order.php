@@ -98,7 +98,7 @@ class Order extends Model
     public function hasProductProvider() {
         $hasProductProvider = false;
         foreach ($this->products as $product) {
-            if ($product->provider) {
+            if ($product->external) {
                 $hasProductProvider = true;
                 break;
             }
@@ -232,8 +232,8 @@ class Order extends Model
     public function getProvidersCode() {
         $providersCode = [];
         foreach ($this->orderProductWarehouses as $orderProductWarehouse) {
-            if (! in_array($orderProductWarehouse->provider, $providersCode)) {
-                $providersCode[] = $orderProductWarehouse->provider;
+            if (! in_array($orderProductWarehouse->external, $providersCode)) {
+                $providersCode[] = $orderProductWarehouse->external;
             }
         }
 

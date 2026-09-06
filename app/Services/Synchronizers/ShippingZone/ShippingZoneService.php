@@ -8,7 +8,7 @@ use App\Models\Country;
 use App\Models\ShippingZone;
 
 // TODO: Sincronizar métodos de envíos de odoo
-class ShippingZoneController extends Controller
+class ShippingZoneService
 {
     public $provider;
 
@@ -19,7 +19,7 @@ class ShippingZoneController extends Controller
         // $shippingZoneController = new self;
         // $shippingZonesProvider = $shippingZoneController->provider->getShippingMethods();
         // foreach ($shippingZonesProvider as $shippingCodeProvider => $shippingZoneProvider) {
-        //     $shippingZone = ShippingZone::query()->where('provider_id', $shippingCodeProvider)->first();
+        //     $shippingZone = ShippingZone::query()->where('external_id', $shippingCodeProvider)->first();
         //     if (! $shippingZone) {
         //         self::create($shippingZoneProvider);
         //     }
@@ -32,7 +32,7 @@ class ShippingZoneController extends Controller
         //     'name' => $shippingZoneProvider['name'],
         //     'alias' => $shippingZoneProvider['alias'],
         //     'provider' => $shippingZoneProvider['provider'],
-        //     'provider_id' => $shippingZoneProvider['providerId'],
+        //     'external_id' => $shippingZoneProvider['externalId'],
         // ]);
         // $stateIds = $country->states->pluck('id');
         // $shippingZone->states()->sync($stateIds);

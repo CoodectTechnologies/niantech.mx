@@ -31,19 +31,19 @@ class Index extends Component
                 'currency' => $orderInternal->currency,
             ];
         }
-        if (config('services.erp.status') && $this->user->provider_id) {
+        if (config('services.erp.status') && $this->user->external_id) {
             $erp = new ERP;
             $ordersIdsInternalByErp = [];
             foreach ($ordersInternal as $orderInternal) {
                 foreach ($orderInternal->orderProviders as $orderProvider) {
-                    if ($orderProvider->provider == $erp->code) {
-                        $ordersIdsInternalByErp[] = $orderProvider->provider_id;
-                        $this->ordersInternal[$orderInternal->number]['so'] = $orderProvider->provider_id;
+                    if ($orderProvider->external == $erp->code) {
+                        $ordersIdsInternalByErp[] = $orderProvider->external_id;
+                        $this->ordersInternal[$orderInternal->number]['so'] = $orderProvider->external_id;
                     }
                 }
             }
             // Obtenemos el client id del erp
-            $clientId = $this->user->provider_id;
+            $clientId = $this->user->external_id;
             // Estas ordenes son cuando ya existian en el ERP, y la ecommerce apenas es nueva
             $ordersErp = $erp->getOrdersByClient($clientId);
             foreach ($ordersErp as $orderErp) {

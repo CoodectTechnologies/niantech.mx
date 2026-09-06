@@ -2,12 +2,11 @@
 
 namespace App\Services\Synchronizers\Currency;
 
-use App\Http\Controllers\Controller;
 use App\Models\Currency;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
-class CurrencyController extends Controller
+class CurrencyService
 {
     public function __construct() {}
     public static function save($currencyCode) {

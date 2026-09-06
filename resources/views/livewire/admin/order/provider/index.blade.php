@@ -18,8 +18,8 @@
                     <!--begin::Table row-->
                     <tr>
                         <td>
-                            <span class="badge badge-primary">{{ $orderProvider->provider }}
-                                {{ $orderProvider->provider_id }}</span>
+                            <span class="badge badge-primary">{{ $orderProvider->external }}
+                                {{ $orderProvider->external_id }}</span>
                         </td>
                         <td>
                             @if($orderProvider->provider_guide)

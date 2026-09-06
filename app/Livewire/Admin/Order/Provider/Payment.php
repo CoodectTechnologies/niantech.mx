@@ -5,7 +5,7 @@ namespace App\Livewire\Admin\Order\Provider;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\OrderProviderPayment;
-use App\Services\Synchronizers\Order\VoucherController;
+use App\Services\Synchronizers\Order\VoucherService;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -39,16 +39,16 @@ class Payment extends Component
     public function save() {
         $this->validate();
         if ($this->voucherTMP) {
-            $url = $this->voucherTMP->store('order/provider/'.$this->order->number.'/voucher');
+            $url = $this->voucherTMP->store('order/external/'.$this->order->number.'/voucher');
             $originalFileName = $this->voucherTMP->getClientOriginalName();
             $extension = pathinfo($originalFileName, PATHINFO_EXTENSION);
             $this->orderProviderPayment->voucher = $url;
             $this->orderProviderPayment->voucher_ext = $extension;
         }
         $this->orderProviderPayment->order_id = $this->order->id;
-        $this->orderProviderPayment->order_provider_ids = implode(', ', $this->order->orderProviders->pluck('provider_id')->toArray());
+        $this->orderProviderPayment->order_external_ids = implode(', ', $this->order->orderProviders->pluck('external_id')->toArray());
         $this->orderProviderPayment->save();
-        VoucherController::create($this->orderProviderPayment);
+        VoucherService::create($this->orderProviderPayment);
         $this->dispatch('render')->to('admin.order.provider.index');
     }
     private function loadTotal() {

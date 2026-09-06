@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands\Admin\Promotion;
+namespace App\Console\Commands\Admin\Catalog;
 
-use App\Models\Promotion;
+use App\Services\Synchronizers\Catalog\ProductService;
 use Illuminate\Console\Command;
 
-class InactivePromotion extends Command
+class ProductWarehouseCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'promotion:inactive';
+    protected $signature = 'catalog:product-warehouse';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Disable all promotion when the end date is less that today';
+    protected $description = 'Sync stock by warehouses';
 
     /**
      * Create a new command instance.
@@ -36,11 +36,8 @@ class InactivePromotion extends Command
      * @return int
      */
     public function handle() {
-        Promotion::where('active', true)
-            ->whereDate('date_end', '<=', date('Y-m-d'))
-            ->update([
-                'active' => false,
-            ]);
-        Promotion::regenerateCache();
+        $product = new ProductService;
+        $result = $product->warehouses();
+        $this->info(json_encode($result, JSON_PRETTY_PRINT));
     }
 }

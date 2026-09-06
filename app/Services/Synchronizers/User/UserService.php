@@ -51,9 +51,9 @@ class UserService extends Controller
                 ->whereIn('email', $emails)
                 ->orWhere(function ($query) use ($customers) {
                     foreach ($customers as $c) {
-                        if (! empty($c['provider_id']) && ! empty($c['provider'])) {
+                        if (! empty($c['external_id']) && ! empty($c['external'])) {
                             $query->orWhere(function ($q) use ($c) {
-                                $q->where('provider', $c['provider'])->where('provider_id', $c['provider_id']);
+                                $q->where('external', $c['external'])->where('external_id', $c['external_id']);
                             });
                         }
                     }
@@ -70,7 +70,7 @@ class UserService extends Controller
                     }
 
                     $user = $localUsers->first(function ($u) use ($customer) {
-                        return ($u->provider === $customer['provider'] && $u->provider_id == $customer['provider_id'])
+                        return ($u->external === $customer['external'] && $u->external_id == $customer['external_id'])
                             || strtolower(trim($u->email)) === strtolower(trim($customer['email']));
                     });
 
@@ -109,10 +109,10 @@ class UserService extends Controller
 
         User::query()
             ->where(function ($query) {
-                $query->whereNull('provider_id')->orWhere('provider_id', '');
+                $query->whereNull('external_id')->orWhere('external_id', '');
             })
             ->where(function ($query) {
-                $query->whereNull('provider')->orWhere('provider', '')->orWhere('provider', OdooClient::$code);
+                $query->whereNull('external')->orWhere('external', '')->orWhere('external', OdooClient::$code);
             })
             ->orderBy('id')
             ->chunkById(200, function ($users) use ($countriesAvaliables, $defaultCountryId, &$result) {
@@ -136,15 +136,15 @@ class UserService extends Controller
                             'phone' => $user->phone,
                         ];
 
-                        if (! ($customer['provider_id'] ?? false)) {
+                        if (! ($customer['external_id'] ?? false)) {
                             $customer = $this->customerResource->create($data);
                         } else {
-                            $customer = $this->customerResource->update((int) $customer['provider_id'], $data);
+                            $customer = $this->customerResource->update((int) $customer['external_id'], $data);
                         }
 
-                        if (empty($customer['provider_id'])) {
+                        if (empty($customer['external_id'])) {
                             $result['failed'] += 1;
-                            Log::channel('odoo.general')->error('Error syncing local user to provider: customer was not created or updated.', [
+                            Log::channel('odoo.general')->error('Error syncing local user to external: customer was not created or updated.', [
                                 'user_id' => $user->id,
                                 'email' => $email,
                             ]);
@@ -157,7 +157,7 @@ class UserService extends Controller
                         }
                     } catch (Throwable $e) {
                         $result['failed'] += 1;
-                        Log::channel('odoo.general')->error('Error syncing local user to provider: '.$e->getMessage(), [
+                        Log::channel('odoo.general')->error('Error syncing local user to external: '.$e->getMessage(), [
                             'user_id' => $user->id,
                             'email' => $user->email,
                             'file' => $e->getFile(),
@@ -183,8 +183,8 @@ class UserService extends Controller
     }
     protected function findUserLocal(array $customer): ?User {
         $user = User::query()
-            ->where('provider', $customer['provider'])
-            ->where('provider_id', $customer['provider_id'])
+            ->where('external', $customer['external'])
+            ->where('external_id', $customer['external_id'])
             ->first();
 
         if ($user) {
@@ -203,8 +203,8 @@ class UserService extends Controller
             'slug' => $this->buildUniqueSlug($name),
             'email' => $customer['email'],
             'phone' => $customer['phone'],
-            'provider' => $customer['provider'],
-            'provider_id' => $customer['provider_id'],
+            'external' => $customer['external'],
+            'external_id' => $customer['external_id'],
             'password' => null,
             'email_verified_at' => now(),
         ]);
@@ -217,12 +217,12 @@ class UserService extends Controller
         $newEmail = strtolower(trim($customer['email']));
         $newName = $this->getName($customer);
 
-        if ($user->provider != $customer['provider']) {
-            $user->provider = $customer['provider'];
+        if ($user->external != $customer['external']) {
+            $user->external = $customer['external'];
             $isUpdated = true;
         }
-        if ($user->provider_id != $customer['provider_id']) {
-            $user->provider_id = $customer['provider_id'];
+        if ($user->external_id != $customer['external_id']) {
+            $user->external_id = $customer['external_id'];
             $isUpdated = true;
         }
         $newCountryId = $this->countriesAvailable[$customer['country_id']]['id'] ?? $this->defaultCountryId;
@@ -291,8 +291,8 @@ class UserService extends Controller
         return $query->exists();
     }
     protected function loadCountries(): void {
-        $countries = Country::query()->validate()->get(['id', 'provider_id', 'default']);
-        $this->countriesAvailable = $countries->keyBy('provider_id')->toArray();
+        $countries = Country::query()->validate()->get(['id', 'external_id', 'default']);
+        $this->countriesAvailable = $countries->keyBy('external_id')->toArray();
         $this->defaultCountryId = $countries->firstWhere('default', true)?->id ?? null;
     }
 }

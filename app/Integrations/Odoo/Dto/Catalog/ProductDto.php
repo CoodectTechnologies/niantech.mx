@@ -10,8 +10,8 @@ class ProductDto
 {
     public function __construct(
         public readonly string $sku,
-        public readonly string $provider,
-        public readonly string $providerId,
+        public readonly string $external,
+        public readonly string $externalId,
         public readonly array $name,
         public readonly array $nameCommercial,
         public readonly float $cost,
@@ -31,8 +31,8 @@ class ProductDto
         try {
             return new self(
                 sku: trim($product['default_code'] ?? ''),
-                provider: OdooClient::$code,
-                providerId: $product['id'],
+                external: OdooClient::$code,
+                externalId: $product['id'],
                 name: [config('translatable.fallback') => $product['name'] ?? ''],
                 nameCommercial: [config('translatable.fallback') => ''],
                 cost: round($product['standard_price'] ?? 0, 2),
@@ -59,8 +59,8 @@ class ProductDto
     public function toArray(): array {
         return [
             'sku' => $this->sku,
-            'provider' => $this->provider,
-            'provider_id' => $this->providerId,
+            'external' => $this->external,
+            'external_id' => $this->externalId,
             'name' => $this->name,
             'name_commercial' => $this->nameCommercial,
             'cost' => $this->cost,

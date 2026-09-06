@@ -24,8 +24,8 @@ class CreateProductsTable extends Migration
 
             // General
             $table->string('sku')->index()->nullable();
-            $table->string('provider')->nullable();
-            $table->string('provider_id')->index()->nullable();
+            $table->string('external')->nullable();
+            $table->string('external_id')->index()->nullable();
             $table->text('name');
             $table->string('name_commercial')->nullable();
             $table->decimal('price', 12, 2)->nullable();

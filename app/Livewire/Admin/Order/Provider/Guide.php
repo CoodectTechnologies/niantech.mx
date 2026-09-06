@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Order\Provider;
 
 use App\Models\OrderProvider;
-use App\Services\Synchronizers\Order\GuideController;
+use App\Services\Synchronizers\Order\GuideService;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -28,10 +28,10 @@ class Guide extends Component
     public function create() {
         $this->validate();
         if ($this->providerGuideTMP) {
-            $url = $this->providerGuideTMP->store('order/provider/'.$this->orderProvider->provider_id.'/guide');
+            $url = $this->providerGuideTMP->store('order/external/'.$this->orderProvider->external_id.'/guide');
             $this->orderProvider->provider_guide = $url;
             $this->orderProvider->update();
-            GuideController::create($this->orderProvider);
+            GuideService::create($this->orderProvider);
             $this->dispatch('render')->to('admin.order.provider.index');
         }
     }

@@ -40,7 +40,7 @@ class ProductResource
         $rawProducts = $this->productClient->getProducts(params: $params);
         foreach ($rawProducts as $productData) {
             $productDto = ProductDto::handle($productData);
-            $paginated[$productDto->providerId] = $productDto->toArray();
+            $paginated[$productDto->externalId] = $productDto->toArray();
         }
 
         return [

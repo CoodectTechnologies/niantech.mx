@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands\Admin\User;
+namespace App\Console\Commands\Admin\Invoice;
 
-use App\Services\Synchronizers\User\UserService;
+use App\Services\Synchronizers\Invoice\UseCfdiService;
 use Illuminate\Console\Command;
 
-class UserSave extends Command
+class UseCfdiSaveCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'user:save';
+    protected $signature = 'invoice:use-cfdi-save';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sync all users by odoo to local';
+    protected $description = 'Sync all invoice use CFDI from Odoo to local database';
 
     /**
      * Execute the console command.
@@ -27,8 +27,8 @@ class UserSave extends Command
      * @return int
      */
     public function handle() {
-        $userService = new UserService;
-        $result = $userService->save();
+        $service = new UseCfdiService;
+        $result = $service->save();
         $this->info(json_encode($result, JSON_PRETTY_PRINT));
 
         return self::SUCCESS;

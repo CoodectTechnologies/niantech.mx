@@ -5,7 +5,7 @@ namespace App\Console\Commands\Admin\Catalog;
 use App\Models\ProductCategory;
 use Illuminate\Console\Command;
 
-class CategoryCache extends Command
+class CategoryCacheCommand extends Command
 {
     /**
      * The name and signature of the console command.

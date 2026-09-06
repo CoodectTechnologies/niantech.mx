@@ -56,8 +56,8 @@
                             <!--begin::Table row-->
                             <tr>
                                 <td>
-                                    <span class="badge badge-primary">{{ $orderProviderError->provider }}
-                                        {{ $orderProviderError->provider_id }}</span>
+                                    <span class="badge badge-primary">{{ $orderProviderError->external }}
+                                        {{ $orderProviderError->external_id }}</span>
                                 </td>
                                 <td>
                                     <pre>

@@ -6,7 +6,7 @@ use App\Models\Product;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
-class ProductToonExport extends Command
+class ProductToonExportCommand extends Command
 {
     protected $signature = 'catalog:product-toon-export';
     protected $description = 'Exporta productos publicados en formato TOON';

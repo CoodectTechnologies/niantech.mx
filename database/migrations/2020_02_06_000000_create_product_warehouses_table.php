@@ -14,8 +14,8 @@ return new class extends Migration {
         Schema::create('product_warehouses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('provider')->nullable();
-            $table->string('provider_id')->nullable();
+            $table->string('external')->nullable();
+            $table->string('external_id')->nullable();
             $table->timestamps();
         });
     }

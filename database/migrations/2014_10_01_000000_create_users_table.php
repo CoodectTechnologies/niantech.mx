@@ -18,15 +18,15 @@ return new class extends Migration
             $table->mediumText('slug');
             $table->string('email')->unique()->index();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('provider')->nullable();
-            $table->string('provider_id')->nullable();
+            $table->string('external')->nullable();
+            $table->string('external_id')->nullable();
             $table->string('phone')->nullable();
             $table->text('password')->nullable();
             $table->text('google_id')->nullable();
             $table->boolean('connected_google')->default(true);
             $table->rememberToken();
             $table->timestamps();
-            $table->index(['provider', 'provider_id']);
+            $table->index(['external', 'external_id']);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

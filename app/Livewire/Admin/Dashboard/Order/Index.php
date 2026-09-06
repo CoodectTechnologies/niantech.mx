@@ -167,7 +167,7 @@ class Index extends Component
     }
     public function getProductsWithoutImage() {
         return Product::query()
-            ->whereNotNull('provider')
+            ->whereNotNull('external')
             ->whereNotNull('sku')
             ->whereDoesntHave('image')
             ->validateProduct()

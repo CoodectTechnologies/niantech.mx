@@ -5,9 +5,9 @@
     </div>
     <div class="card-body">
         <div class="mb-2">
-            <label class="form-label">{{ __('Provider') }} {{ $product->provider }} {{ __('id') }}</label>
-            <input wire:model="product.provider_id" class="form-control form-control-sm mb-2 @error('product.provider') invalid-feedback @enderror"/>
-            @error('product.provider')
+            <label class="form-label">{{ __('Provider') }} {{ $product->external }} {{ __('id') }}</label>
+            <input wire:model="product.external_id" class="form-control form-control-sm mb-2 @error('product.external') invalid-feedback @enderror"/>
+            @error('product.external')
                 <small class="form-text text-danger" role="alert">{{ $message }}</small>
             @enderror
         </div>

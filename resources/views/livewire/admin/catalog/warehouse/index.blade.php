@@ -55,8 +55,8 @@
                             <tr>
                                 <td>{{ $warehouse->name }}</td>
                                 <td>
-                                    @if($warehouse->provider)
-                                        {{ $warehouse->provider }} (ID: {{ $warehouse->provider_id }})
+                                    @if($warehouse->external)
+                                        {{ $warehouse->external }} (ID: {{ $warehouse->external_id }})
                                     @else
                                         N/A
                                     @endif

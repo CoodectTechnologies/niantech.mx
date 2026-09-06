@@ -191,7 +191,7 @@ class ProductService
         if (
             config('services.vadeto_brands.status') &&
             config('services.vadeto_brands.download_image_product') &&
-            ($product->sku && $product->provider_id)
+            ($product->sku && $product->external_id)
         ) {
             $brand = $product->productBrand->name ?? null;
             $sku = $product->sku ?? null;

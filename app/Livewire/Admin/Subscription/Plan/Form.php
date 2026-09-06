@@ -13,7 +13,7 @@ class Form extends Component
     use LivewireTranslatable;
 
     public $plan;
-    public $provider;
+    public $external;
     public $providers = [];
     public $countries = [];
     public $planFeatures = [];

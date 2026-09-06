@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreignId('product_warehouse_id')->nullable()->constrained()->onDelete('set null');
             $table->string('quantity')->nullable();
             $table->boolean('apply_provider')->default(false);
-            $table->string('provider')->nullable();
+            $table->string('external')->nullable();
             $table->timestamps();
         });
     }

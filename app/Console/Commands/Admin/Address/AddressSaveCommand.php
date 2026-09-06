@@ -5,7 +5,7 @@ namespace App\Console\Commands\Admin\Address;
 use App\Services\Synchronizers\Address\AddressService;
 use Illuminate\Console\Command;
 
-class AddressSave extends Command
+class AddressSaveCommand extends Command
 {
     /**
      * The name and signature of the console command.

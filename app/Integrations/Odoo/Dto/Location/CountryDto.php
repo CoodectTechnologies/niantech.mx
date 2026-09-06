@@ -9,8 +9,8 @@ use Throwable;
 class CountryDto
 {
     public function __construct(
-        public readonly string $provider,
-        public readonly int $providerId,
+        public readonly string $external,
+        public readonly int $externalId,
         public readonly ?string $code,
         public readonly string $name,
         public readonly ?string $phoneCode,
@@ -21,8 +21,8 @@ class CountryDto
     public static function handle(array $country): self {
         try {
             return new self(
-                provider: OdooClient::$code,
-                providerId: (int) ($country['id'] ?? 0),
+                external: OdooClient::$code,
+                externalId: (int) ($country['id'] ?? 0),
                 code: strtoupper(trim(strval($country['code'] ?? ''))),
                 name: trim(strval($country['display_name'] ?? '')),
                 phoneCode: trim(strval($country['phone_code'] ?? '')),
@@ -40,8 +40,8 @@ class CountryDto
     }
     public function toArray(): array {
         return [
-            'provider' => $this->provider,
-            'provider_id' => $this->providerId,
+            'external' => $this->external,
+            'external_id' => $this->externalId,
             'code' => $this->code,
             'name' => $this->name,
             'phone_code' => $this->phoneCode,

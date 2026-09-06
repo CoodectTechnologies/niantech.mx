@@ -9,7 +9,7 @@ use Throwable;
 class UseCfdiDto
 {
     public function __construct(
-        public readonly string $provider,
+        public readonly string $external,
         public readonly string $code,
         public readonly string $description
     ) {}
@@ -17,7 +17,7 @@ class UseCfdiDto
     public static function handle(array $useCfdi): self {
         try {
             return new self(
-                provider: OdooClient::$code,
+                external: OdooClient::$code,
                 code: strtoupper(trim(strval($useCfdi[0] ?? ''))),
                 description: trim(strval($useCfdi[1] ?? '')),
             );
@@ -32,7 +32,7 @@ class UseCfdiDto
     }
     public function toArray(): array {
         return [
-            'provider' => $this->provider,
+            'external' => $this->external,
             'code' => $this->code,
             'description' => $this->description,
         ];

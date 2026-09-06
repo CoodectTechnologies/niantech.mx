@@ -2,10 +2,9 @@
 
 namespace App\Services\Synchronizers\Catalog;
 
-use App\Http\Controllers\Controller;
 use App\Models\ProductCategory;
 
-class CategoryController extends Controller
+class CategoryService
 {
     public static function save($categories, $parentId = null) {
         $syncCategories = [];
@@ -36,7 +35,7 @@ class CategoryController extends Controller
                         'status' => true,
                         'name' => $categoryArray['name'],
                         'description' => $categoryArray['description'],
-                        'provider' => $categoryArray['provider'],
+                        'external' => $categoryArray['external'],
                         'include_in_menu' => true,
                         'order' => $order,
                         'parent_id' => $parentId,

@@ -30,7 +30,7 @@ class Country extends Model
     public function scopeValidate($query) {
         $query = $query->where('status', true);
         if (config('services.odoo.status')) {
-            $query = $query->whereNotNull('provider_id')->where('provider_id', '<>', '');
+            $query = $query->whereNotNull('external_id')->where('external_id', '<>', '');
         }
 
         return $query;

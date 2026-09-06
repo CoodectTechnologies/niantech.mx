@@ -2,24 +2,24 @@
 
 namespace App\Console\Commands\Admin\Catalog;
 
-use App\Services\Synchronizers\Catalog\ProductController;
+use App\Services\Synchronizers\Catalog\ProductService;
 use Illuminate\Console\Command;
 
-class ProductWarehouse extends Command
+class ProductSaveCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'catalog:product-warehouse';
+    protected $signature = 'catalog:product-save';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sync stock by warehouses';
+    protected $description = 'Synchronization catalog (products, categories, brands, attributes, characteristics)';
 
     /**
      * Create a new command instance.
@@ -36,8 +36,8 @@ class ProductWarehouse extends Command
      * @return int
      */
     public function handle() {
-        $product = new ProductController;
-        $result = $product->warehouses();
+        $product = new ProductService;
+        $result = $product->save();
         $this->info(json_encode($result, JSON_PRETTY_PRINT));
     }
 }

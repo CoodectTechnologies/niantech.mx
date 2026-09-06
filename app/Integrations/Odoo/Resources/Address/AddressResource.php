@@ -43,7 +43,7 @@ class AddressResource
         $rawAddresses = $this->addressClient->getAddresses(domain: $domain, params: $params);
         foreach ($rawAddresses as $addressData) {
             $addressDto = AddressDto::handle($addressData);
-            $paginated[$addressDto->providerId] = $addressDto->toArray();
+            $paginated[$addressDto->externalId] = $addressDto->toArray();
         }
 
         return [
@@ -56,11 +56,11 @@ class AddressResource
         ];
     }
     public function save(Address $address) {
-        $stateProviderId = $address->state->provider_id ?? null;
-        $countryProviderId = $address->state->country->provider_id ?? null;
-        $userProviderId = $address->user->provider_id ?? null;
+        $stateExternalId = $address->state->external_id ?? null;
+        $countryExternalId = $address->state->country->external_id ?? null;
+        $userExternalId = $address->user->external_id ?? null;
 
-        if (! $stateProviderId || ! $countryProviderId || ! $userProviderId) {
+        if (! $stateExternalId || ! $countryExternalId || ! $userExternalId) {
             return [];
         }
 
@@ -72,21 +72,21 @@ class AddressResource
             'street2' => $address->colony ?? '',
             'zip' => $address->zip_code ?? '',
             'city' => $address->municipality ?? '',
-            'state_id' => $stateProviderId,
-            'country_id' => $countryProviderId,
+            'state_id' => $stateExternalId,
+            'country_id' => $countryExternalId,
             'vat' => $address->vat ?? '',
             'l10n_mx_edi_fiscal_regime' => $address->fiscalRegime?->code ?? false,
             'l10n_mx_edi_usage' => $address->useCfdi?->code ?? false,
         ];
 
         if (! $address->is_billing) {
-            $data['parent_id'] = (int) $userProviderId;
+            $data['parent_id'] = (int) $userExternalId;
             $data['type'] = 'delivery';
         }
 
-        $updateId = $address->is_billing ? $userProviderId : $address->provider_id;
+        $updateId = $address->is_billing ? $userExternalId : $address->external_id;
 
-        return ! $address->provider_id
+        return ! $address->external_id
             ? $this->create($data)
             : $this->update($updateId, $data);
     }

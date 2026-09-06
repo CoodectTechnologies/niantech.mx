@@ -2,10 +2,9 @@
 
 namespace App\Services\Synchronizers\Catalog;
 
-use App\Http\Controllers\Controller;
 use App\Models\ProductBrand;
 
-class BrandController extends Controller
+class BrandService
 {
     public static function save($brand) {
         $brandId = activity()->withoutLogs(function () use ($brand) {

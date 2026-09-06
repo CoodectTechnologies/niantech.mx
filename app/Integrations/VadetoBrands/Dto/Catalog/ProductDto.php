@@ -10,7 +10,7 @@ class ProductDto
 {
     public function __construct(
         public readonly string $sku,
-        public readonly string $provider,
+        public readonly string $external,
         public readonly array $name,
         public readonly array $nameCommercial,
         public readonly array $attributes,
@@ -32,7 +32,7 @@ class ProductDto
 
             return new self(
                 sku: $sku,
-                provider: VadetoBrandsClient::$code,
+                external: VadetoBrandsClient::$code,
                 name: [$language => ($product['nombre'] ?? '')],
                 nameCommercial: [$language => ($product['nombre_comercial'] ?? '')],
                 attributes: AttributeDto::handle($product['propiedades'] ?? [], $language),
@@ -60,7 +60,7 @@ class ProductDto
     public function toArray(): array {
         return [
             'sku' => $this->sku,
-            'provider' => $this->provider,
+            'external' => $this->external,
             'name' => $this->name,
             'name_commercial' => $this->nameCommercial,
             'attributes' => $this->attributes,

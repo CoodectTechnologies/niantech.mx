@@ -14,8 +14,8 @@ class CreateCountriesTable extends Migration
     public function up() {
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->string('provider')->nullable();
-            $table->unsignedBigInteger('provider_id')->nullable()->index();
+            $table->string('external')->nullable();
+            $table->unsignedBigInteger('external_id')->nullable()->index();
             $table->string('code')->index();
             $table->string('name');
             $table->string('phonecode')->nullable();

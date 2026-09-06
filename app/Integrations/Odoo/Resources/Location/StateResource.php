@@ -42,7 +42,7 @@ class StateResource
         $rawStates = $this->locationClient->getStates(domain: $domain, params: $params);
         foreach ($rawStates as $stateData) {
             $stateDto = StateDto::handle($stateData);
-            $paginated[$stateDto->providerId] = $stateDto->toArray();
+            $paginated[$stateDto->externalId] = $stateDto->toArray();
         }
 
         return [

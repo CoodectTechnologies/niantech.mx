@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create('order_provider_payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('order_provider_ids');
+            $table->string('order_external_ids');
             $table->string('account');
             $table->float('amount', 12);
             $table->text('voucher');

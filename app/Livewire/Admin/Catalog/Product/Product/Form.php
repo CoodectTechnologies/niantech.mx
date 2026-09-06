@@ -77,7 +77,7 @@ class Form extends Component
             'translations.description.'.translatable() => 'nullable',
             'translations.search_advanced.'.translatable() => 'nullable',
             'product.sku' => 'nullable|unique:products,sku,'.$this->product->id,
-            'product.provider_id' => 'nullable',
+            'product.external_id' => 'nullable',
             'product.featured' => 'nullable',
             'product.status' => 'required',
             'product.iframe_url' => 'nullable',

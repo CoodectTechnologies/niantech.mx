@@ -268,9 +268,9 @@
                         <label class="fs-6 fw-bolder form-label mb-2">
                             <span class="">Proveedor</span>
                         </label>
-                        <input wire:model="address.provider"
-                            class="form-control form-control-solid @error('address.provider') invalid-feedback @enderror" />
-                        @error('address.provider')
+                        <input wire:model="address.external"
+                            class="form-control form-control-solid @error('address.external') invalid-feedback @enderror" />
+                        @error('address.external')
                             <small class="form-text text-danger" role="alert">{{ $message }}</small>
                         @enderror
                     </div>
@@ -278,9 +278,9 @@
                         <label class="fs-6 fw-bolder form-label mb-2">
                             <span class="">Proveedor id</span>
                         </label>
-                        <input wire:model="address.provider_id"
-                            class="form-control form-control-solid @error('address.provider_id') invalid-feedback @enderror" />
-                        @error('address.provider_id')
+                        <input wire:model="address.external_id"
+                            class="form-control form-control-solid @error('address.external_id') invalid-feedback @enderror" />
+                        @error('address.external_id')
                             <small class="form-text text-danger" role="alert">{{ $message }}</small>
                         @enderror
                     </div>

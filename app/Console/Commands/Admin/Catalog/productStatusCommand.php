@@ -2,24 +2,24 @@
 
 namespace App\Console\Commands\Admin\Catalog;
 
-use App\Services\Synchronizers\Catalog\ProductController;
+use App\Services\Synchronizers\Catalog\ProductService;
 use Illuminate\Console\Command;
 
-class ProductImage extends Command
+class productStatusCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'catalog:product-image';
+    protected $signature = 'catalog:product-status';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = "Create product's images";
+    protected $description = 'Put mode eraser the products';
 
     /**
      * Create a new command instance.
@@ -36,9 +36,8 @@ class ProductImage extends Command
      * @return int
      */
     public function handle() {
-        $result = [];
-        $catalog = new ProductController;
-        $result = $catalog->images();
+        $product = new ProductService;
+        $result = $product->status();
         $this->info(json_encode($result, JSON_PRETTY_PRINT));
     }
 }

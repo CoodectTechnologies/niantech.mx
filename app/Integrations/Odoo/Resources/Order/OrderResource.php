@@ -41,7 +41,7 @@ class OrderResource
         $rawOrders = $this->orderClient->getOrders(domain: $domain, params: $params);
         foreach($rawOrders as $orderData) {
             $orderDto = OrderDto::handle($orderData);
-            $paginated[$orderDto->providerId] = $orderDto->toArray();
+            $paginated[$orderDto->externalId] = $orderDto->toArray();
         }
 
         return [
@@ -57,10 +57,10 @@ class OrderResource
         $data = $this->buildOrderData($order);
         if(empty($data)) return [];
 
-        if(!$order->provider_id):
+        if(!$order->external_id):
             return $this->create($data);
         endif;
-        return $this->find((int) $order->provider_id);
+        return $this->find((int) $order->external_id);
     }
     public function create(array $data): array {
         $result = [];
@@ -79,25 +79,25 @@ class OrderResource
             'orderProducts.orderProductWarehouses.productWarehouse',
         ]);
 
-        $partnerId = $order->user?->provider_id;
-        $billingAddressId = $order->billingAddress?->provider_id ?? $order->address?->provider_id;
-        $shippingAddressId = $order->address?->provider_id ?? $billingAddressId;
+        $partnerId = $order->user?->external_id;
+        $billingAddressId = $order->billingAddress?->external_id ?? $order->address?->external_id;
+        $shippingAddressId = $order->address?->external_id ?? $billingAddressId;
         if(!$partnerId || !$billingAddressId || !$shippingAddressId) return [];
 
         $groupedByWarehouse = [];
 
         foreach($order->orderProducts as $orderProduct):
             $product = $orderProduct->product;
-            $productProviderId = $product?->provider_id ?? null;
-            if(!$productProviderId) continue;
+            $productExternalId = $product?->external_id ?? null;
+            if(!$productExternalId) continue;
 
             $warehouses = $orderProduct->orderProductWarehouses ?? collect();
             foreach($warehouses as $warehouseAssignment):
-                $warehouseProviderId = $warehouseAssignment->productWarehouse?->provider_id ?? null;
-                if(!$warehouseProviderId) continue;
+                $warehouseExternalId = $warehouseAssignment->productWarehouse?->external_id ?? null;
+                if(!$warehouseExternalId) continue;
 
-                $groupedByWarehouse[$warehouseProviderId][] = [0, 0, [
-                    'product_id' => (int) $productProviderId,
+                $groupedByWarehouse[$warehouseExternalId][] = [0, 0, [
+                    'product_id' => (int) $productExternalId,
                     'product_uom_qty' => (float) ($warehouseAssignment->quantity),
                     'price_unit' => (float) $orderProduct->price,
                 ]];

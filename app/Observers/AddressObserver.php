@@ -37,18 +37,18 @@ class AddressObserver
             if ($address->is_billing) {
                 $address->is_billing_default = true;  // Como en odoo solo se puede tener una dirección de facturación, si esta es marcada como de facturación, se asigna como predeterminada de facturación
             }
-            if (isset($customer['provider_id']) && $customer['provider_id']) {
-                $address->provider = $customer['provider'];
-                $address->provider_id = $customer['provider_id'];
+            if (isset($customer['external_id']) && $customer['external_id']) {
+                $address->external = $customer['external'];
+                $address->external_id = $customer['external_id'];
             } else {
                 throw new OdooException(__('We were unable to complete your registration at this time. Please try again.'));
             }
         }
     }
     private function deleteOdoo(Address $address): void {
-        if (config('services.odoo.status') && $address->provider_id) {
+        if (config('services.odoo.status') && $address->external_id) {
             $addressResource = new AddressResource;
-            $result = $addressResource->delete((int) $address->provider_id);
+            $result = $addressResource->delete((int) $address->external_id);
             if (! $result) {
                 throw new OdooException(__('We were unable to delete your registration at this time. Please try again.'));
             }

@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands\Admin\Invoice;
+namespace App\Console\Commands\Admin\User;
 
-use App\Services\Synchronizers\Invoice\FiscalRegimeService;
+use App\Services\Synchronizers\User\UserService;
 use Illuminate\Console\Command;
 
-class FiscalRegimeSave extends Command
+class UserSaveCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'invoice:fiscal-regime-save';
+    protected $signature = 'user:save';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sync all invoice fiscal regimes from Odoo to local database';
+    protected $description = 'Sync all users by odoo to local';
 
     /**
      * Execute the console command.
@@ -27,8 +27,8 @@ class FiscalRegimeSave extends Command
      * @return int
      */
     public function handle() {
-        $service = new FiscalRegimeService;
-        $result = $service->save();
+        $userService = new UserService;
+        $result = $userService->save();
         $this->info(json_encode($result, JSON_PRETTY_PRINT));
 
         return self::SUCCESS;

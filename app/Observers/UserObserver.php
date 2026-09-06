@@ -38,10 +38,10 @@ class UserObserver
         if (config('services.odoo.status')) {
             $customerResource = new CustomerResource;
             $customer = $customerResource->save($user);
-            if (isset($customer['provider_id']) && $customer['provider_id']) {
-                $user->provider = $customer['provider'];
-                $user->provider_id = $customer['provider_id'];
-            } else {
+            if (isset($customer['external_id']) && $customer['external_id']) {
+                $user->external = $customer['external'];
+                $user->external_id = $customer['external_id'];
+            } else {                
                 throw new OdooException(__('We were unable to complete your registration at this time. Please try again.'));
             }
         }

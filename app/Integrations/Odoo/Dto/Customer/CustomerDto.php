@@ -9,8 +9,8 @@ use Throwable;
 class CustomerDto
 {
     public function __construct(
-        public readonly string $provider,
-        public readonly int $providerId,
+        public readonly string $external,
+        public readonly int $externalId,
         public readonly string $name,
         public readonly string $displayName,
         public readonly ?string $email,
@@ -32,8 +32,8 @@ class CustomerDto
     public static function handle(array $customer): self {
         try {
             return new self(
-                provider: OdooClient::$code,
-                providerId: (int) ($customer['id'] ?? 0),
+                external: OdooClient::$code,
+                externalId: (int) ($customer['id'] ?? 0),
                 name: (string) ($customer['name'] ?? ''),
                 displayName: (string) ($customer['display_name'] ?? ''),
                 email: (string) strtolower(trim(($customer['email'] ?? ''))),
@@ -62,8 +62,8 @@ class CustomerDto
     }
     public function toArray(): array {
         return [
-            'provider' => $this->provider,
-            'provider_id' => $this->providerId,
+            'external' => $this->external,
+            'external_id' => $this->externalId,
             'name' => $this->name,
             'display_name' => $this->displayName,
             'email' => $this->email,

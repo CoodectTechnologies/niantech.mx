@@ -37,7 +37,7 @@ class Index extends Component
     // Shipping
     public ?int $shippingZoneId = null;
     public ?string $shippingMethod = null;
-    public ?string $shippingMethodProviderId = null;
+    public ?string $shippingMethodExternalId = null;
     public array $shippingMethods = [];
 
     // Coupon
@@ -191,7 +191,7 @@ class Index extends Component
             $shippingInfo = $this->shippingMethods[$id];
             $this->shippingPrice = $shippingInfo['price'];
             $this->shippingMethod = $shippingInfo['name'];
-            $this->shippingMethodProviderId = $shippingInfo['id'];
+            $this->shippingMethodExternalId = $shippingInfo['id'];
             if ($shippingInfo['shipping_days']) {
                 $days = $shippingInfo['shipping_days'];
                 $estimatedDate = Carbon::parse(today())->addDays($shippingInfo['shipping_days'])->toFormattedDateString();
@@ -278,7 +278,7 @@ class Index extends Component
                     'shippingPriceTax' => $this->shippingPriceTax,
                     'shippingPriceFinal' => $this->shippingPrice + $this->shippingPriceTax,
                     'shippingMethod' => $this->shippingMethod,
-                    'shippingMethodProviderId' => $this->shippingMethodProviderId,
+                    'shippingMethodExternalId' => $this->shippingMethodExternalId,
                     'shippingDays' => $this->shippingDays,
                     'couponPriceDiscount' => $this->couponPriceDiscount,
                     'couponPercentageDiscount' => $this->couponPercentageDiscount,

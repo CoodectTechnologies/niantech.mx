@@ -39,11 +39,11 @@
                         <div class="d-flex flex-column text-gray-600">
                             @if(config('services.odoo.status'))
                                 <div class="d-flex align-items-center py-2">
-                                    <span class="bullet bg-dark me-3"></span>Proveedor: {{ $address->provider }}
+                                    <span class="bullet bg-dark me-3"></span>Proveedor: {{ $address->external }}
                                 </div>
                                 <div class="d-flex align-items-center py-2">
                                     <span class="bullet bg-dark me-3"></span>Proveedor id:
-                                    {{ $address->provider_id }}
+                                    {{ $address->external_id }}
                                 </div>
                             @endif
                             <div class="d-flex align-items-center py-2">

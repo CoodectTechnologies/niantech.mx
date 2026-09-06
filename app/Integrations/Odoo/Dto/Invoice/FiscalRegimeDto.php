@@ -9,7 +9,7 @@ use Throwable;
 class FiscalRegimeDto
 {
     public function __construct(
-        public readonly string $provider,
+        public readonly string $external,
         public readonly string $code,
         public readonly string $description,
     ) {}
@@ -17,7 +17,7 @@ class FiscalRegimeDto
     public static function handle(array $fiscalRegime): self {
         try {
             return new self(
-                provider: OdooClient::$code,
+                external: OdooClient::$code,
                 code: trim(strval($fiscalRegime[0] ?? '')),
                 description: trim(strval($fiscalRegime[1] ?? '')),
             );
@@ -32,7 +32,7 @@ class FiscalRegimeDto
     }
     public function toArray(): array {
         return [
-            'provider' => $this->provider,
+            'external' => $this->external,
             'code' => $this->code,
             'description' => $this->description,
         ];

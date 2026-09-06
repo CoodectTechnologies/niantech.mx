@@ -2,10 +2,9 @@
 
 namespace App\Services\Synchronizers\Catalog;
 
-use App\Http\Controllers\Controller;
 use App\Models\ProductWarehouse;
 
-class WarehouseController extends Controller
+class WarehouseService
 {
     public static function save($warehouses) {
         $syncWarehouses = activity()->withoutLogs(function () use ($warehouses) {
@@ -15,8 +14,8 @@ class WarehouseController extends Controller
                 if (! $productWarehouse) {
                     $productWarehouse = ProductWarehouse::create([
                         'name' => $warehouseArray['name'],
-                        'provider' => $warehouseArray['provider'],
-                        'provider_id' => $warehouseArray['provider_id'],
+                        'external' => $warehouseArray['external'],
+                        'external_id' => $warehouseArray['external_id'],
                     ]);
                 }
                 $syncWarehouses[$productWarehouse->id] = ['quantity' => intval($warehouseArray['quantity'])];

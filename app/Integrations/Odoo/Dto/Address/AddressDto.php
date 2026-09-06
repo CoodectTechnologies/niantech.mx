@@ -9,9 +9,9 @@ use Throwable;
 class AddressDto
 {
     public function __construct(
-        public readonly string $provider,
-        public readonly int $providerId,
-        public readonly ?int $customerProviderId,
+        public readonly string $external,
+        public readonly int $externalId,
+        public readonly ?int $customerExternalId,
         public readonly ?string $customerName,
         public readonly string $addressType,
         public readonly string $name,
@@ -47,9 +47,9 @@ class AddressDto
             };
 
             return new self(
-                provider: OdooClient::$code,
-                providerId: (int) ($address['id'] ?? 0),
-                customerProviderId: ! empty($address['parent_id'][0]) ? (int) $address['parent_id'][0] : null,
+                external: OdooClient::$code,
+                externalId: (int) ($address['id'] ?? 0),
+                customerExternalId: ! empty($address['parent_id'][0]) ? (int) $address['parent_id'][0] : null,
                 customerName: ! empty($address['parent_id'][1]) ? (string) $address['parent_id'][1] : null,
                 addressType: $addressType,
                 name: (string) ($address['display_name'] ?? $address['name'] ?? ''),
@@ -87,9 +87,9 @@ class AddressDto
     }
     public function toArray(): array {
         return [
-            'provider' => $this->provider,
-            'provider_id' => $this->providerId,
-            'customer_provider_id' => $this->customerProviderId,
+            'external' => $this->external,
+            'external_id' => $this->externalId,
+            'customer_external_id' => $this->customerExternalId,
             'customer_name' => $this->customerName,
             'address_type' => $this->addressType,
             'name' => $this->name,

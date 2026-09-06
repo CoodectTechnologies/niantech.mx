@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Admin\Currency;
 
-use App\Services\Synchronizers\Currency\CurrencyController;
+use App\Services\Synchronizers\Currency\CurrencyService;
 use Illuminate\Console\Command;
 
 class ExchangeRateCommand extends Command
@@ -27,6 +27,6 @@ class ExchangeRateCommand extends Command
      * @return int
      */
     public function handle() {
-        CurrencyController::saveExchangeRate();
+        CurrencyService::saveExchangeRate();
     }
 }

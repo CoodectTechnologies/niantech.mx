@@ -51,7 +51,7 @@ class Address extends Model
     }
     public function scopeValidate($query) {
         if (config('services.odoo.status')) {
-            $query = $query->whereNotNull('provider_id');
+            $query = $query->whereNotNull('external_id');
         }
 
         return $query;

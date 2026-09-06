@@ -129,7 +129,7 @@
         <div class="modal-dialog modal-dialog-centered mw-650px">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="fw-bolder">{{ $orderProvider->provider }} {{ $orderProvider->provider_id }}</h2>
+                    <h2 class="fw-bolder">{{ $orderProvider->external }} {{ $orderProvider->external_id }}</h2>
                     <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
                         <span class="svg-icon svg-icon-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -145,13 +145,13 @@
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                     <div class="card card-flush py-4">
                         <div class="card-body pt-0">
-                            <h3>{{ __('Information provider') }}</h3>
+                            <h3>{{ __('Information external') }}</h3>
                             <hr>
                             <pre>
-                                @json(json_decode($orderProvider->provider_id_data), JSON_PRETTY_PRINT)
+                                @json(json_decode($orderProvider->external_id_data), JSON_PRETTY_PRINT)
                             </pre>
 
-                            <h3>{{ __('Information guide provider') }}</h3>
+                            <h3>{{ __('Information guide external') }}</h3>
                             <hr>
                             <pre>
                                 {!! $orderProvider->provider_guide_data !!}

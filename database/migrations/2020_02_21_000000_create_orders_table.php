@@ -15,8 +15,8 @@ class CreateOrdersTable extends Migration
     public function up() {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('provider')->nullable();
-            $table->string('provider_id')->index()->nullable();
+            $table->string('external')->nullable();
+            $table->string('external_id')->index()->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('address_id')->nullable()->constrained()->onDelete('set null');
             $table->unsignedBigInteger('billing_address_id')->nullable();

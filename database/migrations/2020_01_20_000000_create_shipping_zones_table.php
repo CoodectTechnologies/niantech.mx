@@ -21,8 +21,8 @@ class CreateShippingZonesTable extends Migration
             $table->float('price', 12)->nullable();
             $table->float('free_shipping_over_to')->nullable();
             $table->integer('shipping_days')->nullable();
-            $table->string('provider')->nullable();
-            $table->string('provider_id')->nullable();
+            $table->string('external')->nullable();
+            $table->string('external_id')->nullable();
             $table->timestamps();
         });
     }

@@ -39,7 +39,7 @@ class State extends Model
     }
     public function scopeValidate($query) {
         if (config('services.odoo.status')) {
-            return $query->whereNotNull('provider_id')->where('provider_id', '<>', '');
+            return $query->whereNotNull('external_id')->where('external_id', '<>', '');
         }
     }
 }

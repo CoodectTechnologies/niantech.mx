@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('order_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('product_warehouse_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('provider')->nullable();
+            $table->string('external')->nullable();
             $table->integer('retry_limit')->nullable();
             $table->text('error')->nullable();
             $table->timestamps();

@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands\Admin\Order;
 
-use App\Services\Synchronizers\Order\OrderController as OrderControllerProvider;
+use App\Services\Synchronizers\Order\OrderService;
 use Illuminate\Console\Command;
 
-class OrderSave extends Command
+class OrderSaveCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -19,7 +19,7 @@ class OrderSave extends Command
      *
      * @var string
      */
-    protected $description = 'Send all orders to provider';
+    protected $description = 'Send all orders to external';
 
     /**
      * Execute the console command.
@@ -27,6 +27,6 @@ class OrderSave extends Command
      * @return int
      */
     public function handle() {
-        OrderControllerProvider::save();
+        OrderService::save();
     }
 }

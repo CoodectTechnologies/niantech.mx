@@ -62,7 +62,7 @@ class CustomerResource
         $rawCustomers = $this->customerClient->getCustomers(domain: $domain, params: $params);
         foreach ($rawCustomers as $customerData) {
             $customerDto = CustomerDto::handle($customerData);
-            $paginated[$customerDto->providerId] = $customerDto->toArray();
+            $paginated[$customerDto->externalId] = $customerDto->toArray();
         }
 
         return [
@@ -82,19 +82,19 @@ class CustomerResource
         }
 
         $data = [
-            'country_id' => $user->country->provider_id ?? Country::query()->validate()->where('default', true)->first()->id ?? null,
+            'country_id' => $user->country->external_id ?? Country::query()->validate()->where('default', true)->first()->id ?? null,
             'name' => $user->name,
             'email' => $email,
             'phone' => $user->phone,
         ];
 
-        if (! $user->provider_id) {
+        if (! $user->external_id) {
             $customer = $this->findByEmail($email); // Si ya existe en odoo pero no en la web
-            if (! isset($customer['provider_id']) || ! $customer['provider_id']) {
+            if (! isset($customer['external_id']) || ! $customer['external_id']) {
                 $customer = $this->create($data);
             }
         } else {
-            $customer = $this->update($user->provider_id, $data);
+            $customer = $this->update($user->external_id, $data);
         }
 
         return $customer;

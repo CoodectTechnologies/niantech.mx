@@ -24,8 +24,8 @@ class InventoryService
                 'order_product_id' => $orderProduct->id,
                 'product_warehouse_id' => $productWarehouse->id,
                 'quantity' => $quantityToDeduct,
-                'apply_provider' => (bool) $productWarehouse->provider,
-                'provider' => $productWarehouse->provider,
+                'apply_provider' => (bool) $productWarehouse->external,
+                'external' => $productWarehouse->external,
             ]);
             $requiredQuantity -= $quantityToDeduct;
             if ($requiredQuantity <= 0) {

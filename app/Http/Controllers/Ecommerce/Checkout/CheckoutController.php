@@ -10,7 +10,6 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Notifications\Order\OrderCreate as NotificationOrderCreate;
-use App\Services\Synchronizers\Order\OrderController as OrderControllerProvider;
 use Exception;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\DB;
@@ -164,15 +163,9 @@ class CheckoutController extends Controller
             report($e);
         }
     }
-    public static function sendProvider($order) {
-        if ($order->hasProductProvider() && $order->payment_status == Order::PAYMENT_STATUS_APPROVED) {
-            OrderControllerProvider::create($order);
-        }
-    }
     public static function processOrder($order) {
         self::decrementStock($order);
         self::sendEmail($order);
         self::sendNotificationAdmin($order);
-        // self::sendProvider($order); //Ya no se enviará manualmente, solo por cron
     }
 }

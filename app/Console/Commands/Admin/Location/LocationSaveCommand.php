@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands\Admin\Invoice;
+namespace App\Console\Commands\Admin\Location;
 
-use App\Services\Synchronizers\Invoice\UseCfdiService;
+use App\Services\Synchronizers\Location\LocationService;
 use Illuminate\Console\Command;
 
-class UseCfdiSave extends Command
+class LocationSaveCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'invoice:use-cfdi-save';
+    protected $signature = 'location:save';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sync all invoice use CFDI from Odoo to local database';
+    protected $description = 'Sync countries and states from Odoo to local database';
 
     /**
      * Execute the console command.
@@ -27,8 +27,8 @@ class UseCfdiSave extends Command
      * @return int
      */
     public function handle() {
-        $service = new UseCfdiService;
-        $result = $service->save();
+        $locationService = new LocationService;
+        $result = $locationService->save();
         $this->info(json_encode($result, JSON_PRETTY_PRINT));
 
         return self::SUCCESS;

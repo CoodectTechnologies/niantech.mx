@@ -15,9 +15,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('order_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('product_warehouse_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('provider')->nullable();
-            $table->string('provider_id')->nullable();
-            $table->text('provider_id_data')->nullable();
+            $table->string('external')->nullable();
+            $table->string('external_id')->nullable();
+            $table->text('external_id_data')->nullable();
             $table->text('provider_guide')->nullable();
             $table->text('provider_guide_data')->nullable();
             $table->timestamps();

@@ -34,7 +34,7 @@ class OrderService
                 'shipping_price_tax' => $data['shippingPriceTax'],
                 'shipping_price_final' => $data['shippingPriceFinal'],
                 'shipping_method' => $data['shippingMethod'],
-                'provider_shipping_method_id' => $data['shippingMethodProviderId'],
+                'provider_shipping_method_id' => $data['shippingMethodExternalId'],
                 'shipping_days' => $data['shippingDays'],
                 'coupon_price_discount' => $data['couponPriceDiscount'] ?? null,
                 'coupon_percentage_discount' => $data['couponPercentageDiscount'] ?? null,

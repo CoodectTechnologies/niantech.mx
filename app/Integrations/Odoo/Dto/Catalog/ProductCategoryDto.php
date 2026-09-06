@@ -7,7 +7,7 @@ use App\Integrations\Odoo\Client\OdooClient;
 class ProductCategoryDto
 {
     public function __construct(
-        public readonly string $provider,
+        public readonly string $external,
         public readonly array $name,
         public readonly array $description,
         public readonly ?array $children = null
@@ -30,7 +30,7 @@ class ProductCategoryDto
             $formattedNode = [
                 'name' => [config('translatable.fallback') => $partName],
                 'description' => [config('translatable.fallback') => ''],
-                'provider' => OdooClient::$code,
+                'external' => OdooClient::$code,
             ];
             if ($index < count($parts) - 1) {
                 $formattedNode['children'] = [];
@@ -47,7 +47,7 @@ class ProductCategoryDto
         $data = [
             'name' => $this->name,
             'description' => $this->description,
-            'provider' => $this->provider,
+            'external' => $this->external,
         ];
         if ($this->children !== null) {
             $data['children'] = $this->children;

@@ -158,15 +158,6 @@
                                 </button>
                             </li>
                             <li class="d-flex justify-content-between align-items-center mb-5">
-                                {{ __('Precios') }} (Cada 2 horas)
-                                <button wire:click="updatePriceProducts" wire:loading.attr="disabled" type="button"
-                                    class="btn btn-primary">
-                                    <span class="indicator-label">{{ __('Sincronizar manualmente') }}</span>
-                                    <span wire:loading wire:target="updatePriceProducts"
-                                        class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                </button>
-                            </li>
-                            <li class="d-flex justify-content-between align-items-center mb-5">
                                 {{ __('Almacenes (Stock)') }} (Cada 10 minutos)
                                 <button wire:click="updateWarehouseProducts" wire:loading.attr="disabled" type="button"
                                     class="btn btn-primary">

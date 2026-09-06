@@ -42,7 +42,7 @@ class CountryResource
         $rawCountries = $this->locationClient->getCountries(domain: $domain, params: $params);
         foreach ($rawCountries as $countryData) {
             $countryDto = CountryDto::handle($countryData);
-            $paginated[$countryDto->providerId] = $countryDto->toArray();
+            $paginated[$countryDto->externalId] = $countryDto->toArray();
         }
 
         return [

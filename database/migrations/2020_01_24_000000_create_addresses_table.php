@@ -18,8 +18,8 @@ class CreateAddressesTable extends Migration
             $table->foreignId('state_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('use_cfdi_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('fiscal_regime_id')->nullable()->constrained()->onDelete('set null');
-            $table->string('provider')->nullable();
-            $table->string('provider_id')->nullable();
+            $table->string('external')->nullable();
+            $table->string('external_id')->nullable();
             $table->string('municipality');
             $table->string('colony');
             $table->string('zip_code');

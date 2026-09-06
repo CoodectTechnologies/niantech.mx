@@ -40,7 +40,7 @@ class ShippingService
     public static function getByOdoo($shippingMethods, $zipCode) {
         $user = Auth::check() ? Auth::user() : null;
         $currency = Session::get('currency');
-        $clientId = $user->provider_id;
+        $clientId = $user->external_id;
         $products = [];
         foreach (Cart::instance('default')->content() as $item) {
             $products[] = [

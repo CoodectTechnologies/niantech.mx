@@ -28,7 +28,7 @@
         <!--end::Label-->
         <!--begin::Col-->
         <div class="col-lg-8">
-            <span class="fw-bold fs-6 text-gray-800">{{ $product->provider }} {{ $product->provider_id ? '('.$product->provider_id.')' : 'N/A' }}</span>
+            <span class="fw-bold fs-6 text-gray-800">{{ $product->external }} {{ $product->external_id ? '('.$product->external_id.')' : 'N/A' }}</span>
         </div>
         <!--end::Col-->
     </div>
@@ -199,8 +199,8 @@
         <div class="row mb-7">
             <!--begin::Label-->
             <label class="col-lg-4 fw-bold text-muted">
-                @if($warehouse->provider)
-                    {{ $warehouse->provider }} -
+                @if($warehouse->external)
+                    {{ $warehouse->external }} -
                 @endif
                 {{ $warehouse->name }}
             </label>

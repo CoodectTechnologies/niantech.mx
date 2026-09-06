@@ -85,8 +85,8 @@
                         <div class="pb-5 fs-6">
                             @if(config('services.odoo.status'))
                                 <!--begin::Details item-->
-                                <div class="fw-bolder mt-5">Proveedor: {{ $user->provider }}</div>
-                                <div class="text-gray-600">Proveedor id: {{ $user->provider_id }}</div>
+                                <div class="fw-bolder mt-5">Proveedor: {{ $user->external }}</div>
+                                <div class="text-gray-600">Proveedor id: {{ $user->external_id }}</div>
                             @endif
                             <!--begin::Details item-->
                             <div class="fw-bolder mt-5">{{ __('Account') }} ID</div>

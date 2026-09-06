@@ -10,8 +10,8 @@ use Throwable;
 class OrderDto
 {
     public function __construct(
-        public readonly string $provider,
-        public readonly int $providerId,
+        public readonly string $external,
+        public readonly int $externalId,
         public readonly string $name,
         public readonly ?string $number,
         public readonly int $clientId,
@@ -66,8 +66,8 @@ class OrderDto
     public static function handle(array $o): self {
         try {
             return new self(
-                provider: OdooClient::$code,
-                providerId: $o['id'],
+                external: OdooClient::$code,
+                externalId: $o['id'],
                 name: $o['name'],
                 number: $o['client_order_ref'] ?: null,
                 clientId: $o['partner_id'][0],
@@ -129,8 +129,8 @@ class OrderDto
     }
     public function toArray(): array {
         return [
-            'provider' => $this->provider,
-            'provider_id' => $this->providerId,
+            'external' => $this->external,
+            'external_id' => $this->externalId,
             'name' => $this->name,
             'number' => $this->number,
             'client_id' => $this->clientId,

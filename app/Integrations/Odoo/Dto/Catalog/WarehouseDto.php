@@ -8,8 +8,8 @@ class WarehouseDto
 {
     public function __construct(
         public readonly string $name,
-        public readonly string $provider,
-        public readonly int $providerId,
+        public readonly string $external,
+        public readonly int $externalId,
         public readonly int $productId,
         public readonly float $quantity,
     ) {}
@@ -17,8 +17,8 @@ class WarehouseDto
     public static function handle(array $warehouse): self {
         return new self(
             name: $warehouse['warehouse_id'][1] . ' - ' . $warehouse['location_id'][1],
-            provider: OdooClient::$code,
-            providerId: $warehouse['warehouse_id'][0],
+            external: OdooClient::$code,
+            externalId: $warehouse['warehouse_id'][0],
             productId: $warehouse['product_id'][0],
             quantity: $warehouse['quantity'] - $warehouse['reserved_quantity'],
         );
@@ -26,8 +26,8 @@ class WarehouseDto
     public function toArray(): array {
         return [
             'name' => $this->name,
-            'provider' => $this->provider,
-            'provider_id' => $this->providerId,
+            'external' => $this->external,
+            'external_id' => $this->externalId,
             'quantity' => $this->quantity,
         ];
     }
@@ -36,7 +36,7 @@ class WarehouseDto
         foreach ($warehouseData as $warehouse) {
             $dto = self::handle($warehouse);
             $productId = $dto->productId;
-            $warehouseId = $dto->providerId;
+            $warehouseId = $dto->externalId;
 
             if (! isset($result[$productId])) {
                 $result[$productId] = [];

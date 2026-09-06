@@ -17,7 +17,7 @@ class CreateProductCategoriesTable extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('product_categories')->onDelete('cascade');
             $table->string('key_product_or_service')->nullable();
-            $table->string('provider')->nullable();
+            $table->string('external')->nullable();
 
             $table->text('name');
             $table->text('slug')->nullable();

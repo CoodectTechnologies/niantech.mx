@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->string('folio')->index();
-            $table->integer('provider_id')->index();
-            $table->integer('failure_type_provider_id');
+            $table->integer('external_id')->index();
+            $table->integer('failure_type_external_id');
             $table->string('email')->index();
             $table->string('name');
             $table->string('phone');

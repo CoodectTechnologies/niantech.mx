@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands\Admin\Catalog;
+namespace App\Console\Commands\Admin\Promotion;
 
-use App\Services\Synchronizers\Catalog\ProductController;
+use App\Models\Promotion;
 use Illuminate\Console\Command;
 
-class ProductSave extends Command
+class InactivePromotionCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'catalog:product-save';
+    protected $signature = 'promotion:inactive';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Synchronization catalog (products, categories, brands, attributes, characteristics)';
+    protected $description = 'Disable all promotion when the end date is less that today';
 
     /**
      * Create a new command instance.
@@ -36,8 +36,11 @@ class ProductSave extends Command
      * @return int
      */
     public function handle() {
-        $product = new ProductController;
-        $result = $product->save();
-        $this->info(json_encode($result, JSON_PRETTY_PRINT));
+        Promotion::where('active', true)
+            ->whereDate('date_end', '<=', date('Y-m-d'))
+            ->update([
+                'active' => false,
+            ]);
+        Promotion::regenerateCache();
     }
 }
