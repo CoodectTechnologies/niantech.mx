@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Ecommerce\Product;
 
+use App\Integrations\VadetoBrands\Resources\Catalog\CloudResource;
 use App\Models\File;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Services\Cart\CartService;
-use App\Integrations\VadetoBrands\Resources\Catalog\CloudResourceService;
 use App\Services\Product\ProductVariantService;
 use Exception;
 use Livewire\Attributes\Locked;
@@ -120,12 +120,12 @@ class Show extends Component
         }
     }
     public function loadCloudResources() {
-        $cloudResourceService = new CloudResourceService;
+        $cloudResource = new CloudResource;
         $brand = $this->product->productBrand->name ?? '';
         $sku = $this->product->sku;
         $language = explode('_', language());
         $language = $language[0];
-        $this->cloudResources = $cloudResourceService->find($brand, $language, $sku);
+        $this->cloudResources = $cloudResource->find($brand, $language, $sku);
     }
     public function loadProductsViewRecents() {
         $this->productsViewRecents = Product::getViewRecents();
