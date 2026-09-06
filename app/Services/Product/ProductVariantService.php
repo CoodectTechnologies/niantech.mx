@@ -45,15 +45,15 @@ class ProductVariantService
             $variant->productOptionValues()->sync($syncData);
 
             $productImageIds = [];
-            foreach ($variantData['product_image_ids'] ?? [] as $imageId) {
-                if (is_string($imageId) && Str::startsWith($imageId, 'tmp:')) {
+            foreach($variantData['product_image_ids'] ?? [] as $imageId):
+                if(is_string($imageId) && Str::startsWith($imageId, 'tmp:')):
                     $temporaryIndex = (int) Str::after($imageId, 'tmp:');
                     $imageId = $galleryImageIds[$temporaryIndex] ?? null;
-                }
-                if ($imageId && $product->images()->whereKey($imageId)->exists()) {
+                endif;
+                if($imageId && $product->images()->whereKey($imageId)->exists()):
                     $productImageIds[] = (int) $imageId;
-                }
-            }
+                endif;
+            endforeach;
             $productImageIds = array_values(array_unique($productImageIds));
             $variant->productImages()->sync(
                 collect($productImageIds)->values()->mapWithKeys(

@@ -32,7 +32,7 @@
 
                     <!-- Dirección -->
                     <div class="mb-3">
-                        <div class="small mb-1">{{ __('BILLING ADDRESS') }}</div>
+                        <div class="small mb-1 text-uppercase">{{ __('Billing address') }}</div>
                         <p class="mb-0">
                             {{ $billingAddress->street }}, {{ $billingAddress->colony }}<br>
                             {{ $billingAddress->municipality }}, {{ $billingAddress?->state?->name ?? '' }}<br>

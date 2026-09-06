@@ -3,30 +3,30 @@
 namespace App\Services\Synchronizers\Catalog;
 
 use App\Http\Controllers\Controller;
-use App\Integrations\Odoo;
+use App\Integrations\Odoo\Client\OdooClient;
+use App\Integrations\Odoo\Resources\Catalog\ProductResource;
+use App\Integrations\Odoo\Resources\Catalog\WarehouseResource;
+use App\Integrations\VadetoBrands\Resources\Catalog\ImageResource;
 use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductCategory;
 use App\Models\ProductCharacteristic;
 use App\Models\UnitType;
-use App\Services\Integrations\Odoo\Product\ProductService;
-use App\Services\Integrations\Odoo\Product\WarehouseService;
-use App\Services\Integrations\VadetoBrands\Product\ImageService;
-use App\Services\Integrations\VadetoBrands\Product\ProductService as VadetoBrandsProductService;
+use App\Integrations\VadetoBrands\Resources\Catalog\ProductResource as ContentProductResource;
 use App\Services\Synchronizers\Currency\CurrencyController;
 
 class ProductController extends Controller
 {
-    public $productService;
-    public $warehouseService;
-    public $contentService;
-    public $imageService;
+    public ProductResource $productService;
+    public WarehouseResource $warehouseService;
+    public ContentProductResource $contentService;
+    public ImageResource $imageService;
 
     public function __construct() {
-        $this->productService = new ProductService;
-        $this->warehouseService = new WarehouseService;
-        $this->contentService = new VadetoBrandsProductService;
-        $this->imageService = new ImageService;
+        $this->productService = new ProductResource;
+        $this->warehouseService = new WarehouseResource;
+        $this->contentService = new ContentProductResource;
+        $this->imageService = new ImageResource;
     }
 
     /*  ========================================================================= */
@@ -39,7 +39,7 @@ class ProductController extends Controller
                 'products' => ['created' => 0, 'updated' => 0],
                 'categories' => ['attached' => 0, 'detached' => 0, 'updated' => 0],
             ];
-            $products = Product::with('productCategories')->where('provider', Odoo::$code)->whereNotNull('provider_id')->get()->keyBy('provider_id');
+            $products = Product::with('productCategories')->where('provider', OdooClient::$code)->whereNotNull('provider_id')->get()->keyBy('provider_id');
             foreach ($this->productService->getAll() as $productsProvider) {
                 foreach ($productsProvider as $productProvider) {
                     if (! isset($products[$productProvider['provider_id']])) {
@@ -192,7 +192,7 @@ class ProductController extends Controller
     public function status() {
         return activity()->withoutLogs(function () {
             $startTime = microtime(true);
-            $products = Product::where('provider', Odoo::$code)->whereNotNull('provider_id')->get()->keyBy('provider_id');
+            $products = Product::where('provider', OdooClient::$code)->whereNotNull('provider_id')->get()->keyBy('provider_id');
             $toPublish = [];
             foreach ($this->productService->getAll() as $productsProvider) {
                 foreach ($productsProvider as $productProvider) {
@@ -286,7 +286,7 @@ class ProductController extends Controller
             ];
             $products = Product::query()
                 ->with(['productAttributes', 'productCharacteristics'])
-                ->where('provider', Odoo::$code)
+                ->where('provider', OdooClient::$code)
                 ->whereNotNull('provider_id')
                 ->whereNotNull('sku')
                 ->get()
@@ -457,7 +457,7 @@ class ProductController extends Controller
         return activity()->withoutLogs(function () {
             $result = ['created' => 0];
             Product::query()
-                ->where('provider', Odoo::$code)
+                ->where('provider', OdooClient::$code)
                 ->whereNotNull('provider_id')
                 ->whereNotNull('sku')
                 ->whereDoesntHave('image')

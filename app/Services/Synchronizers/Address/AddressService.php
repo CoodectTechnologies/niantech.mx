@@ -2,22 +2,22 @@
 
 namespace App\Services\Synchronizers\Address;
 
-use App\Integrations\Odoo;
+use App\Integrations\Odoo\Client\OdooClient;
 use App\Models\Address;
 use App\Models\FiscalRegime;
 use App\Models\State;
 use App\Models\UseCfdi;
 use App\Models\User;
-use App\Services\Integrations\Odoo\Address\AddressService as OdooAddressService;
+use App\Integrations\Odoo\Resources\Address\AddressResource;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class AddressService
 {
-    protected OdooAddressService $addressService;
+    protected AddressResource $addressResource;
 
     public function __construct() {
-        $this->addressService = new OdooAddressService;
+        $this->addressResource = new AddressResource;
     }
     public function save(): array {
         return activity()->withoutLogs(function () {
@@ -28,7 +28,6 @@ class AddressService
                 'deleted' => 0,
                 'skipped' => 0,
                 'failed' => 0,
-                'users' => 0,
             ];
 
             if (! config('services.odoo.status')) {
@@ -43,7 +42,6 @@ class AddressService
                 ->orderBy('id')
                 ->chunkById(100, function ($users) use (&$result) {
                     foreach ($users as $user) {
-                        $result['users'] += 1;
                         $this->syncUserAddresses($user, $result);
                     }
                 });
@@ -64,7 +62,7 @@ class AddressService
 
             $odooProviderIds = [];
             $domain = ['|', ['id', '=', $providerId], ['parent_id', '=', $providerId]];
-            foreach ($this->addressService->getAll(domain: $domain) as $addresses) {
+            foreach ($this->addressResource->getAll(domain: $domain) as $addresses) {
                 foreach ($addresses as $address) {
                     if (! empty($address['provider_id'])) {
                         $odooProviderIds[] = (string) $address['provider_id'];
@@ -105,7 +103,7 @@ class AddressService
 
         $addressLocal = Address::query()->firstOrNew([
             'user_id' => $user->id,
-            'provider' => Odoo::$code,
+            'provider' => OdooClient::$code,
             'provider_id' => $address['provider_id'] ?? null,
         ]);
 
@@ -122,7 +120,7 @@ class AddressService
         $useCfdi = ! empty($address['use_cfdi']) ? UseCfdi::where('code', $address['use_cfdi'])->first() : null;
 
         return [
-            'provider' => Odoo::$code,
+            'provider' => OdooClient::$code,
             'provider_id' => $address['provider_id'] ?? null,
             'state_id' => $state->id ?? null,
             'fiscal_regime_id' => $fiscalRegime->id ?? null,
@@ -144,7 +142,7 @@ class AddressService
         ];
     }
     protected function deleteMissingAddresses(User $user, array $providerIds, array &$result): void {
-        $query = Address::query()->where('user_id', $user->id)->where('provider', Odoo::$code);
+        $query = Address::query()->where('user_id', $user->id)->where('provider', OdooClient::$code);
         if ($providerIds) {
             $query->whereNotIn('provider_id', $providerIds);
         }

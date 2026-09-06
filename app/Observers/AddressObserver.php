@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Exceptions\OdooException;
 use App\Models\Address;
-use App\Services\Integrations\Odoo\Address\AddressService;
+use App\Integrations\Odoo\Resources\Address\AddressResource;
 
 class AddressObserver
 {
@@ -32,8 +32,8 @@ class AddressObserver
     private function saveOdoo(Address $address): void {
         if (config('services.odoo.status')) {
             $address->load(['state.country', 'user']);
-            $customerService = new AddressService;
-            $customer = $customerService->save($address);
+            $addressResource = new AddressResource;
+            $customer = $addressResource->save($address);
             if ($address->is_billing) {
                 $address->is_billing_default = true;  // Como en odoo solo se puede tener una dirección de facturación, si esta es marcada como de facturación, se asigna como predeterminada de facturación
             }
@@ -47,8 +47,8 @@ class AddressObserver
     }
     private function deleteOdoo(Address $address): void {
         if (config('services.odoo.status') && $address->provider_id) {
-            $addressService = new AddressService;
-            $result = $addressService->delete((int) $address->provider_id);
+            $addressResource = new AddressResource;
+            $result = $addressResource->delete((int) $address->provider_id);
             if (! $result) {
                 throw new OdooException(__('We were unable to delete your registration at this time. Please try again.'));
             }

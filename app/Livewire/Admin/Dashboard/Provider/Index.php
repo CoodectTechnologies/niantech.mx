@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin\Dashboard\Provider;
 
-use App\Integrations\Odoo;
+use App\Integrations\Odoo\Client\OdooClient;
 use App\Models\Order;
 use App\Services\Synchronizers\Catalog\ProductController;
 use App\Services\Synchronizers\Currency\CurrencyController;
@@ -47,7 +47,7 @@ class Index extends Component
             ->validateOrder()
             ->whereHas('orderProviders')
             ->whereHas('orderProductWarehouses', function ($query) {
-                $query->where('provider', Odoo::$code);
+                $query->where('provider', OdooClient::$code);
             })
             ->whereDoesntHave('orderProviderPayment')
             ->get();

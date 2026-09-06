@@ -4,7 +4,7 @@
         <address>
             <strong>{{ $order->address->state->country->name }}.</strong><br>
             {{ $order->address->state->name }}, {{ $order->address->municipality }}<br>
-            {{ $order->address->colony }}, {{ $order->address->street }}, Código postal:
+            {{ $order->address->colony }}, {{ $order->address->street }}, {{ __('Zip code') }}:
             {{ $order->address->zip_code }}<br>
             <abbr title="Phone">{{ __('Phone') }}: {{ $order->address->phone }}
             </abbr> <br>
@@ -15,13 +15,13 @@
 </div>
 @if($order->billingAddress)
     <div class="mb-5">
-        <div class="order-summary-wrapper sticky-sidebar">
+        <div class="">
             <h3 class="">{{ __('Billing address') }}</h3>
             <address>
                 <strong>{{ $order->billingAddress->state->country->name }}.</strong><br>
                 {{ $order->billingAddress->vat }}, {{ $order->billingAddress->state->name }},
                 {{ $order->billingAddress->municipality }}<br>
-                {{ $order->billingAddress->colony }}, {{ $order->billingAddress->street }}, Código postal:
+                {{ $order->billingAddress->colony }}, {{ $order->billingAddress->street }}, {{ __('Zip code') }}:
                 {{ $order->billingAddress->zip_code }}<br>
                 <abbr title="Phone">{{ __('Phone') }}: {{ $order->billingAddress->phone }}
                 </abbr> <br>

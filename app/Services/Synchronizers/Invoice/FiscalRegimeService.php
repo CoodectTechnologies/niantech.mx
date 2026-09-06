@@ -2,17 +2,17 @@
 
 namespace App\Services\Synchronizers\Invoice;
 
+use App\Integrations\Odoo\Resources\Invoice\FiscalRegimeResource;
 use App\Models\FiscalRegime;
-use App\Services\Integrations\Odoo\Invoice\FiscalRegimeService as OdooFiscalRegimeService;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class FiscalRegimeService
 {
-    protected OdooFiscalRegimeService $odooFiscalRegimeService;
+    protected FiscalRegimeResource $fiscalRegimeResource;
 
     public function __construct() {
-        $this->odooFiscalRegimeService = new OdooFiscalRegimeService;
+        $this->fiscalRegimeResource = new FiscalRegimeResource;
     }
     public function save(): array {
         return activity()->withoutLogs(function () {
@@ -32,7 +32,7 @@ class FiscalRegimeService
             }
 
             $providerCodes = [];
-            foreach ($this->odooFiscalRegimeService->getAll() as $fiscalRegime) {
+            foreach ($this->fiscalRegimeResource->getAll() as $fiscalRegime) {
                 try {
                     $code = $fiscalRegime['code'];
                     if (! $code) {

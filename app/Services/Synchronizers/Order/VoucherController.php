@@ -4,6 +4,7 @@ namespace App\Services\Synchronizers\Order;
 
 use App\Http\Controllers\Controller;
 
+// TODO: Checar si este se seguira ocupando o no
 class VoucherController extends Controller
 {
     public $provider;

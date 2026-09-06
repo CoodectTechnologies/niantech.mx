@@ -3,22 +3,22 @@
 namespace App\Services\Synchronizers\Location;
 
 use App\Http\Controllers\Controller;
-use App\Integrations\Odoo;
+use App\Integrations\Odoo\Client\OdooClient;
+use App\Integrations\Odoo\Resources\Location\CountryResource;
+use App\Integrations\Odoo\Resources\Location\StateResource;
 use App\Models\Country;
 use App\Models\State;
-use App\Services\Integrations\Odoo\Location\CountryService as OdooCountryService;
-use App\Services\Integrations\Odoo\Location\StateService as OdooStateService;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class LocationService extends Controller
 {
-    protected OdooCountryService $countryService;
-    protected OdooStateService $stateService;
+    protected CountryResource $countryResource;
+    protected StateResource $stateResource;
 
     public function __construct() {
-        $this->countryService = new OdooCountryService;
-        $this->stateService = new OdooStateService;
+        $this->countryResource = new CountryResource;
+        $this->stateResource = new StateResource;
     }
     public function save(): array {
         return activity()->withoutLogs(function () {
@@ -53,13 +53,13 @@ class LocationService extends Controller
         $codeDefault = countryByLanguage(config('translatable.fallback'))['code'] ?? 'MX';
         $domain = [['code', 'in', $countriesAvaliables]];
 
-        foreach ($this->countryService->getAll(domain: $domain) as $countries) {
+        foreach ($this->countryResource->getAll(domain: $domain) as $countries) {
             $chunkNow = now();
 
             $providerIds = array_values(array_filter(array_map(function ($countryData) { return $countryData['provider_id']; }, $countries)));
             $codes = array_values(array_filter(array_map(function ($countryData) { return $countryData['code']; }, $countries)));
 
-            $existingByProvider = Country::query()->where('provider', Odoo::$code)->whereIn('provider_id', $providerIds)->get()->keyBy('provider_id');
+            $existingByProvider = Country::query()->where('provider', OdooClient::$code)->whereIn('provider_id', $providerIds)->get()->keyBy('provider_id');
             $existingByCode = Country::query()->whereIn('code', $codes)->get()->keyBy('code');
 
             $toUpdate = [];
@@ -125,7 +125,7 @@ class LocationService extends Controller
         }
 
         $domain = [['country_id', 'in', array_values($countryProviderIds)]];
-        foreach ($this->stateService->getAll(domain: $domain) as $states) {
+        foreach ($this->stateResource->getAll(domain: $domain) as $states) {
             $chunkNow = now();
             $providerIds = array_values(array_filter(array_map(function ($stateData) { return $stateData['provider_id']; }, $states)));
             $existingByProvider = State::query()->whereIn('provider_id', $providerIds)->get()->keyBy('provider_id');
@@ -152,7 +152,7 @@ class LocationService extends Controller
                     $state = $existingByProvider[$providerId] ?? null;
 
                     $row = [
-                        'provider' => Odoo::$code,
+                        'provider' => OdooClient::$code,
                         'provider_id' => $providerId,
                         'country_id' => $country->id,
                         'name' => $stateData['name'],

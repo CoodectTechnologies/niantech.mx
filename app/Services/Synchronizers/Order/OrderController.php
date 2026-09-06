@@ -4,17 +4,18 @@ namespace App\Services\Synchronizers\Order;
 
 use App\Http\Controllers\Controller;
 use App\Integrations\ERP;
-use App\Integrations\Odoo;
+use App\Integrations\Odoo\Client\OdooClient;
 use App\Integrations\PCH;
 use App\Models\Order;
 use App\Models\OrderProviderError;
 
+// TODO: Sincronizador de ordenes
 class OrderController extends Controller
 {
     public $odoo;
 
     public function __construct() {
-        $this->odoo = new Odoo;
+        $this->odoo = new OdooClient;
     }
     public static function save() {
         // $failedOrderIds = OrderProviderError::query()

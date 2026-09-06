@@ -84,6 +84,7 @@ return [
     'odoo' => [
         'status' => (bool) env('ODOO_STATUS'),
         'url' => env('ODOO_URL'),
+        'language' => env('ODOO_LANGUAGE'),
         'database' => env('ODOO_DATABASE'),
         'key' => env('ODOO_KEY'),
     ],

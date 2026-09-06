@@ -2,17 +2,17 @@
 
 namespace App\Services\Synchronizers\Invoice;
 
+use App\Integrations\Odoo\Resources\Invoice\UseCfdiResource;
 use App\Models\UseCfdi;
-use App\Services\Integrations\Odoo\Invoice\UseCfdiService as OdooUseCfdiService;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class UseCfdiService
 {
-    protected OdooUseCfdiService $odooUseCfdiService;
+    protected UseCfdiResource $useCfdiResource;
 
     public function __construct() {
-        $this->odooUseCfdiService = new OdooUseCfdiService;
+        $this->useCfdiResource = new UseCfdiResource;
     }
     public function save(): array {
         return activity()->withoutLogs(function () {
@@ -32,13 +32,11 @@ class UseCfdiService
             }
 
             $providerCodes = [];
-            foreach ($this->odooUseCfdiService->getAll() as $useCfdi) {
+            foreach ($this->useCfdiResource->getAll() as $useCfdi) {
                 try {
                     $code = $useCfdi['code'];
                     if (! $code) {
                         $result['skipped'] += 1;
-                        dd($useCfdi, $result);
-
                         continue;
                     }
 

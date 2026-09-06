@@ -4,7 +4,7 @@ namespace App\Services\Product;
 
 use App\Models\Product;
 use App\Models\ProductCategory;
-use App\Services\Integrations\VadetoBrands\Product\ImageService as VadetoImageService;
+use App\Integrations\VadetoBrands\Resources\Catalog\ImageService as VadetoImageService;
 use App\Services\Synchronizers\Catalog\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;

@@ -3,41 +3,38 @@
 namespace App\Http\Controllers\Admin\Test;
 
 use App\Http\Controllers\Controller;
-use App\Mail\Order\OrderCreate;
+use App\Integrations\Odoo\Resources\Catalog\ProductResource;
+use App\Integrations\Odoo\Resources\Order\OrderResource;
+use App\Integrations\VadetoBrands\Resources\Catalog\CloudResource;
+use App\Integrations\VadetoBrands\Resources\Catalog\ImageResource;
+use App\Integrations\VadetoBrands\Resources\Catalog\ProductResource as VadetoBrandsProductResource;
 use App\Models\Order;
-use App\Services\Integrations\Odoo\Address\AddressService;
-use App\Services\Integrations\Odoo\Customer\CustomerService;
-use App\Services\Integrations\Odoo\Order\OrderService;
-use App\Services\Integrations\Odoo\Product\ProductService;
-use App\Services\Integrations\Odoo\Product\WarehouseService;
-use App\Services\Integrations\VadetoBrands\Product\CloudResourceService;
-use App\Services\Integrations\VadetoBrands\Product\ImageService;
-use App\Services\Integrations\VadetoBrands\Product\ProductService as ProductProductService;
-use App\Services\Synchronizers\Catalog\ProductController;
-use App\Services\User\RegistrationService;
-use Exception;
-use Illuminate\Support\Facades\Mail;
 
 class TestController extends Controller
 {
     public function __construct() {}
     public function index() {
-        $order = Order::first();
-        Mail::to('rigo.villa52@gmail.com')->send(new OrderCreate($order));
-        return new OrderCreate($order);
+        // $orderResource = new OrderResource();
+        // $params = ['page' => 1, 'per_page' => 200];
+        // foreach($orderResource->getAll(params: $params) as $orders):
+        //     foreach($orders as $order):
+        //         dd($order);
+        //     endforeach;
+        // endforeach;
+
         // BRANDS PRODUCTOS
-        // $productService = new ProductProductService();
-        // $res = $productService->getAllContent();
+        // $productResource = new VadetoBrandsProductResource();
+        // $res = $productResource->getAllContent();
         // dd($res);
 
         // // BRANDS CLOUD RESOURCES
-        // $cloudResourceService = new CloudResourceService();
-        // $res = $cloudResourceService->find('yeyian', 'es', 'YMO2001');
+        // $cloudResourceResource = new CloudResource();
+        // $res = $cloudResourceResource->find('yeyian', 'es', 'YMO2001');
         // dd($res);
 
         // BRANDS IMAGES
-        // $cloudResourceService = new ImageService();
-        // $res = $cloudResourceService->getAll('yeyian', 'es_MX', 'YMC-VA34-01');
+        // $cloudResourceResource = new ImageResource();
+        // $res = $cloudResourceResource->getAll('yeyian', 'es_MX', 'YMC-VA34-01');
         // dd($res);
 
         // CORRER EL SYNC DE PRODUCTOS
@@ -45,14 +42,14 @@ class TestController extends Controller
         // $productController->save();
 
         // TESTEAR EL SERVICIO DE PRODUCTOS find
-        // $productService = new ProductService();
-        // $result = $productService->find(1);
+        // $productResource = new ProductResource();
+        // $result = $productResource->find(1);
         // dd($result);
 
         // TESTEAR EL SERVICIO DE PRODUCTOS getALL
-        // $productService = new ProductService();
+        // $productResource = new ProductResource();
         // $params = ['page' => 1, 'per_page' => 200];
-        // foreach($productService->getAll($params) as $products):
+        // foreach($productResource->getAll($params) as $products):
         //     foreach($products as $product):
         //         dd($product);
         //     endforeach;
@@ -61,22 +58,23 @@ class TestController extends Controller
         // TESTEAR EL SERVICIO DE ALMACENES getALL
         // $result = [];
         // $params = ['page' => 1, 'per_page' => 200];
-        // $warehouseService = new WarehouseService();
-        // foreach($warehouseService->getAll($params) as $warehouses):
+        // $warehouseResource = new WarehouseResource();
+        // foreach($warehouseResource->getAll($params) as $warehouses):
         //     $result = $warehouses;
         //     break;
         //     // foreach($warehouses as $warehouse):
         //     //     dd($warehouse);
         //     // endforeach;
         // endforeach;
+        // dd($result);
 
         // TESTEAR EL SERVICIO DE ORDENES find
         // $result = [];
         // $params = ['page' => 1, 'per_page' => 200];
         // $domain = [];
         // $domain = [['state', 'in', ['sale', 'done']]];
-        // $orderService = new OrderService();
-        // $order = $orderService->find(1);
+        // $orderResource = new OrderResource();
+        // $order = $orderResource->find(1);
         // dd($order);
 
         // // TESTEAR EL SERVICIO DE ORDENES getALL
@@ -84,8 +82,8 @@ class TestController extends Controller
         // $params = ['page' => 1, 'per_page' => 200];
         // $domain = [];
         // $domain = [['state', 'in', ['sale', 'done']]];
-        // $orderService = new OrderService();
-        // foreach($orderService->getAll(domain: $domain, params: $params) as $orders):
+        // $orderResource = new OrderResource();
+        // foreach($orderResource->getAll(domain: $domain, params: $params) as $orders):
         //     foreach($orders as $order):
         //         dd($order);
         //     endforeach;
@@ -94,8 +92,8 @@ class TestController extends Controller
         // TESTEAR CUSTOMER getAll
         // $result = [];
         // $params = ['page' => 1, 'per_page' => 200];
-        // $customerService = new CustomerService();
-        // foreach($customerService->getAll(params: $params) as $customers):
+        // $customerResource = new CustomerResource();
+        // foreach($customerResource->getAll(params: $params) as $customers):
         //     $result = $customers;
         //     dd($result);
         //     break;
@@ -103,8 +101,8 @@ class TestController extends Controller
 
         // TESTEAR CUSTOMER find
         // $result = [];
-        // $customerService = new CustomerService();
-        // $res = $customerService->find(57);
+        // $customerResource = new CustomerResource();
+        // $res = $customerResource->find(57);
         // dd($res);
 
         // TESTAR NEW CUSTOMER
@@ -121,8 +119,8 @@ class TestController extends Controller
         // }
 
         // TESTAER EL SERVICIO DE CUSTOMER findByEmail
-        // $customerService = new CustomerService();
-        // $result = $customerService->findByEmail('deco_addict@yourcompany.example.com');
+        // $customerResource = new CustomerResource();
+        // $result = $customerResource->findByEmail('deco_addict@yourcompany.example.com');
         // dd($result);
 
         // TESTAER EL SERVICIO DE ADDRESSES
@@ -135,6 +133,11 @@ class TestController extends Controller
         //     dd($result);
         //     break;
         // endforeach;
+
+        // $order = Order::find(1);
+        // $orderResource = new OrderResource();
+        // $result = $orderResource->save($order);
+        // dd($result);
 
         return view('admin.test.index');
     }

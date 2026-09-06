@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="mb-3 checkout-address-content">
-                    <div class="small mb-1">{{ __('SHIPPING ADDRESS') }}</div>
+                    <div class="small mb-1 text-uppercase">{{ __('Shipping address') }}</div>
                     <p class="mb-0 ">
                         {{ $address->street }}, {{ $address->colony }}<br>
                         {{ $address->municipality }}, {{ $address->state?->name ?? '' }}<br>

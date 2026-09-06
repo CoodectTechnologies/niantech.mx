@@ -6,7 +6,7 @@ use App\Models\File;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Services\Cart\CartService;
-use App\Services\Integrations\VadetoBrands\Product\CloudResourceService;
+use App\Integrations\VadetoBrands\Resources\Catalog\CloudResourceService;
 use App\Services\Product\ProductVariantService;
 use Exception;
 use Livewire\Attributes\Locked;
@@ -21,7 +21,6 @@ class Show extends Component
     public $sku;
     #[Locked] 
     public $quantityTotal = 0;
-    #[Locked] 
     public $quantitySelected = 1;
     public $variantSelected;
     public $gallery = [];

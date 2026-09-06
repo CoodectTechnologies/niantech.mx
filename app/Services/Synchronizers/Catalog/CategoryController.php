@@ -3,16 +3,10 @@
 namespace App\Services\Synchronizers\Catalog;
 
 use App\Http\Controllers\Controller;
-use App\Integrations\VadetoBrands;
 use App\Models\ProductCategory;
 
 class CategoryController extends Controller
 {
-    public $brands;
-
-    public function __construct() {
-        $this->brands = new VadetoBrands;
-    }
     public static function save($categories, $parentId = null) {
         $syncCategories = [];
         foreach ($categories as $categoryArray) {

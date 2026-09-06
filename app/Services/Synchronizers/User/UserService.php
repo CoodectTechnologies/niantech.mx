@@ -5,22 +5,22 @@ namespace App\Services\Synchronizers\User;
 use App\Enums\Role\Role as EnumsRole;
 use App\Exceptions\OdooException;
 use App\Http\Controllers\Controller;
-use App\Integrations\Odoo;
+use App\Integrations\Odoo\Client\OdooClient;
+use App\Integrations\Odoo\Resources\Customer\CustomerResource;
 use App\Models\Country;
 use App\Models\User;
-use App\Services\Integrations\Odoo\Customer\CustomerService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
 
 class UserService extends Controller
 {
-    protected CustomerService $customerService;
+    protected CustomerResource $customerResource;
     protected array $countriesAvailable = [];
     protected ?int $defaultCountryId = null;
 
     public function __construct() {
-        $this->customerService = new CustomerService;
+        $this->customerResource = new CustomerResource;
         $this->loadCountries();
     }
     public function save(): array {
@@ -44,7 +44,7 @@ class UserService extends Controller
     protected function syncProviderToLocal(array &$result): void {
         $countriesAvaliables = $this->countriesAvailable;
 
-        foreach ($this->customerService->getAll() as $customers) {
+        foreach ($this->customerResource->getAll() as $customers) {
             $emails = array_filter(array_map(fn ($c) => strtolower(trim($c['email'] ?? '')), $customers));
 
             $localUsers = User::query()
@@ -112,12 +112,12 @@ class UserService extends Controller
                 $query->whereNull('provider_id')->orWhere('provider_id', '');
             })
             ->where(function ($query) {
-                $query->whereNull('provider')->orWhere('provider', '')->orWhere('provider', Odoo::$code);
+                $query->whereNull('provider')->orWhere('provider', '')->orWhere('provider', OdooClient::$code);
             })
             ->orderBy('id')
             ->chunkById(200, function ($users) use ($countriesAvaliables, $defaultCountryId, &$result) {
                 $emails = $users->map(fn ($u) => strtolower(trim($u->email)))->toArray();
-                $odooCustomers = $this->customerService->getByEmails($emails);
+                $odooCustomers = $this->customerResource->getByEmails($emails);
                 foreach ($users as $user) {
                     try {
                         if (! $this->isSyncableUser($user)) {
@@ -137,9 +137,9 @@ class UserService extends Controller
                         ];
 
                         if (! ($customer['provider_id'] ?? false)) {
-                            $customer = $this->customerService->create($data);
+                            $customer = $this->customerResource->create($data);
                         } else {
-                            $customer = $this->customerService->update((int) $customer['provider_id'], $data);
+                            $customer = $this->customerResource->update((int) $customer['provider_id'], $data);
                         }
 
                         if (empty($customer['provider_id'])) {

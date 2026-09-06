@@ -3,8 +3,8 @@
 namespace App\Observers;
 
 use App\Exceptions\OdooException;
+use App\Integrations\Odoo\Resources\Customer\CustomerResource;
 use App\Models\User;
-use App\Services\Integrations\Odoo\Customer\CustomerService;
 use Illuminate\Support\Facades\Storage;
 
 class UserObserver
@@ -36,8 +36,8 @@ class UserObserver
     }
     private function saveOdoo(User $user): void {
         if (config('services.odoo.status')) {
-            $customerService = new CustomerService;
-            $customer = $customerService->save($user);
+            $customerResource = new CustomerResource;
+            $customer = $customerResource->save($user);
             if (isset($customer['provider_id']) && $customer['provider_id']) {
                 $user->provider = $customer['provider'];
                 $user->provider_id = $customer['provider_id'];
