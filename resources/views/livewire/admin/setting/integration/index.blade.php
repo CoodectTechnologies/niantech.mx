@@ -1,6 +1,6 @@
 <div class="flex-lg-row-fluid ms-lg-7 ms-xl-10">
     <div class="row justify-content-center">
-        @can('proveedor erp')
+        @can('proveedor odoo')
             <div class="col-lg-6 col-sm-12 col-12 mb-5">
                 @include('admin.setting.integration.erp.index')
             </div>

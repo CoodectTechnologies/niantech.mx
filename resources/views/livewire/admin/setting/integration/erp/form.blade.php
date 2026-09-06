@@ -40,34 +40,33 @@
         </div>
         <div class="fv-row mb-7">
             <label class="fs-6 fw-bold form-label mb-2">
-                <span class="required">{{ __('Username') }}</span>
+                <span class="required">{{ __('Lenguaje') }}</span>
             </label>
-            <input wire:model="erpUsername"
-                class="form-control form-control-solid @error('erpUsername') invalid-feedback @enderror"
-                placeholder="Ejem: admin" name="erpUsername" />
-            @error('erpUsername')
+            <input wire:model="erpLanguage"
+                class="form-control form-control-solid @error('erpLanguage') invalid-feedback @enderror"
+                placeholder="Ejem: es_419" name="erpLanguage" />
+            @error('erpLanguage')
                 <small class="form-text text-danger" role="alert">{{ $message }}</small>
             @enderror
         </div>
         <div class="fv-row mb-7">
             <label class="fs-6 fw-bold form-label mb-2">
-                <span class="required">{{ __('Password / API Key') }}</span>
+                <span class="required">{{ __('API Key') }}</span>
             </label>
-            <input wire:model="erpPassword" type="password"
-                class="form-control form-control-solid @error('erpPassword') invalid-feedback @enderror"
-                placeholder="••••••••" name="erpPassword" />
-            @error('erpPassword')
+            <input wire:model="erpKey" type="password"
+                class="form-control form-control-solid @error('erpKey') invalid-feedback @enderror"
+                placeholder="••••••••" name="erpKey" />
+            @error('erpKey')
                 <small class="form-text text-danger" role="alert">{{ $message }}</small>
             @enderror
         </div>
         <div class="text-center pt-15">
-            <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal"><i
-                    class="fa fa-arrow-left"></i></button>
-            <button wire:loading.attr="disabled" wire:target="{{ $method }}" type="submit"
-                class="btn btn-primary">
+            <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">
+                <i class="fa fa-arrow-left"></i>
+            </button>
+            <button wire:loading.attr="disabled" wire:target="{{ $method }}" type="submit" class="btn btn-primary">
                 <span class="indicator-label">{{ __('Save changes') }}</span>
-                <span wire:loading wire:target="{{ $method }}"
-                    class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                <span wire:loading wire:target="{{ $method }}" class="spinner-border spinner-border-sm align-middle ms-2"></span>
             </button>
         </div>
         <!--end::Actions-->

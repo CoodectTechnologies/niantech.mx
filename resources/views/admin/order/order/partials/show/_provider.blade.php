@@ -22,7 +22,7 @@
                     </div>
                 @endforeach
             </div>
-            @if(config('services.erp.status'))
+            @if(config('services.odoo.status'))
                 <div class="col-lg-4">
                     <!--begin::Order history-->
                     <div class="card card-flush my-4 flex-row-fluid">

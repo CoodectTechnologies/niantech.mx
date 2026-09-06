@@ -12,7 +12,7 @@
             <div class="mb-5">
                 <p class="fw-bolder text-dark mb-0">{{ __('Status') }}</p>
                 <div class="fw-bold text-gray-700">
-                    @if(config('services.erp.status'))
+                    @if(config('services.odoo.status'))
                         <span class="badge badge-primary">{{ __('Active') }}</span>
                     @else
                         <span class="badge badge-secondary">{{ __('Off') }}</span>
@@ -22,9 +22,15 @@
             <div class="mb-5">
                 <p class="fw-bolder text-dark mb-0">API URL</p>
                 <div class="fw-bold text-gray-700">
-                    {{ config('services.erp.url') }}
+                    {{ config('services.odoo.url') }}
                 </div>
             </div>
+            @if ($canSync)
+                <button wire:click='sync' wire:loading.attr="disabled" wire:target="sync" type="button" class="btn btn-primary">
+                    <span class="indicator-label">{{ __('Sincronizar') }}</span>
+                    <span wire:loading wire:target="sync" class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                </button>
+            @endif
         </div>
     </div>
 </div>

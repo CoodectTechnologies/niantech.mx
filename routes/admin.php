@@ -115,7 +115,7 @@ Route::prefix('setting')->name('setting.')->group(function () {
     Route::middleware(['can:producto almacenes'])->get('/warehouse', [WarehouseController::class, 'index'])->name('warehouse');
     Route::middleware(['can:popup'])->get('/popup', [PopupController::class, 'index'])->name('popup');
     Route::middleware(['can:configurador'])->get('/configurator', [ConfiguratorController::class, 'index'])->name('configurator');
-    Route::middleware(['permission:proveedor erp|proveedor pch|proveedor vadeto brands'])->get('/integrations', [IntegrationController::class, 'index'])->name('integration.index');
+    Route::middleware(['permission:proveedor odoo|proveedor pch|proveedor vadeto brands'])->get('/integrations', [IntegrationController::class, 'index'])->name('integration.index');
     // Payment
     Route::middleware(['can:monedas'])->get('/currency', [CurrencyController::class, 'index'])->name('currency');
     Route::middleware(['can:pasarelas de pago'])->get('/access-payment', [AccessPaymentController::class, 'index'])->name('access-payment');

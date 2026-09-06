@@ -32,7 +32,7 @@ class OrderService
         //     })
         //     ->whereDoesntHave('orderProviders')
         //     ->whereNotNull('payment_method')
-        //     ->when(! config('services.erp.status'), function ($query) {
+        //     ->when(! config('services.odoo.status'), function ($query) {
         //         return $query->validateOrder();
         //     }, function ($query) {
         //         return $query->whereNotIn('status', [Order::STATUS_CANCELED, Order::STATUS_REFUND]);
@@ -46,7 +46,7 @@ class OrderService
     public static function create($order) {
         // $providersCode = $order->getProvidersCode();
         // $orderController = new self();
-        // if (config('services.erp.status')) {
+        // if (config('services.odoo.status')) {
         //     $orderController->erp->createOrder($order);
         // } elseif (config('services.pch.status')) {
         //     if (in_array($orderController->pch->code, $providersCode)) {

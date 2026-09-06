@@ -13,25 +13,25 @@ class Form extends Component
     public $erpStatus;
     public $erpUrl;
     public $erpDatabase;
-    public $erpUsername;
-    public $erpPassword;
+    public $erpLanguage;
+    public $erpKey;
 
     protected function rules() {
         return [
             'erpStatus' => 'nullable',
             'erpUrl' => 'required|url',
             'erpDatabase' => 'required|string',
-            'erpUsername' => 'required|string',
-            'erpPassword' => 'required|string',
+            'erpLanguage' => 'required|string',
+            'erpKey' => 'required|string',
         ];
     }
     public function mount($method) {
         $this->method = $method;
-        $this->erpStatus = config('services.erp.status');
-        $this->erpUrl = config('services.erp.url');
-        $this->erpDatabase = config('services.erp.database');
-        $this->erpUsername = config('services.erp.username');
-        $this->erpPassword = config('services.erp.password');
+        $this->erpStatus = config('services.odoo.status');
+        $this->erpUrl = config('services.odoo.url');
+        $this->erpDatabase = config('services.odoo.database');
+        $this->erpLanguage = config('services.odoo.language');
+        $this->erpKey = config('services.odoo.key');
     }
     public function render() {
         return view('livewire.admin.setting.integration.erp.form');
@@ -42,8 +42,8 @@ class Form extends Component
             setEnvValue('ERP_STATUS', $this->erpStatus);
             setEnvValue('ERP_URL', $this->erpUrl);
             setEnvValue('ERP_DATABASE', $this->erpDatabase);
-            setEnvValue('ERP_USERNAME', $this->erpUsername);
-            setEnvValue('ERP_PASSWORD', $this->erpPassword);
+            setEnvValue('ODOO_LANGUAGE', $this->erpLanguage);
+            setEnvValue('ODOO_KEY', $this->erpKey);
             if (file_exists(App::getCachedConfigPath())) {
                 Artisan::call('config:cache');
             }

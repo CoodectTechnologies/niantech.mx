@@ -42,7 +42,7 @@ class OdooClient
     }
     public function log(string $level, string $title, string $url, array $data = [], ?Throwable $exception = null) {
         Log::channel('odoo.api')->$level($title, [
-            'url' => config('services.erp.url').$url,
+            'url' => config('services.odoo.url').$url,
             'data' => $data,
             'response_header' => $this->response?->getHeaders(),
             'response_data' => json_decode($this->response?->getBody() ?? '', true),

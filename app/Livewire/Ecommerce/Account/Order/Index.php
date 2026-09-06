@@ -20,6 +20,7 @@ class Index extends Component
     public function render() {
         return view('livewire.ecommerce.account.order.index');
     }
+    // TODO: No se obtendrán al momento de odoo, primero la sincronización.
     private function loadOrders() {
         $ordersInternal = $this->user->orders()->with(['products', 'orderProviders'])->orderByDesc('id')->get();
         foreach ($ordersInternal as $orderInternal) {
@@ -31,32 +32,32 @@ class Index extends Component
                 'currency' => $orderInternal->currency,
             ];
         }
-        if (config('services.erp.status') && $this->user->external_id) {
-            $erp = new ERP;
-            $ordersIdsInternalByErp = [];
-            foreach ($ordersInternal as $orderInternal) {
-                foreach ($orderInternal->orderProviders as $orderProvider) {
-                    if ($orderProvider->external == $erp->code) {
-                        $ordersIdsInternalByErp[] = $orderProvider->external_id;
-                        $this->ordersInternal[$orderInternal->number]['so'] = $orderProvider->external_id;
-                    }
-                }
-            }
-            // Obtenemos el client id del erp
-            $clientId = $this->user->external_id;
-            // Estas ordenes son cuando ya existian en el ERP, y la ecommerce apenas es nueva
-            $ordersErp = $erp->getOrdersByClient($clientId);
-            foreach ($ordersErp as $orderErp) {
-                if (! in_array($orderErp['so'], $ordersIdsInternalByErp)) {
-                    $this->ordersErp[$orderErp['so']] = $orderErp;
-                }
-            }
-            // Sobreescribimos el status interno sobre el status del ERP en dado caso que sean ordenes syncronizadas
-            foreach ($this->ordersInternal as $orderInternal) {
-                if (isset($orderInternal['so']) && isset($ordersErp[$orderInternal['so']])) {
-                    $this->ordersInternal[$orderInternal['number']]['status'] = $ordersErp[$orderInternal['so']]['status'];
-                }
-            }
-        }
+        // if (config('services.odoo.status') && $this->user->external_id) {
+        //     $erp = new ERP;
+        //     $ordersIdsInternalByErp = [];
+        //     foreach ($ordersInternal as $orderInternal) {
+        //         foreach ($orderInternal->orderProviders as $orderProvider) {
+        //             if ($orderProvider->external == $erp->code) {
+        //                 $ordersIdsInternalByErp[] = $orderProvider->external_id;
+        //                 $this->ordersInternal[$orderInternal->number]['so'] = $orderProvider->external_id;
+        //             }
+        //         }
+        //     }
+        //     // Obtenemos el client id del erp
+        //     $clientId = $this->user->external_id;
+        //     // Estas ordenes son cuando ya existian en el ERP, y la ecommerce apenas es nueva
+        //     $ordersErp = $erp->getOrdersByClient($clientId);
+        //     foreach ($ordersErp as $orderErp) {
+        //         if (! in_array($orderErp['so'], $ordersIdsInternalByErp)) {
+        //             $this->ordersErp[$orderErp['so']] = $orderErp;
+        //         }
+        //     }
+        //     // Sobreescribimos el status interno sobre el status del ERP en dado caso que sean ordenes syncronizadas
+        //     foreach ($this->ordersInternal as $orderInternal) {
+        //         if (isset($orderInternal['so']) && isset($ordersErp[$orderInternal['so']])) {
+        //             $this->ordersInternal[$orderInternal['number']]['status'] = $ordersErp[$orderInternal['so']]['status'];
+        //         }
+        //     }
+        // }
     }
 }

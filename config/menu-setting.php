@@ -129,7 +129,7 @@ return [
                     'icon' => 'fa-light fa-truck-ramp-box',
                     'urlName' => 'admin.setting.integration.index',
                     'active' => 'admin.setting.integration.index',
-                    'canany' => ['proveedor erp', 'proveedor pch', 'proveedor vadeto brands'],
+                    'canany' => ['proveedor odoo', 'proveedor pch', 'proveedor vadeto brands'],
                 ],
             ],
         ],
